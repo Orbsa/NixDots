@@ -6,6 +6,7 @@
       "<leader>tb" = "buffers";
       "<leader>tt" = "builtin";
       "<leader>tm" = "marks";
+      "<leader>tn" = "notify";
       "<C-p>" = {
         action = "git_files";
         options = {
