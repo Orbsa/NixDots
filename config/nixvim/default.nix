@@ -26,6 +26,7 @@
     ./utils/wilder.nix
   ];
   programs.nixvim = {
+    colorschemes.dracula.enable = true;
     plugins.neoscroll.enable = true;
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {
@@ -46,9 +47,25 @@
           hash = "sha256-o2iNktcWxL0oCtCkbARMiWnTlZA8QWQHy2qeOanBlO4=";
         };
       })
+      (pkgs.vimUtils.buildVimPlugin {
+        name = "actions-preview";
+        src = pkgs.fetchFromGitHub {
+          owner = "aznhe21";
+          repo = "actions-preview.nvim";
+          rev = "9f52a01c374318e91337697ebed51c6fae57f8a4";
+          hash = "sha256-lYjsv8y1fMuTGpBF/iG7cm/a7tLdh748vJhVsSp/Iz8=";
+        };
+      })
     ];
-    colorschemes.dracula.enable = true;
 
+    extraConfigLua = ''require('actions-preview').setup {
+      diff = {
+        algorithm = 'patience',
+        ignore_whitespace = true,
+        ctxlen = 3,
+      },
+      backend = { 'telescope', 'nui'},
+    }'';
     extraConfigVim = ''
       autocmd BufRead,BufNewFile *.pl set filetype=prolog
     '';
@@ -65,6 +82,11 @@
         key = "<leader>hr";
         action = "<CMD>Hardtime report<CR>";
         options.desc = "Report hardtime";
+      }
+      {
+        key = "<leader>la";
+        action = "<CMD> lua require('actions-preview').code_actions<CR>";
+        options.desc = "Code Action Menu";
       }
       # Default mode is "" which means normal-visual-op
       {

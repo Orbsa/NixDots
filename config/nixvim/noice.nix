@@ -9,9 +9,9 @@
     };
     lsp.signature.enabled = true;
   };
-  programs.nixvim.plugins.notify = {
-    enable = true;
-    render = "compact";
-    timeout = 3000;
-  };
+  #programs.nixvim.plugins.notify = {
+#    enable = true;
+#    render = "compact";
+    #timeout = 3000;
+  #};
 }

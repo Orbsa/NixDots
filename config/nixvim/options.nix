@@ -11,7 +11,7 @@
     scrolloff = 4;
 
     autoindent = true;
-    clipboard = "unnamedplus";
+    #clipboard = "unnamedplus";
     expandtab = true;
     shiftwidth = 2;
     smartindent = true;

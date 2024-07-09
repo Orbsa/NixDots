@@ -155,6 +155,7 @@
     nvidia-docker
     vim 
     wget
+    pulseaudio
     kitty
     foot
     dolphin
@@ -172,7 +173,6 @@
     scream
     keepassxc
     neofetch
-    plex-media-player
     vesktop
     looking-glass-client
     mpv
@@ -183,13 +183,12 @@
     tidal-hifi
     mpd
     rtkit
-    #hyprnotify
     swww
     ncmpcpp
     playerctl
     xdg-utils
-    plemoljp-nf
     sqlite
+    libnotify
    ];
 
   services.mpd = {
@@ -211,6 +210,10 @@
   #  displayManager.gdm.enable = true;
   #  desktopManager.gnome.enable = true;
   #};
+
+  fonts.packages = with pkgs; [
+      plemoljp-nf
+  ];
 
   programs = {
     steam.enable = true;

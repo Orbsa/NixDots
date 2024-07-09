@@ -30,16 +30,15 @@
   home.stateVersion = "24.05";
 
   # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
-  programs.nixvim = {
-    enable = true;
-  };
-  programs.fish = {
-    enable = true;
-    plugins = [
-      { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-    ];
+  programs = {
+    home-manager.enable = true;
+    nixvim.enable = true;
+    fish = {
+      enable = true;
+      plugins = [
+        { name = "grc"; src = pkgs.fishPlugins.grc.src; }
+      ];
+    };
   };
   services.gpg-agent = {
     enable = true;
