@@ -189,7 +189,20 @@
     xdg-utils
     sqlite
     libnotify
+    plex-media-player 
    ];
+   nixpkgs.overlays = [(final: prev: {
+     plex-media-player= prev.plex-media-player.override (old: {
+         mpv =  old.mpv.overrideAttrs ( prevo: {
+           src = prev.fetchFromGitHub {
+             owner = "mpv-player";
+             repo = "mpv";
+             rev = "v0.37.0";
+             hash="sha256-izAz9Iiam7tJAWIQkmn2cKOfoaog8oPKq4sOUtp1nvU=";
+           };
+       });
+     });
+   })];
 
   services.mpd = {
     enable = true;

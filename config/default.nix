@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
-     ./plexmediaplayer.nix
-  ]
+     ./programs
+  ];
   #imports = [ ./home.nix ];
 }
