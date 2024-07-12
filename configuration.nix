@@ -163,6 +163,8 @@
     dolphin
     slurp
     grim
+    mullvad-vpn
+    mullvad
     wl-clipboard
     cliphist
     hyprlock
@@ -193,6 +195,7 @@
     libnotify
     hoppscotch
     runelite
+    plex-mpv-shim
     #plex-media-player 
    ];
    #nixpkgs.overlays = [(final: prev: {
@@ -207,7 +210,7 @@
        #});
      #});
    #})];
-
+  services.mullvad-vpn.enable = true;
   services.mpd = {
     enable = true;
     #musicDirectory = "/home/eric/music";
