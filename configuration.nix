@@ -1,5 +1,5 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
+#61  Edit this configuration file to define what should be installed on
+#61  your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, ... }:
@@ -154,6 +154,7 @@
     ripgrep
     home-manager
     nvidia-docker
+    egl-wayland
     vim 
     wget
     pulseaudio
@@ -190,6 +191,8 @@
     xdg-utils
     sqlite
     libnotify
+    hoppscotch
+    runelite
     #plex-media-player 
    ];
    #nixpkgs.overlays = [(final: prev: {
@@ -218,7 +221,6 @@
       true; # systemd feature: only start MPD service upon connection to its socket
     user = "eric";
   };
-
   #services.xserver = {
   #  enable = true;
   #  displayManager.gdm.enable = true;

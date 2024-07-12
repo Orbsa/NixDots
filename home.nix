@@ -45,4 +45,5 @@
     defaultCacheTtl = 1800;
     enableSshSupport = true;
   };
+  services.plex-mpv-shim.enable = true;
 }
