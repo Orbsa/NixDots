@@ -11,6 +11,7 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.supportedFilesystems = [ "zfs" "ext4" "vfat" "ntfs" "btrfs"];
   boot.extraModulePackages = [ ];
   boot.zfs.extraPools = [ "zpool" ];
   services.zfs = {
