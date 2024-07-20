@@ -107,7 +107,6 @@
       enable = true;
       powerOnBoot = false;
     };
-    opengl.enable = true;
   };
   # hardware.nvidia.prime.offload.enable = true;
   environment.variables = { GDK_SCALE = "0.5"; };
@@ -204,11 +203,11 @@
     winetricks
     lutris
     vulkan-tools
-    (steam.override { 
-extraProfile = ''
-        export VK_ICD_FILENAMES=${config.hardware.nvidia.package}/share/vulkan/icd.d/nvidia_icd.json:${config.hardware.nvidia.package.lib32}/share/vulkan/icd.d/nvidia_icd32.json:$VK_ICD_FILENAMES
-      '';
-      })
+      #(steam.override { 
+      #extraProfile = ''
+      #export VK_ICD_FILENAMES=${config.hardware.nvidia.package}/share/vulkan/icd.d/nvidia_icd.json:${config.hardware.nvidia.package.lib32}/share/vulkan/icd.d/nvidia_icd32.json:$VK_ICD_FILENAMES
+      #'';
+      #})
     #plex-media-player 
    ];
    #nixpkgs.overlays = [(final: prev: {
