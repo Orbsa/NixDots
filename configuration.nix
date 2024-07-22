@@ -21,7 +21,12 @@
       "nixos-config=/persist/etc/nixos/configuration.nix"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  };
+
 
   programs.fish.enable = true;
   # Boot loader config for configuration.nix:
@@ -185,7 +190,6 @@
     virt-manager
     looking-glass-client
     tidal-hifi
-    mpd
     rtkit
     swww
     ncmpcpp
@@ -203,11 +207,11 @@
     winetricks
     lutris
     vulkan-tools
-      #(steam.override { 
-      #extraProfile = ''
-      #export VK_ICD_FILENAMES=${config.hardware.nvidia.package}/share/vulkan/icd.d/nvidia_icd.json:${config.hardware.nvidia.package.lib32}/share/vulkan/icd.d/nvidia_icd32.json:$VK_ICD_FILENAMES
-      #'';
-      #})
+    (steam.override { 
+      extraProfile = ''
+      export VK_ICD_FILENAMES=${config.hardware.nvidia.package}/share/vulkan/icd.d/nvidia_icd.json:${config.hardware.nvidia.package.lib32}/share/vulkan/icd.d/nvidia_icd32.json:$VK_ICD_FILENAMES
+      '';
+    })
     #plex-media-player 
    ];
    #nixpkgs.overlays = [(final: prev: {
@@ -223,19 +227,6 @@
      #});
    #})];
   services.mullvad-vpn.enable = true;
-  services.mpd = {
-    enable = true;
-    #musicDirectory = "/home/eric/music";
-    extraConfig = ''
-      audio_output {
-        type "pipewire"
-        name "My PipeWire Output"
-      }
-    '';
-    startWhenNeeded =
-      true; # systemd feature: only start MPD service upon connection to its socket
-    user = "eric";
-  };
   #services.xserver = {
   #  enable = true;
   #  displayManager.gdm.enable = true;
@@ -302,46 +293,8 @@
       wantedBy = [ "multi-user.target" ];
       requires = [ "pipewire-pulse.service" ];
     };
-    services.mpd = {
-      environment = {
-        XDG_RUNTIME_DIR = "/run/user/${toString config.users.users.eric.uid}"; # User-id must match above user. MPD will look inside this directory for the PipeWire socket.
-      };
-    };
   };
   services = {
-    mopidy = let
-      mopidyPackagesOverride = pkgs.mopidyPackages.overrideScope (prev: final: { extraPkgs = pkgs: [ pkgs.yt-dlp ]; });
-    in {
-      extensionPackages = with mopidyPackagesOverride; [
-        mopidy-mpd
-        mopidy-tidal
-        mopidy-podcast
-        mopidy-soundcloud
-        mopidy-notify
-        mopidy-youtube
-      ];
-      configuration = ''
-        [youtube]
-        youtube_dl_package = yt_dlp
-        [mpd]
-        enabled = true
-        hostname = 127.0.0.1
-        [tidal]
-        enabled = true
-        quality = LOSSLESS
-        #playlist_cache_refresh_secs = 0
-        #lazy = true
-        login_method = AUTO
-        auth_method = PKCE
-        login_server_port = 8989
-        #client_id =
-        
-        [soundcloud]
-        enabled = true
-        explore_songs = 25
-        auth_token = 3-35204-852097828-A8Y4EsxCgpgtmdV
-      '';
-    };
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
