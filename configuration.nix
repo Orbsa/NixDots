@@ -159,6 +159,7 @@
     nvidia-docker
     egl-wayland
     vim 
+    lsd
     wget
     pulseaudio
     kitty
