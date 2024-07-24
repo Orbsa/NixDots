@@ -16,17 +16,22 @@
   nix.nixPath =
     [
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+    
       "nixos-config=/persist/etc/nixos/configuration.nix"
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    substituters = [
+      "https://hyprland.cachix.org" 
+      "https://cosmic.cachix.org/"
+    ];
+    trusted-public-keys = [
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" 
+    ];
   };
 
-
-  programs.fish.enable = true;
   # Boot loader config for configuration.nix:
   boot.loader = {
     efi = {
@@ -75,44 +80,23 @@
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
-  # NVIDIA
   services = {
-    xserver = {
-      videoDrivers = [ "nvidia" ];
-      dpi = 110;
-    };
+    #desktopManager.cosmic.enable = true;
+    #displayManager.cosmic-greeter.enable = true;
     # Enable sound.
     pipewire = {
       enable = true;
       pulse.enable = true;
     };
-    flatpak.enable = true;
+    #flatpak.enable = true;
   };
   hardware = {
-    nvidia = {
-      nvidiaSettings = true;
-      modesetting.enable = true;
-      prime = {
-        offload.enable = true;
-        nvidiaBusId = "PCI:8:0:0"; # Change this to the correct Bus ID of your Quadro card
-        intelBusId = "PCI:1:0:0";  # Change this to the correct Bus ID of your RTX2080 card
-      };
-      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-        version = "555.58";
-        sha256_64bit = "sha256-bXvcXkg2kQZuCNKRZM5QoTaTjF4l2TtrsKUvyicj5ew=";
-        sha256_aarch64 = "sha256-7XswQwW1iFP4ji5mbRQ6PVEhD4SGWpjUJe1o8zoXYRE=";
-        openSha256 = "sha256-hEAmFISMuXm8tbsrB+WiUcEFuSGRNZ37aKWvf0WJ2/c=";
-        settingsSha256 = "sha256-vWnrXlBCb3K5uVkDFmJDVq51wrCoqgPF03lSjZOuU8M=";
-        persistencedSha256 = "sha256-lyYxDuGDTMdGxX3CaiWUh1IQuQlkI2hPEs5LI20vEVw=";
-      };   
-    };
     bluetooth = {
       enable = true;
       powerOnBoot = false;
     };
   };
-  # hardware.nvidia.prime.offload.enable = true;
-  environment.variables = { GDK_SCALE = "0.5"; };
+  #environment.variables = { GDK_SCALE = "0.5"; };
 
   # Bluetooth
   # https://nixos.wiki/wiki/Bluetooth
@@ -156,11 +140,10 @@
     fd
     ripgrep
     home-manager
-    nvidia-docker
     egl-wayland
     vim 
-    lsd
     wget
+    lsd
     pulseaudio
     kitty
     foot
@@ -206,11 +189,6 @@
     winetricks
     lutris
     vulkan-tools
-    (steam.override { 
-      extraProfile = ''
-      export VK_ICD_FILENAMES=${config.hardware.nvidia.package}/share/vulkan/icd.d/nvidia_icd.json:${config.hardware.nvidia.package.lib32}/share/vulkan/icd.d/nvidia_icd32.json:$VK_ICD_FILENAMES
-      '';
-    })
     #plex-media-player 
    ];
    #nixpkgs.overlays = [(final: prev: {
@@ -237,6 +215,9 @@
   ];
 
   programs = {
+    fish.enable = true;
+    dconf.enable = true;
+    nm-applet.enable = true;
     steam.enable = true;
     waybar.enable = true;
     hyprland.enable = true;
@@ -274,29 +255,14 @@
     };
   };
   systemd = {
-    tmpfiles.rules = [
-      "f /dev/shm/looking-glass 0660 eric qemu-libvirtd -" # LookingGlass
-      "f /dev/shm/scream 0660 eric qemu-libvirtd -" # Scream Audio
-      "L /var/lib/libvirt/qemu - - - - /persist/var/lib/libvirt/qemu" #QEMU Confs
-      "L /var/lib/flatpak - - - - /persist/var/lib/flatpak " #Flatpak Confs
-    ];
+    #tmpfiles.rules = [ ];
 
-    # Scream config
-    user.services.scream-ivshmem = {
-      enable = true;
-      description = "Scream IVSHMEM";
-      serviceConfig = {
-        ExecStart = "${pkgs.scream}/bin/scream-ivshmem-pulse /dev/shm/scream";
-        Restart = "always";
-      };
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "pipewire-pulse.service" ];
-    };
   };
   services = {
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
+    upower.enable = true;
     openssh.enable = true;
   };
 

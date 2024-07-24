@@ -10,6 +10,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-cosmic = {
+      url = "github:lilyinstarlight/nixos-cosmic";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
@@ -22,10 +26,8 @@
         system = "${system}";
         # extraSpecialArgs = {inherit inputs;};
         modules = [
+          ./enix-hardware.nix
  # Include the results of the hardware scan. # Include the results of the hardware scan.
-          ./thinix-hardware.nix
-          ./modules/vfio.nix
-          ./configuration.nix
           inputs.home-manager.nixosModules.home-manager {
             home-manager = {
               useGlobalPkgs = true;
@@ -35,6 +37,7 @@
               ];
             };
           }
+          ./configuration.nix
         ];
       };
       nixosConfigurations.thinix = nixpkgs.lib.nixosSystem {
@@ -42,8 +45,7 @@
         # extraSpecialArgs = {inherit inputs;};
         modules = [
  # Include the results of the hardware scan. # Include the results of the hardware scan.
-          ./enix-hardware.nix
-          ./configuration.nix
+          ./thinix-hardware.nix
           inputs.home-manager.nixosModules.home-manager {
             home-manager = {
               useGlobalPkgs = true;
@@ -53,6 +55,8 @@
               ];
             };
           }
+          #inputs.nixos-cosmic.nixosModules.default
+          ./configuration.nix
         ];
       };
     };

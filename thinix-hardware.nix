@@ -8,37 +8,14 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.supportedFilesystems = [ "zfs" "ext4" "vfat" "ntfs" "btrfs"];
   boot.extraModulePackages = [ ];
-  boot.zfs.extraPools = [ "zpool" ];
-  services.zfs = {
-    autoScrub.enable = true;
-    autoSnapshot.enable = true;
-  };
-
-  # Clean root on Every boot. Erase your darlings
-   boot.initrd.postDeviceCommands = lib.mkAfter ''
-     zfs rollback -r zpool/root@blank
-   '';
-  # Multi-partition disk scheduler to none
-  boot.kernelParams = [ "elevator=none" ];
 
   fileSystems."/" =
     { device = "zpool/root";
       fsType = "zfs";
-    };
-
-  fileSystems."/nix" =
-    { device = "zpool/nix";
-      fsType = "zfs";
-    };
-
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/fd44011a-9459-48b5-a1cd-f2acf9c7f85c";
-      fsType = "ext4";
     };
 
   fileSystems."/persist" =
@@ -46,40 +23,15 @@
       fsType = "zfs";
     };
 
+  fileSystems."/home" =
+    { device = "zpool/home";
+      fsType = "zfs";
+    };
+
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/FDE8-41C1";
+    { device = "/dev/disk/by-uuid/DA84-C89C";
       fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
-
-  fileSystems."/mnt/nGames" =
-    { device = "/dev/disk/by-uuid/8e9b6bd0-97f2-41dc-95ba-64b395a1e39a";
-      fsType = "btrfs";
-      options = [ "nofail"] ;
-    };
-
-  fileSystems."/mnt/nGames2" =
-    { device = "/dev/disk/by-uuid/02F4B58D241AC58F";
-      fsType = "ntfs-3g";
-      options = [ "nofail"];
-    };
-
-  fileSystems."/mnt/nGames3" =
-    { device = "/dev/disk/by-uuid/65EA78231E4BF68D";
-      fsType = "ntfs-3g";
-      options = [ "nofail"];
-    };
-
-  fileSystems."/mnt/C" =
-    { device = "/dev/disk/by-uuid/4412C8B412C8AC6C";
-      fsType = "ntfs-3g";
-      options = [ "nofail"];
-    };
-
-  fileSystems."/mnt/winGames" =
-    { device = "/dev/disk/by-uuid/3A3A5ED63A5E8F2F";
-      fsType = "ntfs-3g";
-      options = [ "nofail"];
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices = [ ];
@@ -89,10 +41,9 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
 }
