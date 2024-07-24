@@ -18,6 +18,7 @@
       prismlauncher
       papirus-folders
       calibre
+      orca-slicer
     ];
   };
 

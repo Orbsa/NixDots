@@ -1,4 +1,15 @@
 { pkgs, ... }:
+let 
+  # Define a function to create keybindings
+  createKeybinding = num: {
+    key = "<leader>${toString num}";
+    action = "${toString num}gt";
+    options.desc = "Tab ${toString num}";
+  };
+
+  # Generate the list of keybindings from 1 to 10
+  neovimKeybindings = builtins.genList (n: createKeybinding (n + 1)) 10;
+in
 {
   imports = [
     ./utils/leap.nix
@@ -71,7 +82,7 @@
     '';
 
     globals.mapleader = " ";
-    keymaps = [
+    keymaps = neovimKeybindings ++ [
       # Global
       {
         key = "<C-c>";

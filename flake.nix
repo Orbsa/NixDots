@@ -22,13 +22,36 @@
         system = "${system}";
         # extraSpecialArgs = {inherit inputs;};
         modules = [
+ # Include the results of the hardware scan. # Include the results of the hardware scan.
+          ./thinix-hardware.nix
+          ./modules/vfio.nix
           ./configuration.nix
           inputs.home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.sharedModules = [
-              inputs.nixvim.homeManagerModules.nixvim
-            ];
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              sharedModules = [
+                inputs.nixvim.homeManagerModules.nixvim
+              ];
+            };
+          }
+        ];
+      };
+      nixosConfigurations.thinix = nixpkgs.lib.nixosSystem {
+        system = "${system}";
+        # extraSpecialArgs = {inherit inputs;};
+        modules = [
+ # Include the results of the hardware scan. # Include the results of the hardware scan.
+          ./enix-hardware.nix
+          ./configuration.nix
+          inputs.home-manager.nixosModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              sharedModules = [
+                inputs.nixvim.homeManagerModules.nixvim
+              ];
+            };
           }
         ];
       };
