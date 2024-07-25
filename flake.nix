@@ -23,9 +23,8 @@
         # extraSpecialArgs = {inherit inputs;};
         modules = [
  # Include the results of the hardware scan. # Include the results of the hardware scan.
-          ./thinix-hardware.nix
+          ./enix-hardware.nix
           ./modules/vfio.nix
-          ./configuration.nix
           inputs.home-manager.nixosModules.home-manager {
             home-manager = {
               useGlobalPkgs = true;
@@ -35,6 +34,7 @@
               ];
             };
           }
+          ./configuration.nix
         ];
       };
       nixosConfigurations.thinix = nixpkgs.lib.nixosSystem {
@@ -42,7 +42,7 @@
         # extraSpecialArgs = {inherit inputs;};
         modules = [
  # Include the results of the hardware scan. # Include the results of the hardware scan.
-          ./enix-hardware.nix
+          ./thinix-hardware.nix
           ./configuration.nix
           inputs.home-manager.nixosModules.home-manager {
             home-manager = {

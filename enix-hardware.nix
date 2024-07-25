@@ -26,33 +26,55 @@
   # Multi-partition disk scheduler to none
   boot.kernelParams = [ "elevator=none" ];
 
-  fileSystems = {
-    "/" =
-      { device = "zpool/root";
-        fsType = "zfs";
-      };
+  fileSystems."/" =
+    { device = "zpool/root";
+      fsType = "zfs";
+    };
 
-    "/nix" =
-      { device = "zpool/nix";
-        fsType = "zfs";
-      };
+  fileSystems."/nix" =
+    { device = "zpool/nix";
+      fsType = "zfs";
+    };
 
-    "/home" =
-      { device = "zpool/home";
-        fsType = "zfs";
-      };
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/fd44011a-9459-48b5-a1cd-f2acf9c7f85c";
+      fsType = "ext4";
+    };
 
-    "/persist" =
-      { device = "zpool/persist";
-        fsType = "zfs";
-      };
+  fileSystems."/persist" =
+    { device = "zpool/persist";
+      fsType = "zfs";
+    };
 
-    "/boot" =
-      { device = "/dev/disk/by-uuid/6246-7993";
-        fsType = "vfat";
-        options = [ "fmask=0077" "dmask=0077" ];
-      };
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/FDE8-41C1";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  fileSystems."/mnt/nGames" =
+    { device = "/dev/disk/by-uuid/8e9b6bd0-97f2-41dc-95ba-64b395a1e39a";
+      fsType = "btrfs";
+      options = [ "nofail"] ;
+    };
+
+  fileSystems."/mnt/nGames3" =
+    { device = "/dev/disk/by-uuid/65EA78231E4BF68D";
+      fsType = "ntfs-3g";
+      options = [ "nofail"];
+    };
+
+  fileSystems."/mnt/C" =
+    { device = "/dev/disk/by-uuid/4412C8B412C8AC6C";
+      fsType = "ntfs-3g";
+      options = [ "nofail"];
+    };
+
+  fileSystems."/mnt/winGames" =
+    { device = "/dev/disk/by-uuid/3A3A5ED63A5E8F2F";
+      fsType = "ntfs-3g";
+      options = [ "nofail"];
+    };
 
   swapDevices = [ ];
 
