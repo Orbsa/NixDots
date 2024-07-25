@@ -117,7 +117,7 @@
         isNormalUser = true;
         createHome = true;
         initialHashedPassword = "$y$j9T$LGtqcLijoBEb9Ap8WVeAZ0$7ZMSUzOEVrFsF4R2J8Z.aZc6e7WPBY/OAYnoMBZNM41";
-        extraGroups = [ "wheel" "qemu-libvirtd" "libvirtd" "disk" ];
+        extraGroups = [ "wheel" "disk" ];
         uid = 1000;
         home = "/home/eric";
         shell = pkgs.fish;
@@ -232,30 +232,6 @@
     };
   };
 
-  # Looking Glass
-  # Enable virtualisation programs. These will be used by virt-manager to run your VM.
-  virtualisation = {
-     libvirtd = {
-       enable = true;
-       extraConfig = ''
-         user="eric"
-       '';
-
-       # Don't start any VMs automatically on boot.
-       onBoot = "ignore";
-       # Stop all running VMs on shutdown.
-       onShutdown = "shutdown";
-
-       qemu = {
-         package = pkgs.qemu_kvm;
-         ovmf.enable = true;
-         verbatimConfig = ''
-            namespaces = []
-           user = "+${builtins.toString config.users.users.eric.uid}"
-         '';
-       };
-    };
-  };
   systemd = {
     #tmpfiles.rules = [ ];
 
