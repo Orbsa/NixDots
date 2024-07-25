@@ -150,6 +150,8 @@
     dolphin
     slurp
     grim
+    grc
+    nm-aplet
     mullvad-vpn
     mullvad
     wl-clipboard
