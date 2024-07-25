@@ -50,8 +50,8 @@
   };
 
   networking = {
-    hostName = "enix"; # Define your hostname.
-    hostId = "6241ca71"; 
+    hostName = "thinix"; # Define your hostname.
+    hostId = "4241ca72"; 
   };
 
   # Pick only one of the below networking options.
@@ -151,7 +151,7 @@
     slurp
     grim
     grc
-    nm-aplet
+    networkmanagerapplet
     mullvad-vpn
     mullvad
     wl-clipboard

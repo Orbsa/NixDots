@@ -22,24 +22,6 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
-      nixosConfigurations.enix = nixpkgs.lib.nixosSystem {
-        system = "${system}";
-        # extraSpecialArgs = {inherit inputs;};
-        modules = [
-          ./enix-hardware.nix
- # Include the results of the hardware scan. # Include the results of the hardware scan.
-          inputs.home-manager.nixosModules.home-manager {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              sharedModules = [
-                inputs.nixvim.homeManagerModules.nixvim
-              ];
-            };
-          }
-          ./configuration.nix
-        ];
-      };
       nixosConfigurations.thinix = nixpkgs.lib.nixosSystem {
         system = "${system}";
         # extraSpecialArgs = {inherit inputs;};
