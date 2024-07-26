@@ -81,8 +81,8 @@
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   services = {
-    #desktopManager.cosmic.enable = true;
-    #displayManager.cosmic-greeter.enable = true;
+    desktopManager.cosmic.enable = true;
+    displayManager.cosmic-greeter.enable = true;
     # Enable sound.
     pipewire = {
       enable = true;
@@ -173,6 +173,7 @@
     busybox
     virt-manager
     looking-glass-client
+      #tlp
     tidal-hifi
     rtkit
     swww
@@ -219,10 +220,10 @@
   programs = {
     fish.enable = true;
     dconf.enable = true;
-    nm-applet.enable = true;
+    #nm-applet.enable = true;
     steam.enable = true;
-    waybar.enable = true;
-    hyprland.enable = true;
+    #waybar.enable = true;
+    #hyprland.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
     mtr.enable = true;
@@ -240,6 +241,8 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
+    fwupd.enable = true;
+    #tlp.enable = true;
     upower.enable = true;
     openssh.enable = true;
   };

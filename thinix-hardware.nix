@@ -12,14 +12,20 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [ "zfs" "vfat" "ntfs" ];
+  boot.zfs.extraPools = [ "zpool" ];
+  services.zfs = {
+    autoScrub.enable = true;
+    autoSnapshot.enable = true;
+  };
+
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r zpool/root@blank
+  '';
+  boot.kernelParams = [ "elevator=none" ];
 
   fileSystems."/" =
     { device = "zpool/root";
-      fsType = "zfs";
-    };
-
-  fileSystems."/persist" =
-    { device = "zpool/persist";
       fsType = "zfs";
     };
 
@@ -28,8 +34,18 @@
       fsType = "zfs";
     };
 
+  fileSystems."/persist" =
+    { device = "zpool/persist";
+      fsType = "zfs";
+    };
+
+  fileSystems."/nix" =
+    { device = "zpool/nix";
+      fsType = "zfs";
+    };
+
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/DA84-C89C";
+    { device = "/dev/disk/by-uuid/11D8-F50F";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
@@ -41,6 +57,7 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp0s20f0u4u3.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 

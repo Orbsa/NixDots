@@ -37,7 +37,7 @@
               ];
             };
           }
-          #inputs.nixos-cosmic.nixosModules.default
+          inputs.nixos-cosmic.nixosModules.default
           ./configuration.nix
         ];
       };
