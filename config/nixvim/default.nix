@@ -37,7 +37,7 @@ in
     ./utils/wilder.nix
   ];
   programs.nixvim = {
-    colorschemes.dracula.enable = true;
+    colorschemes.oxocarbon.enable = true;
     plugins.neoscroll.enable = true;
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {
