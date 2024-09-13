@@ -30,6 +30,7 @@ in
     ./treesitter.nix
     ./utils/auto-pairs.nix
     ./utils/autosave.nix
+    ./utils/alpha.nix
     ./utils/blankline.nix
     ./utils/telescope.nix
     ./utils/toggleterm.nix

@@ -1,19 +1,22 @@
-{
+  {
   pkgs,
   inputs,
   ...
 }: {
-  #Stylix
   stylix = {
     enable = true;
     polarity = "dark";
     image = /home/eric/Pictures/papes/1709509373046161.jpg;
-    base16Scheme = inputs.nix-colors.colorSchemes.oxocarbon-dark;
+      #base16Scheme = inputs.nix-colors.colorSchemes.oxocarbon-dark;
     cursor = { 
       package = pkgs.catppuccin-cursors;
       size = 18;
     };
     fonts = {
+      emoji = {
+        package = pkgs.noto-fonts-emoji;
+        name = "Noto Color Emoji";
+      };
       sizes= {
         terminal = 12;
         desktop = 12;

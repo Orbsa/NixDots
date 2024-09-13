@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
+      ./config/stylix.nix
     ];
   home-manager = { 
     users = {

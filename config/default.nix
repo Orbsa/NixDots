@@ -1,8 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
-     ./programs
+    ./programs
     ./stylix.nix
   ];
-  #imports = [ ./home.nix ];
 }
