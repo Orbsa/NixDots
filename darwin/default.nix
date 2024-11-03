@@ -2,13 +2,28 @@
   imports = [ ./homebrew.nix ];
 
   environment = {
+  # Hack to make pam-reattach work
+    etc."pam.d/sudo_local".text = ''
+    # Written by nix-darwin
+    auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so
+    auth       sufficient     pam_tid.so
+    '';
+
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
+    systemPackages = with pkgs;
+    [
+     fzf
+     ffmpeg
+     tmux
+    ];
   };
 
-  programs = { zsh.enable = true; };
+  programs = { 
+    zsh.enable = true;
+  };
 
   services = {
     nix-daemon.enable = true;
@@ -26,6 +41,7 @@
   fonts = {
     packages = with pkgs; [
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      plemoljp-nf
       sketchybar-app-font
     ];
   };

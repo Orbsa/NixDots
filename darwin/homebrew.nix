@@ -17,12 +17,12 @@
       #"openai-whisper" # transcode audio to text
       #"databricks" # databricks cli
       #"pkgxdev/made/pkgx" # run anything
-
       # ios development
       #"cocoapods"
       #"ios-deploy"
 
       # work
+      "gimme-aws-creds" # AWS Okta creds
       #"libmagic"
       #"ruff" # python linter
     ];
@@ -41,6 +41,7 @@
       # coding
       #"intellij-idea"
       #"postman"
+      # "dotnet" # This should be managed with local flakes
 
       # virtualization
       #"utm" # virtual machines
@@ -71,7 +72,7 @@
       #"arc" # mac browser
       "visual-studio-code" # code editor
       "zed" # vim like editor
-      "mpv" # media player
+      #"mpv" # media player
       "linear-linear" # task management
       #"balenaetcher" # usb flashing
       "spacedrive" # file explorer
@@ -86,7 +87,8 @@
       "FelixKratz/formulae" # borders
       #"databricks/tap" # databricks
       #"pkgxdev/made" # pkgx
-      #"nikitabobko/tap" # aerospace
+      "nikitabobko/tap" # aerospace
+      "omnisharp/omnisharp-roslyn" # CSharp SDK
     ];
   };
 }

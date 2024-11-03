@@ -27,9 +27,10 @@
       alt-shift-k = 'move up'
       alt-shift-l = 'move right'
       alt-shift-h = 'move left'
+      alt-shift-period = 'move-workspace-to-display next'
 
-      #alt-h = 'split horizontal'
-      #alt-v = 'split vertical'
+      alt-b = 'split horizontal'
+      alt-v = 'split vertical'
 
       alt-f = 'fullscreen'
 
@@ -115,7 +116,7 @@
 
       [[on-window-detected]]
       if.app-name-regex-substring = 'slack'
-      run = 'move-node-to-workspace 5'
+      run = 'move-node-to-workspace 1'
     '';
   };
 }
