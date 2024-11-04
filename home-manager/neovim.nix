@@ -24,26 +24,34 @@ in
       with treesitter-plugins; [
         bash
         c
-	c_sharp
+        c_sharp
         cpp
         lua
         nix
         python
-	rust
+        rust
         zig
-	tsx
-	typescript
-	toml
-	yaml
+        tsx
+        typescript
+        toml
+        yaml
       ]);
   in
     with pkgs.vimPlugins; [
       nvim-lspconfig
       nvim-treesitter-with-plugins
+      lualine-nvim
+      lualine-lsp-progress
       which-key-nvim
       telescope-nvim
-
-      # (fromGitHub "6422c3a651c3788881d01556cb2a90bdff7bf002" "master" "Shopify/shadowenv.vim")
+      Navigator-nvim
+      nerdtree
+      nerdcommenter
+      mini-nvim
+      nvim-web-devicons
+      plenary-nvim
+      fzf-lua
+      #(fromGitHub "ac8c6fbb5e0e25d7841fe7ccc3c9d8ab658cad30" "main" "frankroeder/parrot.nvim")
     ];
   };
 }

@@ -7,8 +7,9 @@
 
       ## borders
       after-startup-command = [
-	  'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0'
- 	]
+        'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0'
+      ]
+
       [gaps]
       inner.horizontal = 15
       inner.vertical   = 15
@@ -20,14 +21,25 @@
       [mode.main.binding]
       alt-j = 'focus down'
       alt-k = 'focus up'
-      alt-l = 'focus right'
-      alt-h = 'focus left'
+      alt-l = 'focus right --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors'
+      alt-h = 'focus left --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors'
 
       alt-shift-j = 'move down'
+      alt-ctrl-j = 'move-node-to-monitor down'
       alt-shift-k = 'move up'
+      alt-ctrl-k = 'move-node-to-monitor up'
       alt-shift-l = 'move right'
+      alt-ctrl-l = 'move-node-to-monitor right'
       alt-shift-h = 'move left'
+      alt-ctrl-h = 'move-node-to-monitor left'
+      alt-shift-comma = 'move-workspace-to-display next'
       alt-shift-period = 'move-workspace-to-display next'
+      alt-slash = 'layout tiles horizontal vertical'
+      alt-comma = 'layout accordion horizontal vertical'
+      alt-tab = 'workspace-back-and-forth'
+
+      alt-enter = 'exec-and-forget /Applications/Alacritty.app/Contents/MacOS/alacritty'
+
 
       alt-b = 'split horizontal'
       alt-v = 'split vertical'
@@ -40,83 +52,25 @@
 
       alt-shift-space = 'layout floating tiling' # 'floating toggle' in i3
 
-      alt-q = 'workspace 1'
-      alt-w = 'workspace 2'
-      alt-e = 'workspace 3'
-      alt-r = 'workspace 4'
-      alt-t = 'workspace 5'
+      alt-1 = 'summon-workspace 1'
+      alt-2 = 'summon-workspace 2'
+      alt-3 = 'summon-workspace 3'
+      alt-4 = 'summon-workspace 4'
+      alt-5 = 'summon-workspace 5'
+      alt-6 = 'summon-workspace 6'
+      alt-7 = 'summon-workspace 7'
+      alt-8 = 'summon-workspace 8'
+      alt-9 = 'summon-workspace 9'
 
-      alt-shift-q = 'move-node-to-workspace 1'
-      alt-shift-w = 'move-node-to-workspace 2'
-      alt-shift-e = 'move-node-to-workspace 3'
-      alt-shift-r = 'move-node-to-workspace 4'
-      alt-shift-t = 'move-node-to-workspace 5'
-
-      alt-shift-c = 'reload-config'
-
-      [workspace-to-monitor-force-assignment]
-      1 = 'main'
-      2 = 'main'
-      3 = 'main'
-      4 = 'main'
-      5 = ['built-in', 'secondary', 'main']
-
-      # todo
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'reminder'
-      run = 'move-node-to-workspace 1'
-
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'mail'
-      run = 'move-node-to-workspace 1'
-
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'calendar'
-      run = 'move-node-to-workspace 1'
-
-      # code
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'intellij'
-      run = 'move-node-to-workspace 2'
-
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'alacritty'
-      run = 'move-node-to-workspace 2'
-
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'arc'
-      run = 'move-node-to-workspace 2'
-
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'code'
-      run = 'move-node-to-workspace 2'
-
-      # chat
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'signal'
-      run = 'move-node-to-workspace 3'
-
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'messages'
-      run = 'move-node-to-workspace 3'
-
-      # utils
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'spotify'
-      run = 'move-node-to-workspace 4'
-
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'bitwarden'
-      run = 'move-node-to-workspace 4'
-
-      # business
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'teams'
-      run = 'move-node-to-workspace 5'
-
-      [[on-window-detected]]
-      if.app-name-regex-substring = 'slack'
-      run = 'move-node-to-workspace 1'
+      alt-shift-1 = 'move-node-to-workspace 1'
+      alt-shift-2 = 'move-node-to-workspace 2'
+      alt-shift-3 = 'move-node-to-workspace 3'
+      alt-shift-4 = 'move-node-to-workspace 4'
+      alt-shift-5 = 'move-node-to-workspace 5'
+      alt-shift-6 = 'move-node-to-workspace 6'
+      alt-shift-7 = 'move-node-to-workspace 8'
+      alt-shift-8 = 'move-node-to-workspace 8'
+      alt-shift-9 = 'move-node-to-workspace 9'
     '';
   };
 }

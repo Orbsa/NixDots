@@ -11,22 +11,12 @@ let
       sha256 = "sha256-Q21kSGcXAPhG4Q94B/ZD38zaBojgbvsBuQi5unkpJN0=";
     };
   };
-  tmux-powerline=  pkgs.tmuxPlugins.mkTmuxPlugin
-  {
-    pluginName = "tmux-powerline";
-    version = "unstable-2024-10-19";
-    src = pkgs.fetchFromGitHub {
-      owner = "erikw";
-      repo = "tmux-powerline";
-      rev = "7a29f71563828e3093d860695d11583bd874acb4";
-      sha256 = "sha256-68Jm1m0f2SYtYExk84ozRORVFzzX7e9zP/X29i6Vnc8=";
-    };
-  };
 in
 {
   programs.tmux = {
     enable = true;
-    #shell = "${pkgs.fish}/bin/fish";
+    prefix = "C-space";
+    shell = "${pkgs.fish}/bin/fish";
     terminal = "tmux-256color";
     mouse = true;
     keyMode = "vi";
@@ -38,21 +28,47 @@ in
           plugin = tmux-thumbs;
           extraConfig = "set -g @thumbs-key F";
         }
+        #{ plugin = tmux-tilit;
+          #extraConfig = ''
+            #set -g @tilit-navigator 'on'
+            #set -g @tilit-prefix 'C-space'
+            #set -g repeat-time 1000
+          #'';
+        #}
         {
-          plugin = tmux-powerline;
-          #extraConfig = "set -g @super-fingers-key f";
+          plugin = power-theme;
+          extraConfig = ''
+            set -g @tmux_power_theme 'moon'
+          '';
         }
-        { plugin = tmux-tilit;
-          extraConfig = "
-            set -g @tilit-navigator 'on'
-            set -g @tilit-prefix 'M-b'
-            set -g repeat-time 1000
-          ";
-        }
+        tmux-fzf
         better-mouse-mode
+        vim-tmux-navigator
+        extrakto
       ];
     extraConfig = ''
-    set-option -g default-command /nix/store/lh19r6hngpjap0qaflmx0iz0bqhggps6-fish-3.7.1/bin/fish
+      set-option -g default-command /nix/store/lh19r6hngpjap0qaflmx0iz0bqhggps6-fish-3.7.1/bin/fish
+      version_pat='s/^tmux[^0-9]*([.0-9]+).*/\1/p'
+
+      is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+      bind-key -n C-h if-shell "$is_vim" "send-keys C-h" "select-pane -L"
+      bind-key -n C-j if-shell "$is_vim" "send-keys C-j" "select-pane -D"
+      bind-key -n C-k if-shell "$is_vim" "send-keys C-k" "select-pane -U"
+      bind-key -n C-l if-shell "$is_vim" "send-keys C-l" "select-pane -R"
+      tmux_version="$(tmux -V | sed -En "$version_pat")"
+      setenv -g tmux_version "$tmux_version"
+
+      if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
+        "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
+      if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
+        "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
+
+      bind-key -T copy-mode-vi C-h select-pane -L
+      bind-key -T copy-mode-vi C-j select-pane -D
+      bind-key -T copy-mode-vi C-k select-pane -U
+      bind-key -T copy-mode-vi C-l select-pane -R
+      bind-key -T copy-mode-vi C-\\ select-pane -l
     '';
   };
 }

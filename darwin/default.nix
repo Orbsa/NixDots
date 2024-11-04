@@ -15,6 +15,7 @@
     };
     systemPackages = with pkgs;
     [
+     ripgrep
      fzf
      ffmpeg
      tmux
