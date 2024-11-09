@@ -7,7 +7,6 @@
 {
   imports =
     [ 
-      ./config/stylix.nix
     ];
   home-manager = { 
     users = {
@@ -91,6 +90,8 @@
   };
   hardware = {
     nvidia = {
+      open = false;
+      package =  config.boot.kernelPackages.nvidiaPackages.beta;
       nvidiaSettings = true;
       modesetting.enable = true;
       prime = {
@@ -98,21 +99,13 @@
         nvidiaBusId = "PCI:8:0:0"; # Change this to the correct Bus ID of your Quadro card
         intelBusId = "PCI:1:0:0";  # Change this to the correct Bus ID of your RTX2080 card
       };
-      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-        version = "555.58";
-        sha256_64bit = "sha256-bXvcXkg2kQZuCNKRZM5QoTaTjF4l2TtrsKUvyicj5ew=";
-        sha256_aarch64 = "sha256-7XswQwW1iFP4ji5mbRQ6PVEhD4SGWpjUJe1o8zoXYRE=";
-        openSha256 = "sha256-hEAmFISMuXm8tbsrB+WiUcEFuSGRNZ37aKWvf0WJ2/c=";
-        settingsSha256 = "sha256-vWnrXlBCb3K5uVkDFmJDVq51wrCoqgPF03lSjZOuU8M=";
-        persistencedSha256 = "sha256-lyYxDuGDTMdGxX3CaiWUh1IQuQlkI2hPEs5LI20vEVw=";
-      };   
     };
     bluetooth = {
       enable = true;
       powerOnBoot = false;
     };
   };
-  # hardware.nvidia.prime.offload.enable = true;
+
   environment.variables = { GDK_SCALE = "0.5"; };
 
   # Bluetooth
@@ -153,6 +146,7 @@
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs;
    [
+    comma
     git
     fd
     ripgrep
@@ -165,13 +159,18 @@
     pulseaudio
     kitty
     foot
+    rar
+    unrar
     dolphin
     slurp
     grim
+    bottles
+    httpie-desktop
     mullvad-vpn
     mullvad
     wl-clipboard
     cliphist
+    sunshine
     hyprlock
     wofi 
     librewolf
@@ -183,18 +182,22 @@
     keepassxc
     fastfetch
     vesktop
+    btop
+    fastfetch
     looking-glass-client
     mpv
     yt-dlp
     busybox
     virt-manager
     looking-glass-client
+    vscode
     tidal-hifi
     rtkit
     swww
     ncmpcpp
     playerctl
     xdg-utils
+    brave
     sqlite
     libnotify
     hoppscotch
@@ -214,8 +217,18 @@
     })
     #plex-media-player 
    ];
-   #nixpkgs.overlays = [(final: prev: {
-     #plex-media-player= prev.plex-media-player.override (old: {
+    nixpkgs.overlays = [
+    (self: super: {
+      mpv = super.mpv.override {
+        scripts = with self.mpvScripts; [
+          mpris modernx sponsorblock-minimal evafast videoclip
+        ];
+      };
+    })
+];
+
+     #nixpkgs.overlays = [(final: prev: {
+       #plex-media-player= prev.plex-media-player.override (old: {
          #mpv =  old.mpv.overrideAttrs ( prevo: {
            #src = prev.fetchFromGitHub {
              #owner = "mpv-player";
@@ -226,6 +239,14 @@
        #});
      #});
    #})];
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+    
+  };
+
   services.mullvad-vpn.enable = true;
   #services.xserver = {
   #  enable = true;

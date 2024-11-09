@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./config/nixvim
     ./config/programs
   ];
   # Home Manager needs a bit of information about you and the
@@ -17,8 +16,6 @@
       fortune
       prismlauncher
       papirus-folders
-      calibre
-      orca-slicer
     ];
   };
 
@@ -93,48 +90,48 @@
         }
       '';
     };
-    mopidy = let
-      mopidyPackagesOverride = pkgs.mopidyPackages.overrideScope (prev: final: { extraPkgs = pkgs: [ 
-        pkgs.yt-dlp 
-        (pkgs.python3.withPackages (p: with p; [
-          pygobject3 gst-python 
-        ]))
-      ];});
-    in {
-      enable = true;
-      extensionPackages = with mopidyPackagesOverride; [
-        mopidy-mpd
-        mopidy-tidal
-        mopidy-podcast
-        mopidy-soundcloud
-        mopidy-notify
-        mopidy-youtube
-      ];
-      settings = {
-        youtube = {
-          youtube_dl_package = "yt_dlp";
-        };
-        mpd = {
-          enabled = true;
-          hostname = "127.0.0.1";
-        };
-        tidal = {
-          enabled = true;
-          quality = "LOSSLESS";
-          #playlist_cache_refresh_secs = 0
-          #lazy = true
-          login_method = "AUTO";
-          auth_method = "PKCE";
-          login_server_port = 8989;
-          #client_id =
-        };
-        soundcloud = {
-          enabled = true;
-          explore_songs = 25;
-          auth_token = "3-35204-852097828-A8Y4EsxCgpgtmdV";
-        };
-      };
-    };
+   # mopidy = let
+   #   mopidyPackagesOverride = pkgs.mopidyPackages.overrideScope (prev: final: { extraPkgs = pkgs: [ 
+   #     pkgs.yt-dlp 
+   #     (pkgs.python3.withPackages (p: with p; [
+   #       pygobject3 gst-python 
+   #     ]))
+   #   ];});
+   # in {
+   #   enable = true;
+   #   extensionPackages = with mopidyPackagesOverride; [
+   #     mopidy-mpd
+   #     mopidy-tidal
+   #     mopidy-podcast
+   #     mopidy-soundcloud
+   #     mopidy-notify
+   #     mopidy-youtube
+   #   ];
+   #   settings = {
+   #     youtube = {
+   #       youtube_dl_package = "yt_dlp";
+   #     };
+   #     mpd = {
+   #       enabled = true;
+   #       hostname = "127.0.0.1";
+   #     };
+   #     tidal = {
+   #       enabled = true;
+   #       quality = "LOSSLESS";
+   #       #playlist_cache_refresh_secs = 0
+   #       #lazy = true
+   #       login_method = "AUTO";
+   #       auth_method = "PKCE";
+   #       login_server_port = 8989;
+   #       #client_id =
+   #     };
+   #     soundcloud = {
+   #       enabled = true;
+   #       explore_songs = 25;
+   #       auth_token = "3-35204-852097828-A8Y4EsxCgpgtmdV";
+   #     };
+   #   };
+   # };
     gpg-agent = {
       enable = true;
       defaultCacheTtl = 1800;

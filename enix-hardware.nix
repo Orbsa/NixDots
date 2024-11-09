@@ -24,7 +24,7 @@
      zfs rollback -r zpool/root@blank
    '';
   # Multi-partition disk scheduler to none
-  boot.kernelParams = [ "elevator=none" ];
+  boot.kernelParams = [ "elevator=none" "nvidia.NVreg_EnableGpuFirmware=0" ];
 
   fileSystems."/" =
     { device = "zpool/root";
@@ -57,6 +57,7 @@
       fsType = "btrfs";
       options = [ "nofail"] ;
     };
+
 
   fileSystems."/mnt/nGames3" =
     { device = "/dev/disk/by-uuid/65EA78231E4BF68D";

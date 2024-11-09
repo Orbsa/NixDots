@@ -1,5 +1,6 @@
 {
   imports = [
     ./starship
+    ./neovim.nix
   ];
 }
