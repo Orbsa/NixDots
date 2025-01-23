@@ -3,6 +3,7 @@
     ./neovim.nix
     ./borders.nix
     ./aerospace.nix
+    ./fish.nix
     ./tmux.nix
     ./home.nix
   ];

@@ -1,0 +1,54 @@
+{ pkgs, ... }:
+{
+home.packages = with pkgs; [
+    fishPlugins.done
+    fishPlugins.fzf-fish
+    fishPlugins.forgit
+    fishPlugins.hydro
+    fishPlugins.grc
+    ripgrep # recursively searches directories for a regex pattern
+    jq # A lightweight and flexible command-line JSON processor
+    yq-go # yaml processor https://github.com/mikefarah/yq
+    eza # A modern replacement for ‘ls’
+    fzf # A command-line fuzzy finder
+    grc
+]
+  programs.fish = {
+    enable = true;
+    plugins = [
+      {name = "grc"; src = pkgs.fishPlugins.grc.src; } 
+      {name = "done"; src = pkgs.fishPlugins.done.src;} 
+      {name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src;} 
+      {name = "forgit"; src = pkgs.fishPlugins.forgit.src;} 
+      {name = "hydro"; src = pkgs.fishPlugins.hydro.src;} 
+    ];
+  };
+  programs.starship = {
+    enable = true;
+    settings = {
+
+      enableFishIntegration = true;
+      # TODO: Move symbols to another file
+      directory.read_only = mkDefault " ";
+      directory.fish_style_pwd_dir_length = 1; # turn on fish directory truncation
+      directory.truncation_length = 2; # number of directories not to truncate
+
+      # TODO: Move symbols to another file
+      gcloud.symbol = mkDefault " ";
+      gcloud.disabled = true; # annoying to always have on
+
+      hostname.style = "bold green"; # don't like the default
+
+      # TODO: Move symbols to another file
+      memory_usage.symbol = mkDefault " ";
+      memory_usage.disabled = true; # because it includes cached memory it's reported as full a lot
+
+      # TODO: Move symbols to another file
+      shlvl.symbol = mkDefault " ";
+      shlvl.disabled = false;
+
+      username.style_user = "bold blue"; # don't like the default
+    };
+  };
+}
+

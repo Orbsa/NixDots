@@ -19,6 +19,8 @@
       #"pkgxdev/made/pkgx" # run anything
       # ios development
       #"cocoapods"
+      "sketchybar"
+      "terminal-notifier" # Dunst on macos
       #"ios-deploy"
 
       # work
@@ -29,8 +31,12 @@
     casks = [
       # utilities
       "aldente" # battery management
+      "ghostty"
+      "keepassxc"
       "macfuse" # file system utilities
       "hiddenbar" # hides menu bar icons
+      "dbeaver-community" # Database manager
+      "httpie" # not postman
       "meetingbar" # shows upcoming meetings
       "karabiner-elements" # keyboard remap
       "eurkey" # keyboard layout

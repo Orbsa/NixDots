@@ -15,8 +15,13 @@
     };
     systemPackages = with pkgs;
     [
+     vscode-langservers-extracted
+     awscli2
+     roslyn-ls
      ripgrep
      fzf
+     mpv
+     yt-dlp
      ffmpeg
      tmux
     ];
@@ -36,7 +41,7 @@
 
   networking = {
     knownNetworkServices = [ "Wi-Fi" ];
-    dns = [ "9.9.9.9" "1.1.1.1" "8.8.8.8" ];
+    # dns = [ "9.9.9.9" "1.1.1.1" "8.8.8.8" ];
   };
 
   fonts = {
@@ -57,7 +62,7 @@
 
     defaults = {
       ".GlobalPreferences"."com.apple.mouse.scaling" = 4.0;
-      spaces.spans-displays = true; #aerospace fix
+      spaces.spans-displays = false; 
       universalaccess = {
         # FIXME: cannot write universal access
         #reduceMotion = true;
@@ -88,6 +93,7 @@
       };
 
       NSGlobalDomain = {
+        NSWindowShouldDragOnGesture = true;
         _HIHideMenuBar = false;
         AppleFontSmoothing = 0;
         AppleInterfaceStyle = "Dark";
