@@ -4,35 +4,41 @@
   environment = {
   # Hack to make pam-reattach work
     etc."pam.d/sudo_local".text = ''
-    # Written by nix-darwin
-    auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so
-    auth       sufficient     pam_tid.so
+      # Written by nix-darwin – modified to cache sudo credentials for 15 minutes
+      # auth       optional       pam_timestamp.so timeout=15 use_first_pass
+      auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so
+      auth       sufficient     pam_tid.so
     '';
-
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
     systemPackages = with pkgs;
     [
-     vscode-langservers-extracted
-     awscli2
-     roslyn-ls
-     ripgrep
-     fzf
-     mpv
-     yt-dlp
-     ffmpeg
-     tmux
+      rustup
+      cargo
+      nixfmt-rfc-style
+      nodejs
+      vscode-langservers-extracted
+      awscli2
+      roslyn-ls
+      ripgrep
+      fzf
+      mpv
+      yt-dlp
+      ffmpeg
+      tmux
     ];
   };
 
   programs = { 
     zsh.enable = true;
+    fish.enable = true;
   };
 
+  ids.gids.nixbld = 350;
+
   services = {
-    nix-daemon.enable = true;
     sketchybar = {
       enable = false;
       extraPackages = with pkgs; [ jq gh ];
@@ -46,13 +52,14 @@
 
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      nerd-fonts.symbols-only
+      iosevka-comfy.comfy
       plemoljp-nf
       sketchybar-app-font
     ];
   };
 
-  security = { pam.enableSudoTouchIdAuth = true; };
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   system = {
     keyboard = {

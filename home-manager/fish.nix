@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
-home.packages = with pkgs; [
+  home.packages = with pkgs; [
     fishPlugins.done
     fishPlugins.fzf-fish
     fishPlugins.forgit
@@ -12,7 +12,20 @@ home.packages = with pkgs; [
     eza # A modern replacement for ‘ls’
     fzf # A command-line fuzzy finder
     grc
-]
+  ];
+  programs.atuin = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      auto_sync = true;
+      sync_frequency = "5m";
+      sync_address = "https://atuin.orbsa.net";
+      key_path = "${config.home.homeDirectory}/secrets/ATUIN_KEY";
+      ctrl_n_shortcuts = true;
+      enter_accept = true;
+      filter_mode = "session";
+    };
+  };
   programs.fish = {
     enable = true;
     plugins = [
@@ -26,25 +39,24 @@ home.packages = with pkgs; [
   programs.starship = {
     enable = true;
     settings = {
-
-      enableFishIntegration = true;
+      #enableFishIntegration = true;
       # TODO: Move symbols to another file
-      directory.read_only = mkDefault " ";
+      directory.read_only = " ";
       directory.fish_style_pwd_dir_length = 1; # turn on fish directory truncation
       directory.truncation_length = 2; # number of directories not to truncate
 
       # TODO: Move symbols to another file
-      gcloud.symbol = mkDefault " ";
+      gcloud.symbol = " ";
       gcloud.disabled = true; # annoying to always have on
 
       hostname.style = "bold green"; # don't like the default
 
       # TODO: Move symbols to another file
-      memory_usage.symbol = mkDefault " ";
+      memory_usage.symbol = " ";
       memory_usage.disabled = true; # because it includes cached memory it's reported as full a lot
 
       # TODO: Move symbols to another file
-      shlvl.symbol = mkDefault " ";
+      shlvl.symbol = " ";
       shlvl.disabled = false;
 
       username.style_user = "bold blue"; # don't like the default

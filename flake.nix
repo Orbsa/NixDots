@@ -2,7 +2,7 @@
   description = "Work Nix Mac";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -66,7 +66,6 @@
               package = pkgs.nixVersions.stable;
               gc = {
                 automatic = false;
-                user = user;
               };
               settings = {
                 allowed-users = [ user ];
@@ -78,7 +77,7 @@
               };
             };
           })
-          home-manager.darwinModule
+          home-manager.darwinModules.home-manager
           {
             home-manager = {
               useGlobalPkgs = true;

@@ -1,13 +1,13 @@
 { ... }: {
   homebrew = {
     enable = true;
-    global = { autoUpdate = false; };
+    global = { autoUpdate = true; };
     # will not be uninstalled when removed
     onActivation = {
       # "zap" removes manually installed brews and casks
-      cleanup = "zap";
-      autoUpdate = false;
-      upgrade = false;
+      cleanup = "uninstall";
+      autoUpdate = true;
+      upgrade = true;
     };
     brews = [
       #"sniffnet" # monitor network traffic
@@ -30,8 +30,11 @@
     ];
     casks = [
       # utilities
+      "bruno" # API Testing
+      "orion" # browser
       "aldente" # battery management
       "ghostty"
+      #"easy-move-plus-resize" # X like resize # This doesn't keep installed for some reason
       "keepassxc"
       "macfuse" # file system utilities
       "hiddenbar" # hides menu bar icons
