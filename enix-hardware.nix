@@ -10,7 +10,7 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-intel" "coretemp" ];
   boot.supportedFilesystems = [ "zfs" "ext4" "vfat" "ntfs" "btrfs"];
   boot.extraModulePackages = [ ];
   boot.zfs.extraPools = [ "zpool" ];
@@ -24,7 +24,7 @@
      zfs rollback -r zpool/root@blank
    '';
   # Multi-partition disk scheduler to none
-  boot.kernelParams = [ "elevator=none" "nvidia.NVreg_EnableGpuFirmware=0" ];
+  boot.kernelParams = [ "elevator=none" "nvidia.NVreg_EnableGpuFirmware=0" "usbcore.autosuspend=-1" ];
 
   fileSystems."/" =
     { device = "zpool/root";
@@ -52,27 +52,38 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  fileSystems."/mnt/nGames" =
-    { device = "/dev/disk/by-uuid/8e9b6bd0-97f2-41dc-95ba-64b395a1e39a";
+  fileSystems."/mnt/sGames" =
+    { device = "/dev/disk/by-uuid/1573eb3f-db14-49c8-ad91-6cb055c76865";
       fsType = "btrfs";
-      options = [ "nofail"] ;
+      options = [ "rw" "nofail" "defaults" ];
     };
 
+  fileSystems."/mnt/sharedGames" = {
+    device = "/dev/disk/by-uuid/8413daac-493c-4872-9ea0-2377465982a3";
+    fsType = "btrfs";
+    options = [ "rw" "nofail" "defaults" ];
+  };
 
-  fileSystems."/mnt/nGames3" =
-    { device = "/dev/disk/by-uuid/65EA78231E4BF68D";
-      fsType = "ntfs-3g";
-      options = [ "nofail"];
-    };
+  fileSystems."/mnt/nixGames" = {
+    device = "/dev/disk/by-uuid/f9996c00-95d5-4d20-af04-0e38a14fe12b";
+    fsType = "btrfs";
+    options = [ "rw" "nofail" "defaults"  ];
+  };
+
+  fileSystems."/mnt/archGames" = {
+    device = "/dev/disk/by-uuid/e9a90d6c-4edf-4f90-8bdb-e556fec1f6ed";
+    fsType = "btrfs";
+    options = [ "rw" "nofail" "defaults" ];
+  };
 
   fileSystems."/mnt/C" =
-    { device = "/dev/disk/by-uuid/4412C8B412C8AC6C";
+    { device = "/dev/disk/by-uuid/1CA2D086A2D065B4";
       fsType = "ntfs-3g";
       options = [ "nofail"];
     };
 
-  fileSystems."/mnt/winGames" =
-    { device = "/dev/disk/by-uuid/3A3A5ED63A5E8F2F";
+  fileSystems."/mnt/games2" =
+    { device = "/dev/disk/by-uuid/54BE5F16BE5EEFCA";
       fsType = "ntfs-3g";
       options = [ "nofail"];
     };

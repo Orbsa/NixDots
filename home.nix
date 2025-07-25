@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [
@@ -9,25 +9,38 @@
   home = {
     username = "eric";
     homeDirectory = "/home/eric";
+    shellAliases = {
+      ls = "lsd";
+      vim = "nvim";
+      eZ = "cd ~/.config/nix; nvim home.nix";
+      Ze = "sudo nixos-rebuild --flake /home/eric/.config/nix/ switch";
+    };
 
     # Packages that should be installed to the user profile.
     packages = with pkgs; [
+      inputs.zen-browser.packages."${system}".twilight
       htop
       fortune
-      prismlauncher
       papirus-folders
+      # (prismlauncher.override {
+      #   jdks = [
+      #     temurin-bin-21
+      #     temurin-bin-8
+      #     temurin-bin-17
+      #   ];
+      # })
     ];
   };
 
   gtk = {
     enable = true;
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.catppuccin-papirus-folders.override {
-        flavor = "mocha";
-        accent = "lavender";
-      };
-    };
+    # iconTheme = {
+    #   name = "Papirus-Dark";
+    #   package = pkgs.catppuccin-papirus-folders.override {
+    #     flavor = "mocha";
+    #     accent = "lavender";
+    #   };
+    #};
     #cursorTheme = {
       #name = "Catppuccin-Mocha-Light-Cursors";
     #  package = pkgs.catppuccin-cursors.mochaLight;
@@ -44,12 +57,6 @@
     #size = 16;
   #};
 
-  home.shellAliases = {
-    ls = "lsd";
-    vim = "nvim";
-    eZ = "cd ~/.config/nix; nvim home.nix";
-    Ze = "sudo nixos-rebuild --flake /home/eric/.config/nix/ switch";
-  };
 
   #dconf.settings = {
     #"org/gnome/desktop/interface" = {
@@ -70,8 +77,29 @@
 
   # Let Home Manager install and manage itself.
   programs = {
+    # mangohud= {
+    #  enable = true;
+    #  enableSessionWide = true;
+    # };
+    direnv = {
+      enable = true;
+      #enableFishIntegration = true;
+      nix-direnv.enable= true;
+    };
     home-manager.enable = true;
-    nixvim.enable = true;
+    atuin = {
+      enable = true;
+      enableFishIntegration = true;
+      settings = { 
+        auto_sync = true;
+        sync_frequency = "5m";
+        sync_address = "https://atuin.orbsa.net";
+        key_path = "${config.home.homeDirectory}/.ssh/ATUIN_KEY";
+        ctrl_n_shortcuts = true;
+        enter_appect = true;
+        filter_mode = "session";
+      };
+    };
     fish = {
       enable = true;
       plugins = [
@@ -79,7 +107,9 @@
       ];
     };
   };
+
   services = {
+    kdeconnect.enable = true;
     mpd = {
       enable = true;
       musicDirectory = "~/Music";

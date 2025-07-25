@@ -1,0 +1,55 @@
+{ pkgs }:
+
+pkgs.rustPlatform.buildRustPackage rec {
+  pname = "noita_entangled_worlds";
+  version = "9700b2cf484c42d83d64c45bc848956e4c93f204";
+
+  # Fetch the source repository
+  src = pkgs.fetchFromGitHub {
+    owner = "IntQuant";
+    repo = pname;
+    rev = version;
+    hash = "sha256-Lm1H5JW4czpxQ9oq6Urmg8YiZEBzIKtoGBf5yt59pe8=";
+  };
+
+  # Set the working directory to the noita-proxy subdirectory
+  cargoRoot = "noita-proxy";
+
+  # Use the Cargo.lock file dynamically from the fetched source
+  cargoLock = {
+    lockFile = "${src}/noita-proxy/Cargo.lock";
+    outputHashes = {
+      "steamworks-0.11.0" = "sha256-brAAzwJQpefWJWCveHqBLvrlAi0tUn07V/XkWXCj8PE=";
+    };
+  };
+
+  # Ensure the build starts in the noita-proxy subdirectory
+  buildAndTestSubdir = "noita-proxy";
+
+  doCheck = false;
+
+  postInstall = ''
+    # Copy required files, if applicable
+    cp redist/libsteam_api.so $out/bin/libsteam_api.so || true
+  '';
+
+  # Dependencies for native builds
+  nativeBuildInputs = with pkgs; [
+    stdenv
+    python3
+  ];
+
+  # Runtime dependencies
+  buildInputs = with pkgs; [
+    xorg.libxcb
+  ];
+
+  meta = {
+    description = "Noita Entangled Worlds - Play Noita not alone";
+    homepage = "https://github.com/IntQuant/noita_entangled_worlds";
+    license = pkgs.lib.licenses.mit;
+    maintainers = [ "MichaelCDormann" ];
+    platforms = [ "x86_64-linux" ];
+  };
+}
+

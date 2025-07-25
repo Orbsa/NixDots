@@ -4,6 +4,9 @@
 
 { config, lib, pkgs, ... }:
 
+let
+  mesa = pkgs.mesa;
+in
 {
   imports =
     [ 
@@ -76,21 +79,9 @@
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # NVIDIA
-  services = {
-    xserver = {
-      videoDrivers = [ "nvidia" ];
-      dpi = 110;
-    };
-    # Enable sound.
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-    };
-    flatpak.enable = true;
-  };
   hardware = {
     nvidia = {
-      open = false;
+      open = true;
       package =  config.boot.kernelPackages.nvidiaPackages.beta;
       nvidiaSettings = true;
       modesetting.enable = true;
@@ -105,8 +96,6 @@
       powerOnBoot = false;
     };
   };
-
-  environment.variables = { GDK_SCALE = "0.5"; };
 
   # Bluetooth
   # https://nixos.wiki/wiki/Bluetooth
@@ -139,13 +128,31 @@
   # Fuck entering my passwords
   security.sudo.wheelNeedsPassword = false;
   # Auto Login
-  services.getty.autologinUser = "eric";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "openssl-1.1.1w"
+  ];
+
+  # For KDE Connect  
+  networking.firewall = rec {
+    allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
+    allowedUDPPortRanges = allowedTCPPortRanges;
+  };
+
+  environment.variables = {
+    GDK_SCALE = "0.5";
+    ENABLE_HDR_WSI=1;
+    # __GLX_VENDOR_LIBRARY_NAME = "mesa";
+    # __EGL_VENDOR_LIBRARY_FILENAMES = "${mesa}/share/glvnd/egl_vendor.d/50_mesa.json";
+  };
   environment.systemPackages = with pkgs;
    [
+    (import ./pkgs/noita-entangled-worlds.nix {
+      pkgs = pkgs;
+    })
     comma
     git
     fd
@@ -161,17 +168,45 @@
     foot
     rar
     unrar
-    dolphin
     slurp
+    android-tools
+    hypnotix
+    xfce.thunar
+    xfce.thunar-volman
+    gvfs
+    mtpfs
+    rustdesk
+    davinci-resolve
+    gemini-cli
     grim
+    blender
+    gowall
+    cudaPackages.cudatoolkit
+    dbeaver-bin
+    ghostty
+    smartmontools
+    plex-desktop
+    revanced-cli
+    chatterino2
     bottles
+
+    # Game Mods
+    #slipstream
+    lovely-injector
+
     httpie-desktop
     mullvad-vpn
     mullvad
     wl-clipboard
     cliphist
+    lm_sensors
+    coolercontrol.coolercontrold
+    coolercontrol.coolercontrol-liqctld
+    coolercontrol.coolercontrol-gui
     sunshine
+    fzf
     hyprlock
+    hyprland-qtutils
     wofi 
     librewolf
     teamspeak_client
@@ -202,7 +237,9 @@
     libnotify
     hoppscotch
     runelite
-    plex-mpv-shim
+    hdos
+    runescape
+    #plex-mpv-shim
     steamtinkerlaunch
     btrfs-progs
     wineWowPackages.stable
@@ -221,7 +258,7 @@
     (self: super: {
       mpv = super.mpv.override {
         scripts = with self.mpvScripts; [
-          mpris modernx sponsorblock-minimal evafast videoclip
+          mpris sponsorblock-minimal evafast videoclip
         ];
       };
     })
@@ -239,26 +276,21 @@
        #});
      #});
    #})];
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = true;
-    
-  };
-
-  services.mullvad-vpn.enable = true;
-  #services.xserver = {
+  # services.xserver = {
   #  enable = true;
   #  displayManager.gdm.enable = true;
   #  desktopManager.gnome.enable = true;
-  #};
+  # };
 
   fonts.packages = with pkgs; [
       plemoljp-nf
   ];
 
   programs = {
+    coolercontrol = {
+      enable = true;
+      nvidiaSupport = true;
+    };
     steam.enable = true;
     waybar.enable = true;
     hyprland.enable = true;
@@ -274,6 +306,18 @@
   # Looking Glass
   # Enable virtualisation programs. These will be used by virt-manager to run your VM.
   virtualisation = {
+   # Enable common container config files in /etc/containers
+    containers.enable = true;
+    podman = {
+      enable = true;
+
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+    };
+    # Enable KVM virtualization.
      libvirtd = {
        enable = true;
        extraConfig = ''
@@ -315,12 +359,34 @@
       requires = [ "pipewire-pulse.service" ];
     };
   };
-  services = {
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-    openssh.enable = true;
+services = {
+  getty.autologinUser = "eric";
+  openssh.enable = true;
+  zerotierone = {
+    enable = true;
+    joinNetworks = [ "af78bf9436e7d202" ]; # Replace with your ZeroTier network ID
   };
+  gvfs.enable = true;
+  blueman.enable = true;
+  xserver = {
+    videoDrivers = [ "nvidia" ];
+    dpi = 110;
+  };
+  # Enable sound.
+  pipewire = {
+    enable = true;
+    pulse.enable = true;
+  };
+  flatpak.enable = true;
+  sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+    
+  };
+  mullvad-vpn.enable = true;
+};
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
