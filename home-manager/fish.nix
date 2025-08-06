@@ -2,7 +2,7 @@
 {
   home.packages = with pkgs; [
     fishPlugins.done
-    fishPlugins.fzf-fish
+    #fishPlugins.fzf-fish
     fishPlugins.forgit
     fishPlugins.hydro
     fishPlugins.grc
@@ -16,6 +16,7 @@
   programs.atuin = {
     enable = true;
     enableFishIntegration = true;
+    flags = ["--disable-up-arrow"];
     settings = {
       auto_sync = true;
       sync_frequency = "5m";
@@ -31,8 +32,8 @@
     plugins = [
       {name = "grc"; src = pkgs.fishPlugins.grc.src; } 
       {name = "done"; src = pkgs.fishPlugins.done.src;} 
-      {name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src;} 
-      {name = "forgit"; src = pkgs.fishPlugins.forgit.src;} 
+      # {name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src;} 
+      # {name = "forgit"; src = pkgs.fishPlugins.forgit.src;} 
       {name = "hydro"; src = pkgs.fishPlugins.hydro.src;} 
     ];
   };
@@ -40,22 +41,18 @@
     enable = true;
     settings = {
       #enableFishIntegration = true;
-      # TODO: Move symbols to another file
       directory.read_only = " ";
       directory.fish_style_pwd_dir_length = 1; # turn on fish directory truncation
       directory.truncation_length = 2; # number of directories not to truncate
 
-      # TODO: Move symbols to another file
       gcloud.symbol = " ";
       gcloud.disabled = true; # annoying to always have on
 
       hostname.style = "bold green"; # don't like the default
 
-      # TODO: Move symbols to another file
       memory_usage.symbol = " ";
       memory_usage.disabled = true; # because it includes cached memory it's reported as full a lot
 
-      # TODO: Move symbols to another file
       shlvl.symbol = " ";
       shlvl.disabled = false;
 

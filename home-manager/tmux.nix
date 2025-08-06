@@ -24,10 +24,10 @@ in
     historyLimit = 100000;
     plugins = with pkgs.tmuxPlugins;
       [
-        {
-          plugin = tmux-thumbs;
-          extraConfig = "set -g @thumbs-key F";
-        }
+        #{
+          #plugin = tmux-thumbs;
+          #extraConfig = "set -g @thumbs-key F";
+        #}
         #{ plugin = tmux-tilit;
           #extraConfig = ''
             #set -g @tilit-navigator 'on'
@@ -38,13 +38,15 @@ in
         {
           plugin = power-theme;
           extraConfig = ''
-            set -g @tmux_power_theme 'moon'
+            set -g @tmux_power_theme 'everforest'
+            set -g @tmux_power_right_arrow_icon    ''
+            set -g @tmux_power_left_arrow_icon     ''
           '';
         }
-        tmux-fzf
-        better-mouse-mode
+        #tmux-fzf
+        #better-mouse-mode
         vim-tmux-navigator
-        extrakto
+        #extrakto
       ];
     extraConfig = ''
       set-option -g default-command /nix/store/lh19r6hngpjap0qaflmx0iz0bqhggps6-fish-3.7.1/bin/fish
@@ -71,6 +73,13 @@ in
       bind-key -T copy-mode-vi C-k select-pane -U
       bind-key -T copy-mode-vi C-l select-pane -R
       bind-key -T copy-mode-vi C-\\ select-pane -l
+      bind C-o display-popup -E "tms"
+      bind C-j display-popup -E "tms switch"
+      bind C-k display-popup -E "tms windows"
+      bind C-w command-prompt -p "Rename active session to: " "run-shell 'tms rename %1'"
+      bind C-r "run-shell 'tms refresh'"
+
+      set -g @rose_pine_variant 'main'
     '';
   };
 }

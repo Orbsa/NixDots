@@ -9,8 +9,9 @@
   ];
   
   home.shellAliases = {
-    eZ = "nvim ~/nix-config";
-    Ze = "nix run nix-darwin -- switch --flake ~/nix-config/";
+    eZ = "nvim -c 'cd ~/nix-config'";
+    Ze = "sudo nix run nix-darwin -- switch --flake ~/nix-config/";
+    eV = "nvim -c 'cd ~/.config/nvim/lua/orbsa'";
   };
 
 }

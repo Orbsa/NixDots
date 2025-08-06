@@ -30,7 +30,10 @@
     ];
     casks = [
       # utilities
+      "json-viewer"
+      "mongodb-compass"
       "bruno" # API Testing
+      "krita" # drawing software
       "orion" # browser
       "aldente" # battery management
       "ghostty"

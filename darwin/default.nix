@@ -1,6 +1,8 @@
 { pkgs, ... }: {
   imports = [ ./homebrew.nix ];
 
+  power.sleep.display = 15;
+
   environment = {
   # Hack to make pam-reattach work
     etc."pam.d/sudo_local".text = ''
@@ -15,13 +17,21 @@
     };
     systemPackages = with pkgs;
     [
+      mediainfo
+      tmux-sessionizer
+      gh
+      k9s
+      e1s
+      fd
+      postgresql
       rustup
       cargo
       nixfmt-rfc-style
       nodejs
       vscode-langservers-extracted
+      vscode-extensions.vadimcn.vscode-lldb
       awscli2
-      roslyn-ls
+      stu
       ripgrep
       fzf
       mpv
@@ -62,6 +72,7 @@
   security.pam.services.sudo_local.touchIdAuth = true;
 
   system = {
+    primaryUser = "ebell";
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToControl = true;

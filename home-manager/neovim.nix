@@ -45,48 +45,71 @@ in
         ]);
     in
       with pkgs.vimPlugins; [
-        nvim-cmp
-        cmp-buffer
-        cmp_luasnip
-        cmp-nvim-lsp
-        cmp-treesitter
-        cmp-path
-
+        vim-coffee-script
+        copilot-lua# You know why
+        blink-cmp
+        blink-copilot
+        blink-cmp-git
+        blink-emoji-nvim
+        blink-nerdfont-nvim
+        blink-ripgrep-nvim
+        blink-cmp-npm-nvim
+        blink-cmp-conventional-commits
+        blink-pairs
+        # copilot-cmp
+        # nvim-cmp
+        # cmp-buffer
+        # cmp_luasnip
+        # cmp-nvim-lsp
+        # cmp-treesitter
+        # cmp-path
         flash-nvim # motion
-
         nvim-lspconfig # LSP helper
         luasnip
-        git-blame-nvim
+        gitsigns-nvim
         vim-surround
         neogit
         neoscroll-nvim
         typescript-tools-nvim
-        (fromGitHub "c0dc939be1de00f59a49cfb96641262df760950e" "main" "cordx56/rustowl" false)
+        (fromGitHub "aba49398eeeb0134b70d40887018b2a0e7e8b41a" "main" "cordx56/rustowl" false)
         harpoon2
-        #rustaceanvim
+        zen-mode-nvim # distraction free coding
+        twilight-nvim
+        todo-comments-nvim
+        rustaceanvim
         zephyr-nvim # theme
-        nvim-treesitter-with-plugins # muh treesitter
-        nvim-treesitter-textobjects# muh treesitter
+        miasma-nvim # theme
+        dropbar-nvim
+        (fromGitHub "d53f34f42d344e69303361064d4bcb46811f7fe6" "main" "xero/evangelion.nvim" true)
+        rose-pine # theme
+        nvim-treesitter-with-plugins 
+        nvim-treesitter-textobjects
         lualine-nvim # powerline
         lualine-lsp-progress 
+        crates-nvim
         which-key-nvim # In case I go senile
+        vim-fugitive
         telescope-nvim # Pretty Menus
+        telescope-file-browser-nvim 
+        telescope-git-conflicts-nvim
+        telescope-dap-nvim
+        (fromGitHub "e7d495319f2a04df96402057a6992ea970f8914d" "master" "isak102/telescope-git-file-history.nvim" true)
+        nvim-dap
+        nvim-dap-ui
         dressing-nvim # opts through Telescope
         Navigator-nvim # Tmux Integration
         nvim-tree-lua # Better TreeView
         # nerdcommenter # Better comments
         oil-nvim # better 
         mini-nvim # better icons
-        (fromGitHub "4b7334a09cd2434e73588cc0ea63e71177251249" "main" "sphamba/smear-cursor.nvim" true)
+        smear-cursor-nvim
+        (fromGitHub "47e5ba89f71b9e6c72eaaaaa519dd59bd6897df4" "main" "dmmulroy/ts-error-translator.nvim" true)
         nvim-web-devicons # better icons
         roslyn-nvim # C# LSP
         plenary-nvim # lib dep
         nui-nvim # lib dep
         fzf-lua # fuzzy
-        vimspector # Debugger
-        (fromGitHub "5b6d296eefc75331e2ff9f0adcffbd7d27862dd6" "main" "jackMort/ChatGPT.nvim" false)
-        #(fromGitHub "28113b9c7d23cebe54cfc9adac36aa613096e718" "main" "frankroeder/parrot.nvim" false)
-        (fromGitHub "93130e44cbc16c592081716d59905353c6a9ad10" "main" "tris203/rzls.nvim" true)
+        rzls-nvim
       ];
   };
 }
