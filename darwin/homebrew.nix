@@ -29,6 +29,7 @@
       #"ruff" # python linter
     ];
     casks = [
+      "claude"
       # utilities
       "json-viewer"
       "mongodb-compass"
@@ -57,7 +58,7 @@
 
       # virtualization
       #"utm" # virtual machines
-      "docker" # docker desktop
+      # "docker" # docker desktop // This has issues installing here, install manually
 
       # communication
       #"microsoft-teams"

@@ -71,7 +71,7 @@ in
         neogit
         neoscroll-nvim
         typescript-tools-nvim
-        (fromGitHub "aba49398eeeb0134b70d40887018b2a0e7e8b41a" "main" "cordx56/rustowl" false)
+        # (fromGitHub "aba49398eeeb0134b70d40887018b2a0e7e8b41a" "main" "cordx56/rustowl" false)
         harpoon2
         zen-mode-nvim # distraction free coding
         twilight-nvim

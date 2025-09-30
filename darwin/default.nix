@@ -17,6 +17,7 @@
     };
     systemPackages = with pkgs;
     [
+      claude-code
       mediainfo
       tmux-sessionizer
       gh
@@ -63,7 +64,7 @@
   fonts = {
     packages = with pkgs; [
       nerd-fonts.symbols-only
-      iosevka-comfy.comfy
+      # iosevka-comfy.comfy
       plemoljp-nf
       sketchybar-app-font
     ];
