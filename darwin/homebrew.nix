@@ -43,7 +43,7 @@
       "macfuse" # file system utilities
       "hiddenbar" # hides menu bar icons
       "dbeaver-community" # Database manager
-      "httpie" # not postman
+      "httpie-desktop" # not postman
       "meetingbar" # shows upcoming meetings
       "karabiner-elements" # keyboard remap
       "eurkey" # keyboard layout
