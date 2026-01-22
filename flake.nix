@@ -2,13 +2,13 @@
   description = "Work Nix Mac";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -62,6 +62,11 @@
             };
 
             nix = {
+              settings = {
+                trusted-users = [ "root" "ebell" ];
+                extra-platforms = [ "x86_64-linux" "aarch64-linux" ];
+              };
+
               # enable flakes per default
               package = pkgs.nixVersions.stable;
               gc = {

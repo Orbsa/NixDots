@@ -17,6 +17,8 @@
     };
     systemPackages = with pkgs;
     [
+      jujutsu
+      jjui
       claude-code
       mediainfo
       tmux-sessionizer

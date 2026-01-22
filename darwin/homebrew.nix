@@ -19,8 +19,9 @@
       #"pkgxdev/made/pkgx" # run anything
       # ios development
       #"cocoapods"
-      "sketchybar"
+      #"sketchybar"
       "terminal-notifier" # Dunst on macos
+      "jiratui"
       #"ios-deploy"
 
       # work
