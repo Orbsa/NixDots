@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -92,6 +93,10 @@
                 inherit inputs;
                 pkgs-zsh-fzf-tab =
                   import inputs.nixpkgs-zsh-fzf-tab { inherit system; };
+                pkgs-unstable = import inputs.nixpkgs-unstable {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
               };
               users.${user} = { ... }:
                 with inputs; {

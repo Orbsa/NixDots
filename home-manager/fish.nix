@@ -4,8 +4,8 @@
     fishPlugins.done
     #fishPlugins.fzf-fish
     fishPlugins.forgit
-    fishPlugins.hydro
-    fishPlugins.grc
+    #fishPlugins.hydro
+    #fishPlugins.grc
     ripgrep # recursively searches directories for a regex pattern
     jq # A lightweight and flexible command-line JSON processor
     yq-go # yaml processor https://github.com/mikefarah/yq
@@ -13,20 +13,20 @@
     fzf # A command-line fuzzy finder
     grc
   ];
-  programs.atuin = {
-    enable = true;
-    enableFishIntegration = true;
-    flags = ["--disable-up-arrow"];
-    settings = {
-      auto_sync = true;
-      sync_frequency = "5m";
-      sync_address = "https://atuin.orbsa.net";
-      key_path = "${config.home.homeDirectory}/secrets/ATUIN_KEY";
-      ctrl_n_shortcuts = true;
-      enter_accept = true;
-      filter_mode = "session";
-    };
-  };
+  # programs.atuin = {
+  #   enable = true;
+  #   enableFishIntegration = true;
+  #   flags = ["--disable-up-arrow"];
+  #   settings = {
+  #     auto_sync = true;
+  #     sync_frequency = "5m";
+  #     sync_address = "https://atuin.orbsa.net";
+  #     key_path = "${config.home.homeDirectory}/secrets/ATUIN_KEY";
+  #     ctrl_n_shortcuts = true;
+  #     enter_accept = true;
+  #     filter_mode = "session";
+  #   };
+  # };
   programs.fish = {
     enable = true;
     plugins = [
@@ -34,7 +34,7 @@
       {name = "done"; src = pkgs.fishPlugins.done.src;} 
       # {name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src;} 
       # {name = "forgit"; src = pkgs.fishPlugins.forgit.src;} 
-      {name = "hydro"; src = pkgs.fishPlugins.hydro.src;} 
+      #{name = "hydro"; src = pkgs.fishPlugins.hydro.src;} 
     ];
   };
   programs.starship = {

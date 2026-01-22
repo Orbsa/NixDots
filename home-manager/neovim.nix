@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }: 
+{ lib, pkgs, pkgs-unstable, ... }: 
 
 let 
 fromGitHub = rev: ref: repo: doCheck : pkgs.vimUtils.buildVimPlugin {
@@ -66,6 +66,7 @@ in
         blink-nerdfont-nvim
         blink-pairs
         blink-ripgrep-nvim
+        pkgs-unstable.vimPlugins.codediff-nvim
         copilot-lua# You know why
         crates-nvim
         dressing-nvim # opts through Telescope
