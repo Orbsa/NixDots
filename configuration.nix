@@ -2,7 +2,7 @@
 #61  your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   mesa = pkgs.mesa;
@@ -27,8 +27,7 @@ in
     substituters = ["https://hyprland.cachix.org"];
     trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   };
-
-
+  
   programs.fish.enable = true;
   # Boot loader config for configuration.nix:
   boot = {
@@ -210,6 +209,7 @@ in
     vital
     drumgizmo  # Full drum kit sampler
     hydrogen   # Drum machine/sampler
+    drumgizmo
     infamousPlugins
     lsp-plugins
     surge-XT
@@ -313,13 +313,6 @@ in
     #plex-mpv-shim
     steamtinkerlaunch
     btrfs-progs
-    #wineWowPackages.stable
-    wineWowPackages.staging
-    #wineWowPackages.yabridge
-    #winetricks
-    #wineWowPackages.waylandFull
-    (pkgs.yabridge.override { wine = wineWowPackages.staging; })
-    (pkgs.yabridgectl.override { wine = wineWowPackages.staging; })
     lutris
     vulkan-loader
     vulkan-validation-layers
@@ -331,7 +324,22 @@ in
       '';
     })
     #plex-media-player 
-   ];
+      winetricks
+      dxvk_2
+  ]
+  ++ (
+    let
+      # helix native needs wine with fsync patches
+      # w = wineWowPackages.staging;
+      w = inputs.nix-gaming.packages.${pkgs.system}.wine-tkg;
+    in
+    [
+      w
+      (pkgs.yabridge.override { wine = w; })
+      (pkgs.yabridgectl.override { wine = w; })
+    ]
+  );
+
     nixpkgs.overlays = [
     (self: super: {
       mpv = super.mpv.override {

@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     nix-colors.url = "github:misterio77/nix-colors";
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -24,8 +25,12 @@
       # Optional but recommended to limit the size of your system closure.
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    musnix  = { url = "github:musnix/musnix"; };
+    musnix = { url = "github:musnix/musnix"; };
 
+    nix-gaming = {
+      url = "github:torgeir/nix-gaming"; # Wine 9.21
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs = { self, nixpkgs, lanzaboote, ... }@inputs:
@@ -36,7 +41,7 @@
   {
     nixosConfigurations.enix = nixpkgs.lib.nixosSystem {
       system = "${system}";
-      # extraSpecialArgs = {inherit inputs;};
+      specialArgs = { inherit inputs; };
       modules = [
 # Include the results of the hardware scan. # Include the results of the hardware scan.
         ./enix-hardware.nix

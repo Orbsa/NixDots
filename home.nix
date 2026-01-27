@@ -32,6 +32,21 @@
     ];
   };
 
+  xdg = {
+    configFile = {
+      "yabridgectl/config.toml".text = ''
+        plugin_dirs = [
+          "/home/eric/.wine/drive_c/VST2",
+          "/home/eric/.wine/drive_c/VST3"
+        ]
+        vst2_location = 'centralized'
+        no_verify = false
+        blacklist = []
+      '';
+    };
+  }
+
+
   gtk = {
     enable = true;
     # iconTheme = {
