@@ -31,20 +31,28 @@ in
 
   programs.fish.enable = true;
   # Boot loader config for configuration.nix:
-  boot.loader = {
+  boot = {
+   loader = {
     efi = {
-    canTouchEfiVariables = true;
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
     };
     grub = {
-      enable = true;
+      enable = false;  # Disabled because using Lanzaboote
       zfsSupport = true;
       efiSupport = true;
-      # efiInstallAsRemovable = true;
+      #efiInstallAsRemovable = true;
       mirroredBoots = [
         { devices = [ "nodev"]; path = "/boot"; }
       ];
     };
-
+     systemd-boot.enable = lib.mkForce false;
+   };
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+      configurationLimit = 5;  
+    };
   };
 
   networking = {
@@ -116,7 +124,7 @@ in
         isNormalUser = true;
         createHome = true;
         initialHashedPassword = "$y$j9T$LGtqcLijoBEb9Ap8WVeAZ0$7ZMSUzOEVrFsF4R2J8Z.aZc6e7WPBY/OAYnoMBZNM41";
-        extraGroups = [ "wheel" "qemu-libvirtd" "libvirtd" "disk" ];
+        extraGroups = [ "wheel" "qemu-libvirtd" "libvirtd" "disk" "audio" ];
         uid = 1000;
         home = "/home/eric";
         shell = pkgs.fish;
@@ -133,7 +141,9 @@ in
   # $ nix search wget
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
-    "openssl-1.1.1w"
+    # "libsoup-2.74.3"
+    "qtwebengine-5.15.19"
+     "openssl-1.1.1w"
   ];
 
   # For KDE Connect  
@@ -142,12 +152,29 @@ in
     allowedUDPPortRanges = allowedTCPPortRanges;
   };
 
-  environment.variables = {
-    GDK_SCALE = "0.5";
-    ENABLE_HDR_WSI=1;
-    # __GLX_VENDOR_LIBRARY_NAME = "mesa";
-    # __EGL_VENDOR_LIBRARY_FILENAMES = "${mesa}/share/glvnd/egl_vendor.d/50_mesa.json";
-  };
+  environment.variables = 
+    let
+      makePluginPath = format:
+        (lib.makeSearchPath format [
+          "$HOME/.nix-profile/lib"
+          "/run/current-system/sw/lib"
+          "/etc/profiles/per-user/$USER/lib"
+        ])
+        + ":$HOME/.${format}";
+    in
+    {
+      DSSI_PATH = makePluginPath "dssi";
+      LADSPA_PATH = makePluginPath "ladspa";
+      LV2_PATH = makePluginPath "lv2";
+      LXVST_PATH = makePluginPath "lxvst";
+      VST_PATH = makePluginPath "vst";
+      VST3_PATH = makePluginPath "vst3";
+
+      GDK_SCALE = "0.5";
+      ENABLE_HDR_WSI=1;
+      # __GLX_VENDOR_LIBRARY_NAME = "mesa";
+      # __EGL_VENDOR_LIBRARY_FILENAMES = "${mesa}/share/glvnd/egl_vendor.d/50_mesa.json";
+    };
   environment.systemPackages = with pkgs;
    [
     (import ./pkgs/noita-entangled-worlds.nix {
@@ -171,14 +198,58 @@ in
     slurp
     android-tools
     hypnotix
-    xfce.thunar
-    xfce.thunar-volman
-    gvfs
-    mtpfs
-    rustdesk
-    davinci-resolve
+    pipewire.jack
+    #(pkgs.writeShellScriptBin "reaper" ''
+      #${pkgs.pipewire}/bin/pw-jack ${pkgs.reaper}/bin/reaper "$@"
+    #'')
+    reaper
+    reaper-sws-extension
+    reaper-reapack-extension
+    dxvk.out
+    dxvk
+    vital
+    drumgizmo  # Full drum kit sampler
+    hydrogen   # Drum machine/sampler
+    infamousPlugins
+    lsp-plugins
+    surge-XT
+    cardinal
+    fire
+    paulstretch
+    rkrlv2
+    airwindows-lv2
+    distrho-ports
+    bshapr
+    calf
+    bchoppr
+    zlsplitter
+    zlequalizer
+    zlcompressor
+    talentedhack
+    mooSpace
+    artyFX
+    boops
+    bjumblr
+    bslizr
+    bankstown-lv2
+    uhhyou-plugins 
+    thunar
+    thunar-volman
+    thunderbird
+    #gvfs
+    nix-tree
+    #mtpfs
+    #rustdesk
+    # davinci-resolve
     gemini-cli
+    # opencode
+    deluge
+    parallel
+    r2modman
     grim
+    orca-slicer
+    sbctl
+    claude-code
     blender
     gowall
     cudaPackages.cudatoolkit
@@ -188,11 +259,11 @@ in
     plex-desktop
     revanced-cli
     chatterino2
-    bottles
+    #bottles
 
     # Game Mods
     #slipstream
-    lovely-injector
+    #lovely-injector
 
     httpie-desktop
     mullvad-vpn
@@ -201,15 +272,15 @@ in
     cliphist
     lm_sensors
     coolercontrol.coolercontrold
-    coolercontrol.coolercontrol-liqctld
     coolercontrol.coolercontrol-gui
     sunshine
     fzf
     hyprlock
+    hyprpicker
     hyprland-qtutils
     wofi 
     librewolf
-    teamspeak_client
+    teamspeak6-client
     pwvucontrol
     coppwr
     qpwgraph
@@ -242,10 +313,17 @@ in
     #plex-mpv-shim
     steamtinkerlaunch
     btrfs-progs
-    wineWowPackages.stable
-    wineWowPackages.waylandFull
-    winetricks
+    #wineWowPackages.stable
+    wineWowPackages.staging
+    #wineWowPackages.yabridge
+    #winetricks
+    #wineWowPackages.waylandFull
+    (pkgs.yabridge.override { wine = wineWowPackages.staging; })
+    (pkgs.yabridgectl.override { wine = wineWowPackages.staging; })
     lutris
+    vulkan-loader
+    vulkan-validation-layers
+    nvidia-vaapi-driver
     vulkan-tools
     (steam.override { 
       extraProfile = ''
@@ -261,6 +339,15 @@ in
           mpris sponsorblock-minimal evafast videoclip
         ];
       };
+      yabridge = super.yabridge.overrideAttrs (old: rec {
+        src = super.fetchFromGitHub {
+          owner = "robbert-vdh";
+          repo = "yabridge";
+          rev = "refs/heads/new-wine10-embedding";
+          hash = "sha256-qjyBnwdd/yRIiiAApHyxc/XkkEwB33YP0GpIjG4Upro=";
+        };
+        patches = super.lib.drop 1 old.patches;
+      });
     })
 ];
 
@@ -289,9 +376,13 @@ in
   programs = {
     coolercontrol = {
       enable = true;
-      nvidiaSupport = true;
     };
-    steam.enable = true;
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+      localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+    };
     waybar.enable = true;
     hyprland.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
@@ -331,7 +422,6 @@ in
 
        qemu = {
          package = pkgs.qemu_kvm;
-         ovmf.enable = true;
          verbatimConfig = ''
             namespaces = []
            user = "+${builtins.toString config.users.users.eric.uid}"
@@ -366,7 +456,7 @@ services = {
     enable = true;
     joinNetworks = [ "af78bf9436e7d202" ]; # Replace with your ZeroTier network ID
   };
-  gvfs.enable = true;
+  #gvfs.enable = true;
   blueman.enable = true;
   xserver = {
     videoDrivers = [ "nvidia" ];
@@ -375,7 +465,17 @@ services = {
   # Enable sound.
   pipewire = {
     enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
+    extraConfig.pipewire."92-low-latency" = {
+    "context.properties" = {
+      "default.clock.quantum" = 512;
+      "default.clock.min-quantum" = 512;
+      "default.clock.max-quantum" = 512;
+    };
+  };
   };
   flatpak.enable = true;
   sunshine = {

@@ -18,9 +18,17 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
+
+      # Optional but recommended to limit the size of your system closure.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    musnix  = { url = "github:musnix/musnix"; };
+
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, nixpkgs, lanzaboote, ... }@inputs:
   let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
@@ -38,11 +46,19 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             sharedModules = [
-              inputs.nixvim.homeManagerModules.nixvim
+              inputs.nixvim.homeModules.nixvim
             ];
             extraSpecialArgs = { inherit inputs;};
           };
         }
+        lanzaboote.nixosModules.lanzaboote
+          ({ pkgs, lib, ... }: {
+            environment.systemPackages = [
+              # For debugging and troubleshooting Secure Boot.
+              pkgs.sbctl
+            ];
+          })
+
         ./configuration.nix
       ];
     };
@@ -54,12 +70,16 @@
 # Include the results of the hardware scan. # Include the results of the hardware scan.
         ./thinix-hardware.nix
         ./configuration.nix
+        inputs.musnix.nixosModules.musnix {
+          enable = true;
+        }
+          
         inputs.home-manager.nixosModules.home-manager {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
             sharedModules = [
-              inputs.nixvim.homeManagerModules.nixvim
+              inputs.nixvim.homeModules.nixvim
             ];
             extraSpecialArgs = { inherit inputs;};
           };

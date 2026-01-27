@@ -47,6 +47,7 @@ in
       with pkgs.vimPlugins; [
         vim-coffee-script
         copilot-lua# You know why
+        opencode-nvim
         blink-cmp
         blink-copilot
         blink-cmp-git
