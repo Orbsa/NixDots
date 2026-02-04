@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -10,8 +12,6 @@
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      # IMPORTANT: we're using "libgbm" and is only available in unstable so ensure
-      # to have it up to date or simply don't specify the nixpkgs input  
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -19,33 +19,58 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    home-manager-darwin = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
-
-      # Optional but recommended to limit the size of your system closure.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     musnix = { url = "github:musnix/musnix"; };
 
     nix-gaming = {
-      url = "github:torgeir/nix-gaming"; # Wine 9.21
+      url = "github:torgeir/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixpkgs-zsh-fzf-tab.url =
+      "github:nixos/nixpkgs/8193e46376fdc6a13e8075ad263b4b5ca2592c03";
   };
 
   outputs = { self, nixpkgs, lanzaboote, ... }@inputs:
   let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    linuxSystem = "x86_64-linux";
+    darwinSystem = "aarch64-darwin";
+    pkgs = nixpkgs.legacyPackages.${linuxSystem};
+    pkgs-unstable-linux = import inputs.nixpkgs-unstable {
+      system = linuxSystem;
+      config.allowUnfree = true;
+    };
+    pkgs-unstable-darwin = import inputs.nixpkgs-unstable {
+      system = darwinSystem;
+      config.allowUnfree = true;
+    };
   in
   {
     nixosConfigurations.enix = nixpkgs.lib.nixosSystem {
-      system = "${system}";
+      system = linuxSystem;
       specialArgs = { inherit inputs; };
       modules = [
-# Include the results of the hardware scan. # Include the results of the hardware scan.
-        ./enix-hardware.nix
-        ./modules/vfio.nix
+        ./hosts/enix.nix
         inputs.home-manager.nixosModules.home-manager {
           home-manager = {
             useGlobalPkgs = true;
@@ -53,32 +78,22 @@
             sharedModules = [
               inputs.nixvim.homeModules.nixvim
             ];
-            extraSpecialArgs = { inherit inputs;};
+            extraSpecialArgs = {
+              inherit inputs;
+              pkgs-unstable = pkgs-unstable-linux;
+            };
           };
         }
-        lanzaboote.nixosModules.lanzaboote
-          ({ pkgs, lib, ... }: {
-            environment.systemPackages = [
-              # For debugging and troubleshooting Secure Boot.
-              pkgs.sbctl
-            ];
-          })
-
-        ./configuration.nix
       ];
     };
 
     nixosConfigurations.thinix = nixpkgs.lib.nixosSystem {
-      system = "${system}";
-      # extraSpecialArgs = {inherit inputs;};
+      system = linuxSystem;
+      specialArgs = { inherit inputs; };
       modules = [
-# Include the results of the hardware scan. # Include the results of the hardware scan.
-        ./thinix-hardware.nix
-        ./configuration.nix
-        inputs.musnix.nixosModules.musnix {
-          enable = true;
-        }
-          
+        ./hosts/thinix.nix
+        inputs.musnix.nixosModules.musnix
+        { musnix.enable = true; }
         inputs.home-manager.nixosModules.home-manager {
           home-manager = {
             useGlobalPkgs = true;
@@ -86,7 +101,67 @@
             sharedModules = [
               inputs.nixvim.homeModules.nixvim
             ];
-            extraSpecialArgs = { inherit inputs;};
+            extraSpecialArgs = {
+              inherit inputs;
+              pkgs-unstable = pkgs-unstable-linux;
+            };
+          };
+        }
+      ];
+    };
+
+    darwinConfigurations."KN72DN4D3W" = inputs.darwin.lib.darwinSystem {
+      system = darwinSystem;
+      specialArgs = { inherit inputs; };
+      modules = [
+        inputs.nix-index-database.darwinModules.nix-index
+        ./darwin
+        ({ pkgs, ... }: {
+          nixpkgs.config.allowUnfree = true;
+
+          system = {
+            stateVersion = 4;
+            configurationRevision = self.rev or self.dirtyRev or null;
+          };
+
+          users.users."ebell" = {
+            home = "/Users/ebell";
+            shell = pkgs.fish;
+          };
+
+          networking = {
+            computerName = "KN72DN4D3W";
+            hostName = "KN72DN4D3W";
+            localHostName = "KN72DN4D3W";
+          };
+
+          nix = {
+            package = pkgs.nixVersions.stable;
+            gc.automatic = false;
+            settings = {
+              trusted-users = [ "root" "ebell" ];
+              extra-platforms = [ "x86_64-linux" "aarch64-linux" ];
+              allowed-users = [ "ebell" ];
+              experimental-features = [ "nix-command" "flakes" ];
+              warn-dirty = false;
+              auto-optimise-store = false;
+            };
+          };
+        })
+        inputs.home-manager-darwin.darwinModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = {
+              inherit inputs;
+              pkgs-zsh-fzf-tab =
+                import inputs.nixpkgs-zsh-fzf-tab { system = darwinSystem; };
+              pkgs-unstable = pkgs-unstable-darwin;
+            };
+            users."ebell" = { ... }: {
+              imports = [ ./home/mac.nix ];
+            };
           };
         }
       ];

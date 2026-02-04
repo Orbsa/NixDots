@@ -1,7 +1,7 @@
 { pkgs, ... }:
+
 let
-  tmux-tilit =  pkgs.tmuxPlugins.mkTmuxPlugin
-  {
+  tmux-tilit = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-tilit";
     version = "unstable-2024-10-27";
     src = pkgs.fetchFromGitHub {
@@ -20,34 +20,28 @@ in
     terminal = "tmux-256color";
     mouse = true;
     keyMode = "vi";
-    sensibleOnTop = true;
+    #sensibleOnTop = true; # This is causing hanging with fish in tmux
     historyLimit = 100000;
-    plugins = with pkgs.tmuxPlugins;
-      [
-        {
-          plugin = tmux-thumbs;
-          extraConfig = "set -g @thumbs-key F";
-        }
-        #{ plugin = tmux-tilit;
-          #extraConfig = ''
-            #set -g @tilit-navigator 'on'
-            #set -g @tilit-prefix 'C-space'
-            #set -g repeat-time 1000
-          #'';
-        #}
-        {
-          plugin = power-theme;
-          extraConfig = ''
-            set -g @tmux_power_theme 'everforest'
-            set -g @tmux_power_right_arrow_icon    ''
-            set -g @tmux_power_left_arrow_icon     ''
-          '';
-        }
-        tmux-fzf
-        better-mouse-mode
-        vim-tmux-navigator
-        extrakto
-      ];
+    plugins = with pkgs.tmuxPlugins; [
+      {
+        plugin = rose-pine;
+        extraConfig = ''
+          set -g @rose_pine_variant 'main'
+          set -g @rose_pine_hostname_short 'on'
+          set -g @rose_pine_date_time '%H:%M'
+          set -g @rose_pine_directory 'on'
+          set -g @rose_pine_window_status_separator "  "
+          set -g @rose_pine_disable_active_window_menu 'on'
+          #set -g @rose_pine_session_icon " "
+          #set -g @rose_pine_current_window_icon " "
+          #set -g @rose_pine_folder_icon " "
+          #set -g @rose_pine_username_icon " "
+          set -g @rose_pine_hostname_icon '󰒋'
+          set -g @rose_pine_date_time_icon '󰃰'
+        '';
+      }
+      vim-tmux-navigator
+    ];
     extraConfig = ''
       version_pat='s/^tmux[^0-9]*([.0-9]+).*/\1/p'
 
@@ -72,9 +66,13 @@ in
       bind-key -T copy-mode-vi C-k select-pane -U
       bind-key -T copy-mode-vi C-l select-pane -R
       bind-key -T copy-mode-vi C-\\ select-pane -l
+      bind C-o display-popup -E "tms"
+      bind C-j display-popup -E "tms switch"
+      bind C-k display-popup -E "tms windows"
+      bind C-w command-prompt -p "Rename active session to: " "run-shell 'tms rename %1'"
+      bind C-r "run-shell 'tms refresh'"
 
       set -g @rose_pine_variant 'main'
     '';
   };
 }
-
