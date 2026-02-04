@@ -6,6 +6,19 @@
 
 let
   mesa = pkgs.mesa;
+  orca-slicer = pkgs.symlinkJoin {
+    name = "orca-slicer";
+    paths = [ pkgs.orca-slicer ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/orca-slicer \
+        --prefix LC_ALL : C \
+        --prefix MESA_LOADER_DRIVER_OVERRIDE : zink \
+        --prefix WEBKIT_DISABLE_DMABUF_RENDERER : 1 \
+        --prefix __EGL_VENDOR_LIBRARY_FILENAMES : ${pkgs.mesa}/share/glvnd/egl_vendor.d/50_mesa.json \
+        --prefix GALLIUM_DRIVER : zink
+    '';
+  };
 in
 {
   imports =
@@ -179,6 +192,7 @@ in
     (import ./pkgs/noita-entangled-worlds.nix {
       pkgs = pkgs;
     })
+    (pkgs.callPackage ./pkgs/aida-x.nix {})
     comma
     git
     fd
@@ -189,6 +203,7 @@ in
     vim 
     lsd
     wget
+    deluge
     pulseaudio
     kitty
     foot
@@ -210,6 +225,14 @@ in
     drumgizmo  # Full drum kit sampler
     hydrogen   # Drum machine/sampler
     drumgizmo
+    sfizz
+    sfizz-ui
+    x42-gmsynth
+    dragonfly-reverb
+
+    fluidsynth
+    fluida-lv2
+    carla
     infamousPlugins
     lsp-plugins
     surge-XT
@@ -217,6 +240,9 @@ in
     fire
     paulstretch
     rkrlv2
+    airwindows
+    x42-avldrums
+    x42-plugins
     airwindows-lv2
     distrho-ports
     bshapr
@@ -458,6 +484,12 @@ in
     };
   };
 services = {
+  plex = {
+    enable = true;
+    openFirewall = true;
+    user = "eric";
+  };
+
   getty.autologinUser = "eric";
   openssh.enable = true;
   zerotierone = {
@@ -477,13 +509,25 @@ services = {
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-    extraConfig.pipewire."92-low-latency" = {
-    "context.properties" = {
-      "default.clock.quantum" = 512;
-      "default.clock.min-quantum" = 512;
-      "default.clock.max-quantum" = 512;
+    extraConfig = {
+      pipewire."92-low-latency" = {
+        "context.properties" = {
+          "default.clock.rate" = 44100;
+          "default.clock.quantum" = 512;
+          "default.clock.min-quantum" = 512;
+          "default.clock.max-quantum" = 512;
+        };
+      };
+      pipewire-pulse."chrome-no-audio" = {
+        "pulse.rules" = [
+          {
+            # prevent all sources matching "Chromium" from messing with the volume
+            matches = [ { "application.name" = "~Chromium.*"; } ];
+            actions = { quirks = [ "block-source-volume" ]; };
+          }
+        ];
+      };
     };
-  };
   };
   flatpak.enable = true;
   sunshine = {
