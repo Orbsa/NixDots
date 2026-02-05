@@ -6,10 +6,8 @@ let
       "$HOME/.nix-profile/lib"
       "/run/current-system/sw/lib"
       "/etc/profiles/per-user/$USER/lib"
-    ])
-    + ":$HOME/.${format}";
-in
-{
+    ]) + ":$HOME/.${format}";
+in {
   environment.variables = {
     DSSI_PATH = makePluginPath "dssi";
     LADSPA_PATH = makePluginPath "ladspa";
@@ -35,21 +33,20 @@ in
         };
       };
       pipewire-pulse."chrome-no-audio" = {
-        "pulse.rules" = [
-          {
-            matches = [ { "application.name" = "~Chromium.*"; } ];
-            actions = { quirks = [ "block-source-volume" ]; };
-          }
-        ];
+        "pulse.rules" = [{
+          matches = [{ "application.name" = "~Chromium.*"; }];
+          actions = { quirks = [ "block-source-volume" ]; };
+        }];
       };
     };
   };
 
   environment.systemPackages = with pkgs; [
-    (pkgs.callPackage ../pkgs/aida-x.nix {})
+    (pkgs.callPackage ../pkgs/aida-x.nix { })
     reaper
     reaper-sws-extension
     reaper-reapack-extension
+    bitwig-studio
     vital
     surge-XT
     carla

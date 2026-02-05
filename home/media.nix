@@ -14,9 +14,7 @@
     };
     plex-mpv-shim = {
       enable = true;
-      settings = {
-        mpv_ext = true;
-      };
+      settings = { mpv_ext = true; };
     };
   };
 }

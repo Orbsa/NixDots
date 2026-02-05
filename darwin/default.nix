@@ -55,9 +55,7 @@
     };
   };
 
-  networking = {
-    knownNetworkServices = [ "Wi-Fi" ];
-  };
+  networking = { knownNetworkServices = [ "Wi-Fi" ]; };
 
   fonts = {
     packages = with pkgs; [
@@ -79,8 +77,7 @@
     defaults = {
       ".GlobalPreferences"."com.apple.mouse.scaling" = 4.0;
       spaces.spans-displays = false;
-      universalaccess = {
-      };
+      universalaccess = { };
 
       dock = {
         autohide = true;

@@ -7,12 +7,7 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = [
-      "borders"
-      "terminal-notifier"
-      "jiratui"
-      "gimme-aws-creds"
-    ];
+    brews = [ "borders" "terminal-notifier" "jiratui" "gimme-aws-creds" ];
     casks = [
       "claude"
       "json-viewer"

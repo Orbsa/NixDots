@@ -32,9 +32,18 @@
   programs.fish = {
     enable = true;
     plugins = [
-      { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-      { name = "done"; src = pkgs.fishPlugins.done.src; }
-      { name = "forgit"; src = pkgs.fishPlugins.forgit.src; }
+      {
+        name = "grc";
+        src = pkgs.fishPlugins.grc.src;
+      }
+      {
+        name = "done";
+        src = pkgs.fishPlugins.done.src;
+      }
+      {
+        name = "forgit";
+        src = pkgs.fishPlugins.forgit.src;
+      }
     ];
   };
 

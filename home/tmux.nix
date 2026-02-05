@@ -11,8 +11,7 @@ let
       sha256 = "sha256-Q21kSGcXAPhG4Q94B/ZD38zaBojgbvsBuQi5unkpJN0=";
     };
   };
-in
-{
+in {
   programs.tmux = {
     enable = true;
     prefix = "C-space";

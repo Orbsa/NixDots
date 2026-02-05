@@ -5,7 +5,10 @@
     (self: super: {
       mpv = super.mpv.override {
         scripts = with self.mpvScripts; [
-          mpris sponsorblock-minimal evafast videoclip
+          mpris
+          sponsorblock-minimal
+          evafast
+          videoclip
         ];
       };
     })

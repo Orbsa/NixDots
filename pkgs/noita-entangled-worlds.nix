@@ -6,8 +6,9 @@ pkgs.stdenv.mkDerivation rec {
 
   # Fetch the correct Linux zip file
   src = pkgs.fetchurl {
-    url = "https://github.com/IntQuant/noita_entangled_worlds/releases/download/v${version}/noita-proxy-linux.zip";
-     sha256 = "sha256-ycVk2EmzwO30OQ5qPZDN9MkUWQ3XAffqe6Lf57wmtbU=";
+    url =
+      "https://github.com/IntQuant/noita_entangled_worlds/releases/download/v${version}/noita-proxy-linux.zip";
+    sha256 = "sha256-ycVk2EmzwO30OQ5qPZDN9MkUWQ3XAffqe6Lf57wmtbU=";
   };
 
   # Include unzip and makeWrapper in the build environment

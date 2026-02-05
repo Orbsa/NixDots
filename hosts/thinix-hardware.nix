@@ -4,14 +4,13 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
+  boot.initrd.availableKernelModules =
+    [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.supportedFilesystems = [ "zfs" "ext4" "vfat" "ntfs" "btrfs"];
+  boot.supportedFilesystems = [ "zfs" "ext4" "vfat" "ntfs" "btrfs" ];
   boot.extraModulePackages = [ ];
   boot.zfs.extraPools = [ "zpool" ];
   services.zfs = {
@@ -20,38 +19,38 @@
   };
 
   # Clean root on Every boot. Erase your darlings
-   boot.initrd.postDeviceCommands = lib.mkAfter ''
-     zfs rollback -r zpool/root@blank
-   '';
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r zpool/root@blank
+  '';
   # Multi-partition disk scheduler to none
   boot.kernelParams = [ "elevator=none" ];
 
   fileSystems = {
-    "/" =
-      { device = "zpool/root";
-        fsType = "zfs";
-      };
+    "/" = {
+      device = "zpool/root";
+      fsType = "zfs";
+    };
 
-    "/nix" =
-      { device = "zpool/nix";
-        fsType = "zfs";
-      };
+    "/nix" = {
+      device = "zpool/nix";
+      fsType = "zfs";
+    };
 
-    "/home" =
-      { device = "zpool/home";
-        fsType = "zfs";
-      };
+    "/home" = {
+      device = "zpool/home";
+      fsType = "zfs";
+    };
 
-    "/persist" =
-      { device = "zpool/persist";
-        fsType = "zfs";
-      };
+    "/persist" = {
+      device = "zpool/persist";
+      fsType = "zfs";
+    };
 
-    "/boot" =
-      { device = "/dev/disk/by-uuid/6246-7993";
-        fsType = "vfat";
-        options = [ "fmask=0077" "dmask=0077" ];
-      };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/6246-7993";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
   };
 
   swapDevices = [ ];
@@ -59,6 +58,7 @@
   networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 
 }

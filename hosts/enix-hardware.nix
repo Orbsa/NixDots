@@ -4,14 +4,13 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
+  boot.initrd.availableKernelModules =
+    [ "vmd" "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" "coretemp" ];
-  boot.supportedFilesystems = [ "zfs" "ext4" "vfat" "ntfs" "btrfs"];
+  boot.supportedFilesystems = [ "zfs" "ext4" "vfat" "ntfs" "btrfs" ];
   boot.extraModulePackages = [ ];
   boot.zfs.extraPools = [ "zpool" ];
   services.zfs = {
@@ -20,43 +19,47 @@
   };
 
   # Clean root on Every boot. Erase your darlings
-   boot.initrd.postDeviceCommands = lib.mkAfter ''
-     zfs rollback -r zpool/root@blank
-   '';
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r zpool/root@blank
+  '';
   # Multi-partition disk scheduler to none
-  boot.kernelParams = [ "elevator=none" "nvidia.NVreg_EnableGpuFirmware=0" "usbcore.autosuspend=-1" ];
+  boot.kernelParams = [
+    "elevator=none"
+    "nvidia.NVreg_EnableGpuFirmware=0"
+    "usbcore.autosuspend=-1"
+  ];
 
-  fileSystems."/" =
-    { device = "zpool/root";
-      fsType = "zfs";
-    };
+  fileSystems."/" = {
+    device = "zpool/root";
+    fsType = "zfs";
+  };
 
-  fileSystems."/nix" =
-    { device = "zpool/nix";
-      fsType = "zfs";
-    };
+  fileSystems."/nix" = {
+    device = "zpool/nix";
+    fsType = "zfs";
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/fd44011a-9459-48b5-a1cd-f2acf9c7f85c";
-      fsType = "ext4";
-    };
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/fd44011a-9459-48b5-a1cd-f2acf9c7f85c";
+    fsType = "ext4";
+  };
 
-  fileSystems."/persist" =
-    { device = "zpool/persist";
-      fsType = "zfs";
-    };
+  fileSystems."/persist" = {
+    device = "zpool/persist";
+    fsType = "zfs";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/FDE8-41C1";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/FDE8-41C1";
+    fsType = "vfat";
+    options = [ "fmask=0077" "dmask=0077" ];
+  };
 
-  fileSystems."/mnt/sGames" =
-    { device = "/dev/disk/by-uuid/1573eb3f-db14-49c8-ad91-6cb055c76865";
-      fsType = "btrfs";
-      options = [ "rw" "nofail" "defaults" ];
-    };
+  fileSystems."/mnt/sGames" = {
+    device = "/dev/disk/by-uuid/1573eb3f-db14-49c8-ad91-6cb055c76865";
+    fsType = "btrfs";
+    options = [ "rw" "nofail" "defaults" ];
+  };
 
   fileSystems."/mnt/sharedGames" = {
     device = "/dev/disk/by-uuid/8413daac-493c-4872-9ea0-2377465982a3";
@@ -67,7 +70,7 @@
   fileSystems."/mnt/nixGames" = {
     device = "/dev/disk/by-uuid/f9996c00-95d5-4d20-af04-0e38a14fe12b";
     fsType = "btrfs";
-    options = [ "rw" "nofail" "defaults"  ];
+    options = [ "rw" "nofail" "defaults" ];
   };
 
   fileSystems."/mnt/archGames" = {
@@ -76,17 +79,17 @@
     options = [ "rw" "nofail" "defaults" ];
   };
 
-  fileSystems."/mnt/C" =
-    { device = "/dev/disk/by-uuid/1CA2D086A2D065B4";
-      fsType = "ntfs-3g";
-      options = [ "nofail"];
-    };
+  fileSystems."/mnt/C" = {
+    device = "/dev/disk/by-uuid/1CA2D086A2D065B4";
+    fsType = "ntfs-3g";
+    options = [ "nofail" ];
+  };
 
-  fileSystems."/mnt/games2" =
-    { device = "/dev/disk/by-uuid/54BE5F16BE5EEFCA";
-      fsType = "ntfs-3g";
-      options = [ "nofail"];
-    };
+  fileSystems."/mnt/games2" = {
+    device = "/dev/disk/by-uuid/54BE5F16BE5EEFCA";
+    fsType = "ntfs-3g";
+    options = [ "nofail" ];
+  };
 
   swapDevices = [ ];
 
@@ -94,10 +97,11 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware = {
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    cpu.intel.updateMicrocode =
+      lib.mkDefault config.hardware.enableRedistributableFirmware;
     graphics = {
-        enable = true;
-        enable32Bit = true;
+      enable = true;
+      enable32Bit = true;
     };
   };
 }

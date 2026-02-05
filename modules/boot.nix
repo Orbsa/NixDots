@@ -8,12 +8,13 @@
         efiSysMountPoint = "/boot";
       };
       grub = {
-        enable = false;  # Disabled because using Lanzaboote
+        enable = false; # Disabled because using Lanzaboote
         zfsSupport = true;
         efiSupport = true;
-        mirroredBoots = [
-          { devices = [ "nodev"]; path = "/boot"; }
-        ];
+        mirroredBoots = [{
+          devices = [ "nodev" ];
+          path = "/boot";
+        }];
       };
       systemd-boot.enable = lib.mkForce false;
     };

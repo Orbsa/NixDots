@@ -5,7 +5,7 @@ let
     "10de:10f8" # Audio
     "10de:1ad8" # USB
     "10de:1ad9" # Type-C
-    "0000:02:00.0" #Windows NVME
+    "0000:02:00.0" # Windows NVME
   ];
 in { pkgs, lib, config, ... }: {
   options.vfio.enable = with lib;
@@ -28,7 +28,7 @@ in { pkgs, lib, config, ... }: {
       kernelParams = [
         # enable IOMMU
         "intel_iommu=on"
-        "iommu=pt" 
+        "iommu=pt"
       ] ++ lib.optional cfg.enable
         # isolate the GPU
         ("vfio-pci.ids=" + lib.concatStringsSep "," gpuIDs);

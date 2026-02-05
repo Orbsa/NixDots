@@ -8,49 +8,46 @@
 
   # For KDE Connect
   networking.firewall = rec {
-    allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
+    allowedTCPPortRanges = [{
+      from = 1714;
+      to = 1764;
+    }];
     allowedUDPPortRanges = allowedTCPPortRanges;
   };
 
   environment.systemPackages = with pkgs; [
-    # Terminals
-    kitty
+    blender
+    brave
+    chatterino2
+    claude-code
+    cliphist
+    dbeaver-bin
+    deluge
     foot
+    gemini-cli
     ghostty
-    # Desktop utilities
-    wofi
+    gowall
+    grim
+    hoppscotch
+    httpie-desktop
+    hypridle
+    hyprland-qtutils
     hyprlock
     hyprpicker
-    hyprland-qtutils
-    swww
-    slurp
-    grim
-    gowall
-    wl-clipboard
-    cliphist
-    playerctl
-    xdg-utils
+    keepassxc
     libnotify
-    # Browsers
     librewolf
-    brave
-    # File manager
+    playerctl
+    slurp
+    swww
+    teamspeak6-client
     thunar
     thunar-volman
-    # Communication
     thunderbird
     vesktop
-    chatterino2
-    teamspeak6-client
-    # Apps
-    keepassxc
-    httpie-desktop
-    deluge
-    claude-code
-    gemini-cli
-    dbeaver-bin
     vscode
-    blender
-    hoppscotch
+    wl-clipboard
+    wofi
+    xdg-utils
   ];
 }

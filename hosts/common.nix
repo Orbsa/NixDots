@@ -19,7 +19,8 @@
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     substituters = [ "https://hyprland.cachix.org" ];
-    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+    trusted-public-keys =
+      [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
 
   programs.fish.enable = true;
@@ -39,14 +40,10 @@
   boot.extraModprobeConfig = "options bluetooth disable_ertm=1 ";
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "qtwebengine-5.15.19"
-    "openssl-1.1.1w"
-  ];
+  nixpkgs.config.permittedInsecurePackages =
+    [ "qtwebengine-5.15.19" "openssl-1.1.1w" ];
 
-  fonts.packages = with pkgs; [
-    plemoljp-nf
-  ];
+  fonts.packages = with pkgs; [ plemoljp-nf ];
 
   programs = {
     mtr.enable = true;

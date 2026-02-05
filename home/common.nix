@@ -9,8 +9,5 @@
     home-manager.enable = true;
   };
 
-  home.packages = with pkgs; [
-    htop
-    fortune
-  ];
+  home.packages = with pkgs; [ htop fortune ];
 }

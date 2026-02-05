@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 
 let
   inherit (lib) getExe;
@@ -27,10 +22,7 @@ let
         destination = "/share/mime/packages/model-step.xml";
       })
     ];
-    buildInputs = with pkgs; [
-      makeWrapper
-      shared-mime-info
-    ];
+    buildInputs = with pkgs; [ makeWrapper shared-mime-info ];
     postBuild = ''
       wrapProgram $out/bin/orca-slicer \
         --set __GLX_VENDOR_LIBRARY_NAME mesa \
@@ -47,16 +39,14 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram "$out/bin/FreeCAD"
-      substituteInPlace "$out/bin/FreeCAD" --replace-fail '"/nix/store' '${getExe pkgs.strace} "/nix/store'
+      substituteInPlace "$out/bin/FreeCAD" --replace-fail '"/nix/store' '${
+        getExe pkgs.strace
+      } "/nix/store'
     '';
     meta.mainProgram = "FreeCAD";
   };
-in
-{
-  home.packages = [
-    orca-slicer-with-workaround
-    freecad-with-workaround
-  ];
+in {
+  home.packages = [ orca-slicer-with-workaround freecad-with-workaround ];
 
   xdg = {
     mimeApps = {
