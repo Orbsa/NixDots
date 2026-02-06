@@ -13,6 +13,7 @@ let
   };
 in {
   programs.tmux = {
+    tmuxp.enable = true;
     enable = true;
     prefix = "C-space";
     shell = "${pkgs.fish}/bin/fish";
