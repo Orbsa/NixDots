@@ -9,6 +9,7 @@
     ./gtk.nix
     ./media.nix
     ./printing.nix
+    ./gaming.nix
   ];
 
   home = {

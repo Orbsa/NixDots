@@ -3,11 +3,34 @@
 {
   boot.extraModulePackages = with config.boot.kernelPackages; [ xpadneo ];
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
+  programs = {
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+    };
+    gamescope = {
+      enable = true; 
+      #capSysNice = true;
+      args = [
+        #"--expose-wayland"
+        #"--adaptive-sync"
+        #"--mangoapp"
+        #"--prefer-output DP-4"
+        #"--hdr-enabled"
+        #"--rt"
+      ];
+      env = {
+        DXVK_HDR = "1";
+        #LD_LIBRARY_PATH = "";
+        # LD_PRELOAD = "";
+      };
+    };
+    gamemode = {
+      enable = true;
+      enableRenice = true;
+    };
   };
 
   environment.systemPackages = with pkgs;
