@@ -1,6 +1,7 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, osConfig, ... }:
 
-{
+let audioEnabled = osConfig.services.pipewire.enable or false;
+in {
   imports = [
     ./common.nix
     ./shell.nix
@@ -23,13 +24,12 @@
       Ze = "sudo nixos-rebuild --flake /home/eric/.config/nix/ switch";
     };
     packages = with pkgs; [
-      inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".twilight
-      papirus-folders
+      nil
     ];
   };
 
   xdg = {
-    configFile = {
+    configFile = lib.mkIf audioEnabled {
       "yabridgectl/config.toml".text = ''
         plugin_dirs = [
           '/home/eric/.wine/drive_c/Program Files/Common Files',

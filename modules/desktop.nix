@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   programs = {
@@ -34,11 +34,14 @@
     hyprland-qtutils
     hyprlock
     hyprpicker
+    inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".twilight
     keepassxc
     libnotify
     librewolf
+    papirus-folders
     playerctl
     slurp
+    stirling-pdf
     swww
     teamspeak6-client
     thunar
