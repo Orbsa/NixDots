@@ -156,9 +156,9 @@
         disabled = false;
         format = "[](fg:overlay)[ 󱄅 $state ]($style)[](fg:overlay) ";
         style = "bg:overlay fg:foam";
-        impure_msg = "[impure](rose)";
-        pure_msg = "[pure](iris)";
-        unknown_msg = "[unknown](gold)";
+        impure_msg = "[impure](bg:overlay fg:rose)";
+        pure_msg = "[pure](bg:iris fg:rose)";
+        unknown_msg = "[unknown](bg:gold fg:rose)";
       };
 
       aws.symbol = "";
