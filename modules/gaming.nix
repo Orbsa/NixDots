@@ -56,24 +56,5 @@
       hdos
       runescape
       hypnotix
-    ] ++ (let w = inputs.nix-gaming.packages.${pkgs.system}.wine-tkg;
-    in [
-      w
-      (pkgs.yabridge.override { wine = w; })
-      (pkgs.yabridgectl.override { wine = w; })
-    ]);
-
-  nixpkgs.overlays = [
-    (self: super: {
-      yabridge = super.yabridge.overrideAttrs (old: rec {
-        src = super.fetchFromGitHub {
-          owner = "robbert-vdh";
-          repo = "yabridge";
-          rev = "refs/heads/new-wine10-embedding";
-          hash = "sha256-qjyBnwdd/yRIiiAApHyxc/XkkEwB33YP0GpIjG4Upro=";
-        };
-        patches = super.lib.drop 1 old.patches;
-      });
-    })
   ];
 }

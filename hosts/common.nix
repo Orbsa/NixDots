@@ -41,7 +41,7 @@
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages =
-    [ "qtwebengine-5.15.19" "openssl-1.1.1w" ];
+    [ "python-2.7.18.12" "qtwebengine-5.15.19" "openssl-1.1.1w" ];
 
   fonts.packages = with pkgs; [ plemoljp-nf ];
 
@@ -68,6 +68,8 @@
   };
 
   environment.systemPackages = with pkgs; [
+    python3
+    python2
     comma
     git
     fd

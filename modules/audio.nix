@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ inputs, lib, pkgs, ... }:
 
 let
   makePluginPath = format:
@@ -15,30 +15,6 @@ in {
     LXVST_PATH = makePluginPath "lxvst";
     VST_PATH = makePluginPath "vst";
     VST3_PATH = makePluginPath "vst3";
-  };
-
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    extraConfig = {
-      pipewire."92-low-latency" = {
-        "context.properties" = {
-          "default.clock.rate" = 44100;
-          "default.clock.quantum" = 512;
-          "default.clock.min-quantum" = 512;
-          "default.clock.max-quantum" = 512;
-        };
-      };
-      pipewire-pulse."chrome-no-audio" = {
-        "pulse.rules" = [{
-          matches = [{ "application.name" = "~Chromium.*"; }];
-          actions = { quirks = [ "block-source-volume" ]; };
-        }];
-      };
-    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -64,7 +40,7 @@ in {
     fire
     paulstretch
     rkrlv2
-    airwindows
+    #airwindows
     airwindows-lv2
     x42-avldrums
     x42-plugins
@@ -83,13 +59,17 @@ in {
     bslizr
     bankstown-lv2
     uhhyou-plugins
-    # PipeWire GUI tools
-    pwvucontrol
-    coppwr
-    qpwgraph
-    # Audio utilities
     rtkit
-    pulseaudio
-    pipewire.jack
-  ];
+    ]
+  ++ (
+    let
+      # helix native needs wine with fsync patches
+      w = inputs.nix-gaming.packages.${pkgs.system}.wine-tkg;
+    in
+    [
+      w
+      (pkgs.yabridge.override { wineWowPackages = { yabridge = w; }; })
+      (pkgs.yabridgectl.override { wineWowPackages = { yabridge = w; }; })
+    ]
+  );
 }
