@@ -4,8 +4,8 @@
   home.packages = with pkgs; [
     fishPlugins.done
     fishPlugins.forgit
-    fishPlugins.hydro
     fishPlugins.grc
+    fishPlugins.z
     ripgrep
     jq
     yq-go
@@ -14,7 +14,7 @@
     grc
   ];
 
-  programs.atuin = lib.mkIf pkgs.stdenv.isLinux {
+  programs.atuin = {
     enable = true;
     enableFishIntegration = true;
     flags = [ "--disable-up-arrow" ];
@@ -44,85 +44,146 @@
         name = "forgit";
         src = pkgs.fishPlugins.forgit.src;
       }
+      {
+        name = "grc";
+        src = pkgs.fishPlugins.grc.src;
+      }
+      {
+        name = "z";
+        src = pkgs.fishPlugins.z.src;
+      }
     ];
   };
 
   programs.starship = {
     enable = true;
+    enableFishIntegration = true;
     settings = {
-      add_newline = false;
-      line_break.disabled = true;
-      cmd_duration.disabled = true;
+      format = lib.concatStrings [
+        "$username"
+        "$directory"
+        "$nix_shell"
+        "$git_branch"
+        "$git_status"
+        "$fill"
+        "$c"
+        "$elixir"
+        "$elm"
+        "$golang"
+        "$haskell"
+        "$java"
+        "$julia"
+        "$nodejs"
+        "$nim"
+        "$rust"
+        "$scala"
+        "$conda"
+        "$python"
+        "$time"
+        "\n"
+        "[󱞪](fg:iris) "
+      ];
 
-      format = ''
-        $directory
-        $character'';
-      right_format = "$time";
+      palette = "rose-pine";
 
-      character = {
-        success_symbol = "[](green)";
-        error_symbol = "[](red)";
-        vimcmd_symbol = "[](teal)";
+      palettes.rose-pine = {
+        overlay = "#26233a";
+        love = "#eb6f92";
+        gold = "#f6c177";
+        rose = "#ebbcba";
+        pine = "#31748f";
+        foam = "#9ccfd8";
+        iris = "#c4a7e7";
       };
 
       directory = {
-        format = "[$path]($style)( [$read_only]($read_only_style)) ";
-        style = "blue";
-        disabled = false;
-        read_only = " ";
-        fish_style_pwd_dir_length = 1;
-        truncation_length = 2;
+        format = "[](fg:overlay)[ $path ]($style)[](fg:overlay) ";
+        style = "bg:overlay fg:pine";
+        truncation_length = 3;
+        truncation_symbol = "…/";
+        substitutions = {
+          Documents = "󰈙";
+          Downloads = " ";
+          Music = " ";
+          Pictures = " ";
+        };
       };
 
-      time = {
-        format = "[$time]($style)";
-        style = "blue";
-        disabled = false;
-      };
-
-      status = {
-        format = "[$symbol]($style)";
-        symbol = "[](red)";
-        success_symbol = "[](green)";
-        disabled = true;
+      fill = {
+        style = "fg:overlay";
+        symbol = " ";
       };
 
       git_branch = {
-        style = "purple";
+        format = "[](fg:overlay)[ $symbol $branch ]($style)[](fg:overlay) ";
+        style = "bg:overlay fg:foam";
         symbol = "";
       };
 
-      gcloud.symbol = " ";
-      gcloud.disabled = true;
-      hostname.style = "bold green";
-      memory_usage.symbol = " ";
-      memory_usage.disabled = true;
-      shlvl.symbol = " ";
-      shlvl.disabled = false;
-      username.style_user = "bold blue";
+      git_status = {
+        disabled = false;
+        style = "bg:overlay fg:love";
+        format = "[](fg:overlay)([$all_status$ahead_behind]($style))[](fg:overlay) ";
+        up_to_date = "[ ✓ ](bg:overlay fg:iris)";
+        untracked = "[?($count)](bg:overlay fg:gold)";
+        stashed = "[\\$](bg:overlay fg:iris)";
+        modified = "[!($count)](bg:overlay fg:gold)";
+        renamed = "[»($count)](bg:overlay fg:iris)";
+        deleted = "[✘($count)](style)";
+        staged = "[++($count)](bg:overlay fg:gold)";
+        ahead = "[⇡(\${count})](bg:overlay fg:foam)";
+        diverged = "⇕[\\[](bg:overlay fg:iris)[⇡(\${ahead_count})](bg:overlay fg:foam)[⇣(\${behind_count})](bg:overlay fg:rose)[\\]](bg:overlay fg:iris)";
+        behind = "[⇣(\${count})](bg:overlay fg:rose)";
+      };
 
-      aws.symbol = "  ";
-      conda.symbol = " ";
-      dart.symbol = " ";
-      docker_context.symbol = " ";
-      elixir.symbol = " ";
-      elm.symbol = " ";
-      golang.symbol = " ";
-      java.symbol = " ";
-      julia.symbol = " ";
-      lua.symbol = " ";
-      nim.symbol = " ";
-      nix_shell.symbol = " ";
-      nodejs.symbol = " ";
-      package.symbol = " ";
-      perl.symbol = " ";
-      php.symbol = " ";
-      python.symbol = " ";
-      ruby.symbol = " ";
-      rust.symbol = " ";
-      scala.symbol = " ";
-      swift.symbol = "ﯣ ";
-      terraform.symbol = "行 ";
+      time = {
+        disabled = false;
+        format = " [](fg:overlay)[ $time 󰴈 ]($style)[](fg:overlay)";
+        style = "bg:overlay fg:rose";
+        time_format = "%I:%M%P";
+        use_12hr = true;
+      };
+
+      username = {
+        disabled = true;
+        format = "[](fg:overlay)[ 󰧱 $user ]($style)[](fg:overlay) ";
+        show_always = true;
+        style_root = "bg:overlay fg:iris";
+        style_user = "bg:overlay fg:iris";
+      };
+
+      nix_shell = {
+        disabled = false;
+        format = "[](fg:overlay)[ 󱄅 $state ]($style)[](fg:overlay) ";
+        style = "bg:overlay fg:foam";
+        impure_msg = "[impure](rose)";
+        pure_msg = "[pure](iris)";
+        unknown_msg = "[unknown](gold)";
+      };
+
+      aws.symbol = "";
+      conda.symbol = "";
+      dart.symbol = "";
+      docker_context.symbol = "";
+      elixir.symbol = "";
+      elm.symbol = "";
+      golang.symbol = "󰟓";
+      java.symbol = "";
+      julia.symbol = "";
+      lua.symbol = "󰢱 ";
+      nim.symbol = "";
+      nix_shell.symbol = "󱄅";
+      nodejs.symbol = "";
+      package.symbol = "󰏗 ";
+      perl.symbol = "";
+      php.symbol = "";
+      python.symbol = "";
+      ruby.symbol = "";
+      rust.symbol = "󱘗 ";
+      scala.symbol = "";
+      swift.symbol = "";
+      terraform.symbol = "󱁢 ";
+      bun.symbol = "🥟";
     };
   };
 }

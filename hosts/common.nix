@@ -3,6 +3,7 @@
 {
   imports = [
     inputs.lanzaboote.nixosModules.lanzaboote
+    ../shared/packages.nix
     ../modules/audio.nix
     ../modules/boot.nix
     ../modules/desktop.nix
@@ -67,32 +68,20 @@
     };
   };
 
+  # Linux-specific packages (shared packages imported from ../shared/packages.nix)
   environment.systemPackages = with pkgs; [
     python3
     python2
-    comma
-    git
-    fd
-    ripgrep
     home-manager
-    vim
-    lsd
-    wget
-    rar
-    unrar
-    android-tools
-    nix-tree
-    parallel
-    fastfetch
-    btop
     busybox
-    sqlite
+
+    # Hardware/Linux-specific
+    android-tools
     lm_sensors
     coolercontrol.coolercontrold
     coolercontrol.coolercontrol-gui
     smartmontools
     btrfs-progs
-    fzf
   ];
 
   system.stateVersion = "24.05";

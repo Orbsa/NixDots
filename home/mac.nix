@@ -15,8 +15,8 @@
     homeDirectory = "/Users/ebell";
     stateVersion = "23.11";
     shellAliases = {
-      eZ = "nvim -c 'cd ~/.config/nix'";
-      Ze = "sudo nix run nix-darwin -- switch --flake ~/.config/nix/";
+      eZ = "nvim -c 'cd ~/nix-config/'";
+      Ze = "sudo nix run nix-darwin -- switch --flake ~/nix-config/";
       eV = "nvim -c 'cd ~/.config/nvim/lua/orbsa'";
     };
   };

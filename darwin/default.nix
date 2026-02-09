@@ -13,38 +13,16 @@
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
-    systemPackages = with pkgs; [
-      jujutsu
-      jjui
-      claude-code
-      mediainfo
-      tmux-sessionizer
-      gh
-      k9s
-      e1s
-      fd
-      postgresql
-      rustup
-      cargo
-      nixfmt-rfc-style
-      nodejs
-      vscode-langservers-extracted
-      vscode-extensions.vadimcn.vscode-lldb
-      awscli2
-      stu
-      ripgrep
-      fzf
-      mpv
-      yt-dlp
-      ffmpeg
-      tmux
-    ];
+    # Additional darwin-specific packages (shared CLI tools come from hosts/KN72DN4D3W.nix)
+    systemPackages = with pkgs; [ ];
   };
 
   programs = {
     zsh.enable = true;
     fish.enable = true;
   };
+
+  environment.shells = [ pkgs.fish ];
 
   ids.gids.nixbld = 350;
 

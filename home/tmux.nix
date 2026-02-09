@@ -3,12 +3,12 @@
 let
   tmux-tilit = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-tilit";
-    version = "unstable-2024-10-27";
+    version = "unstable-2025-12-19";
     src = pkgs.fetchFromGitHub {
       owner = "2KAbhishek";
       repo = "tmux-tilit";
-      rev = "0cd3a96c3f34eee057d8215112336da1448b3fa0";
-      sha256 = "sha256-Q21kSGcXAPhG4Q94B/ZD38zaBojgbvsBuQi5unkpJN0=";
+      rev = "29d08003b261ba3ebd3a827673674c3d839d182c";
+      sha256 = "sha256-9tDSqcdROmbTpnAkpKwJjAeJcac2iF+LeBi5SBDL9Bg=";
     };
   };
 in {
@@ -41,9 +41,12 @@ in {
         '';
       }
       vim-tmux-navigator
+      extrakto
     ];
     extraConfig = ''
       version_pat='s/^tmux[^0-9]*([.0-9]+).*/\1/p'
+      run-shell ${tmux-tilit}/share/tmux-plugins/tmux-tilit/tilit.tmux
+      set -g @tilit-navigator 'on'
 
       is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
           | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"

@@ -112,7 +112,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           inputs.nix-index-database.darwinModules.nix-index
-          ./darwin
+          ./hosts/KN72DN4D3W.nix
           ({ pkgs, ... }: {
             nixpkgs.config.allowUnfree = true;
 

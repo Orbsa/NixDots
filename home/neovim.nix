@@ -88,7 +88,7 @@ in {
       nui-nvim # lib dep
       nvim-dap
       nvim-dap-ui
-      nvim-lspconfig # LSP helper
+      # nvim-lspconfig # LSP helper - DEPRECATED in nvim 0.11, using vim.lsp.config instead
       nvim-tree-lua # Better TreeView
       nvim-treesitter-textobjects
       nvim-treesitter-with-plugins
