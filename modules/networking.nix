@@ -6,7 +6,7 @@
   services = {
     zerotierone = {
       enable = true;
-      joinNetworks = [ "af78bf9436e7d202" ];
+      joinNetworks = [ "35c192ce9b138e32" "af78bf9436e7d202" ];
     };
     mullvad-vpn.enable = true;
   };

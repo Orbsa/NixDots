@@ -27,6 +27,7 @@
     "elevator=none"
     "nvidia.NVreg_EnableGpuFirmware=0"
     "usbcore.autosuspend=-1"
+    "iommu=pt"
   ];
 
   fileSystems."/" = {

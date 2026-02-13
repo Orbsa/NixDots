@@ -56,6 +56,10 @@
       linuxSystem = "x86_64-linux";
       darwinSystem = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${linuxSystem};
+      pkgs-stable-linux = import inputs.nixpkgs-stable {
+        system = linuxSystem;
+        config.allowUnfree = true;
+      };
       pkgs-unstable-linux = import inputs.nixpkgs-unstable {
         system = linuxSystem;
         config.allowUnfree = true;
@@ -67,7 +71,7 @@
     in {
       nixosConfigurations.enix = nixpkgs.lib.nixosSystem {
         system = linuxSystem;
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs; pkgs-stable = pkgs-stable-linux; };
         modules = [
           ./hosts/enix.nix
           inputs.home-manager.nixosModules.home-manager

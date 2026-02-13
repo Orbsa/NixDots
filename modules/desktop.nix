@@ -1,18 +1,14 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, pkgs-stable, ... }:
 
 {
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  };
+
   programs = {
     hyprland.enable = true;
     waybar.enable = true;
-  };
-
-  # For KDE Connect
-  networking.firewall = rec {
-    allowedTCPPortRanges = [{
-      from = 1714;
-      to = 1764;
-    }];
-    allowedUDPPortRanges = allowedTCPPortRanges;
   };
 
   services.pipewire = {
@@ -73,7 +69,8 @@
     slurp
     stirling-pdf
     swww
-    teamspeak6-client
+    pkgs-stable.teamspeak_client
+    #teamspeak3 # Will this ever work?
     thunar
     thunar-volman
     thunderbird

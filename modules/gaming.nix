@@ -33,6 +33,16 @@
     };
   };
 
+  networking.firewall = {
+    allowedTCPPorts = [ 3074 ];
+    allowedTCPPortRanges = [ { from = 27014; to = 27050; } ];
+    allowedUDPPorts = [ 3074 3478 27036 ];
+    allowedUDPPortRanges = [
+      { from = 4379; to = 4380; }
+      { from = 27000; to = 27031; }
+    ];
+  };
+
   environment.systemPackages = with pkgs;
     [
       (import ../pkgs/noita-entangled-worlds.nix { pkgs = pkgs; })

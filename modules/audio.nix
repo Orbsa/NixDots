@@ -19,11 +19,13 @@ in {
 
   environment.systemPackages = with pkgs; [
     (pkgs.callPackage ../pkgs/aida-x.nix { })
+    #(pkgs.callPackage ../pkgs/pulse-visualizer.nix { })
     reaper
     reaper-sws-extension
     reaper-reapack-extension
     bitwig-studio
     vital
+    cava
     surge-XT
     carla
     drumgizmo

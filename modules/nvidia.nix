@@ -21,6 +21,8 @@
   environment.variables = {
     GDK_SCALE = "0.5";
     ENABLE_HDR_WSI = "1";
+    LIBVA_DRIVER_NAME = "nvidia";
+    NVD_BACKEND = "direct";
   };
 
   environment.systemPackages = with pkgs; [
