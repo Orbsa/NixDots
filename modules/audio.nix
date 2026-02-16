@@ -26,7 +26,7 @@ in {
     bitwig-studio
     vital
     cava
-    surge-XT
+    surge-xt
     carla
     drumgizmo
     hydrogen
@@ -70,8 +70,8 @@ in {
     in
     [
       w
-      (pkgs.yabridge.override { wineWowPackages = { yabridge = w; }; })
-      (pkgs.yabridgectl.override { wineWowPackages = { yabridge = w; }; })
+      (pkgs.yabridge.override { wineWow64Packages = { yabridge = w; }; })
+      (pkgs.yabridgectl.override { wineWow64Packages = { yabridge = w; }; })
     ]
   );
 }

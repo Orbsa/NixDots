@@ -5,6 +5,7 @@
   environment.systemPackages = with pkgs; [
     # Version control
     git
+    gitui
     jujutsu
     jjui
     gh
@@ -17,8 +18,18 @@
     # Editors
     vim
 
-    # System tools
+    # TUI
+    bandwhich
     btop
+    csvlens
+    dua
+    openapi-tui
+    rainfrog
+    slumber
+    television
+    trippy
+
+    # System tools
     fastfetch
     wget
     nix-tree
@@ -43,7 +54,7 @@
 
     # Nix tools
     comma
-    nixfmt-rfc-style
+    nixfmt
 
     # Cloud/infra
     awscli2

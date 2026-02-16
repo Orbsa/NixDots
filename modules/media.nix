@@ -15,7 +15,7 @@
   ];
 
   services.plex = {
-    enable = false;
+    enable = true;
     openFirewall = true;
     user = "eric";
   };

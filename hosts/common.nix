@@ -44,7 +44,10 @@
   nixpkgs.config.permittedInsecurePackages =
     [ "python-2.7.18.12" "qtwebengine-5.15.19" "openssl-1.1.1w" ];
 
-  fonts.packages = with pkgs; [ plemoljp-nf ];
+  fonts.packages = with pkgs; [ 
+    plemoljp-nf
+    google-fonts
+  ];
 
   programs = {
     mtr.enable = true;

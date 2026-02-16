@@ -105,6 +105,7 @@ in {
       telescope-git-conflicts-nvim
       telescope-nvim # Pretty Menus
       todo-comments-nvim
+      transparent-nvim
       twilight-nvim
       typescript-tools-nvim
       vim-coffee-script

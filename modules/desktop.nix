@@ -53,6 +53,7 @@
     httpie-desktop
     hypridle
     hyprland-qtutils
+    neowall
     hyprlock
     hyprpicker
     inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".twilight
@@ -66,6 +67,7 @@
     pwvucontrol
     coppwr
     qpwgraph
+    rustdesk
     slurp
     stirling-pdf
     swww
