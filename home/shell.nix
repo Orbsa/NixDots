@@ -31,6 +31,11 @@
 
   programs.fish = {
     enable = true;
+    loginShellInit = ''
+      if uwsm check may-start
+        exec uwsm start hyprland.desktop
+      end
+    '';
     plugins = [
       {
         name = "grc";

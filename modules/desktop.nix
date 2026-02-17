@@ -1,13 +1,18 @@
 { inputs, pkgs, pkgs-stable, ... }:
 
 {
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
-  };
+  imports = [ ./quickshell.nix ];
+  xdg.portal.enable = true;
 
   programs = {
-    hyprland.enable = true;
+    hyprland = {
+      enable = true;
+      withUWSM  = true;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # make sure to also set the portal package, so that they are in sync
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+
+    };
     waybar.enable = true;
   };
 
@@ -43,6 +48,7 @@
     claude-code
     cliphist
     dbeaver-bin
+    calibre
     deluge
     foot
     gemini-cli
@@ -51,6 +57,8 @@
     grim
     hoppscotch
     httpie-desktop
+
+
     hypridle
     hyprland-qtutils
     neowall

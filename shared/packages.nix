@@ -3,6 +3,7 @@
 
 {
   environment.systemPackages = with pkgs; [
+    coreutils
     # Version control
     git
     gitui
