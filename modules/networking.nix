@@ -3,6 +3,10 @@
 {
   networking.networkmanager.enable = true;
 
+  networking.interfaces."zthnhfqrru".ipv4.routes = [
+    { address = "10.0.0.0"; prefixLength = 24; via = "192.168.196.2"; }
+  ];
+
   services = {
     zerotierone = {
       enable = true;

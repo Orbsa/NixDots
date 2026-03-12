@@ -14,18 +14,18 @@
     })
   ];
 
-  services.plex = {
-    enable = true;
-    openFirewall = true;
-    user = "eric";
-  };
+  # services.plex = {
+  #   enable = true;
+  #   openFirewall = true;
+  #   user = "eric";
+  # };
 
   environment.systemPackages = with pkgs; [
     mpv
     yt-dlp
     tidal-hifi
     plex-desktop
-    ncmpcpp
+    #ncmpcpp
     revanced-cli
   ];
 }

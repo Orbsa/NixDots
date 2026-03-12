@@ -64,7 +64,7 @@
       # Games
       runelite
       hdos
-      runescape
+      #runescape
       hypnotix
   ];
 }

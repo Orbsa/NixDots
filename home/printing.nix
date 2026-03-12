@@ -46,17 +46,18 @@ let
     meta.mainProgram = "FreeCAD";
   };
 in {
-  home.packages = [ orca-slicer-with-workaround freecad-with-workaround ];
+  #home.packages = [ orca-slicer-with-workaround freecad-with-workaround ];
+  home.packages = [pkgs.orca-slicer ];
 
-  xdg = {
-    mimeApps = {
-      associations.added."model/step" = "OrcaSlicer.desktop";
-      defaultApplications = {
-        "model/step" = "OrcaSlicer.desktop";
-        "x-scheme-handler/orcaslicer" = "OrcaSlicer.desktop";
-        "x-scheme-handler/bambustudio" = "OrcaSlicer.desktop";
-        "x-scheme-handler/prusaslicer" = "OrcaSlicer.desktop";
-      };
-    };
-  };
+  #xdg = {
+    #mimeApps = {
+      #associations.added."model/step" = "OrcaSlicer.desktop";
+      #defaultApplications = {
+        #"model/step" = "OrcaSlicer.desktop";
+        #"x-scheme-handler/orcaslicer" = "OrcaSlicer.desktop";
+        #"x-scheme-handler/bambustudio" = "OrcaSlicer.desktop";
+        #"x-scheme-handler/prusaslicer" = "OrcaSlicer.desktop";
+      #};
+    #};
+  #};
 }

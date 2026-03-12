@@ -40,6 +40,11 @@
     };
   };
 
+  # Docker
+  virtualisation.docker = {
+    enable = true;
+  };
+  users.users.eric.extraGroups = [ "docker" ];
 
   environment.systemPackages = with pkgs; [
     blender
@@ -48,6 +53,7 @@
     claude-code
     cliphist
     dbeaver-bin
+    beekeeper-studio
     calibre
     deluge
     foot
@@ -57,6 +63,10 @@
     grim
     hoppscotch
     httpie-desktop
+    swayimg
+    element-desktop
+    spacedrive
+    plex-mpv-shim
 
 
     hypridle

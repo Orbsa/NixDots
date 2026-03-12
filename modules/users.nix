@@ -13,7 +13,7 @@
         createHome = true;
         initialHashedPassword =
           "$y$j9T$LGtqcLijoBEb9Ap8WVeAZ0$7ZMSUzOEVrFsF4R2J8Z.aZc6e7WPBY/OAYnoMBZNM41";
-        extraGroups = [ "wheel" "qemu-libvirtd" "libvirtd" "disk" "audio" ];
+        extraGroups = [ "wheel" "qemu-libvirtd" "libvirtd" "disk" "audio" "dialout"];
         uid = 1000;
         home = "/home/eric";
         shell = pkgs.fish;

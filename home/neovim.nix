@@ -45,14 +45,7 @@ in {
           ]);
     in with pkgs.vimPlugins; [
       # (fromGitHub "aba49398eeeb0134b70d40887018b2a0e7e8b41a" "main" "cordx56/rustowl" false)
-      # cmp-buffer
-      # cmp-nvim-lsp
-      # cmp-path
-      # cmp-treesitter
-      # cmp_luasnip
-      # copilot-cmp
       # nerdcommenter # Better comments
-      # nvim-cmp
       (fromGitHub "558abff11b9e8f4cefc0de09df780c56841c7a4b" "main"
         "dmmulroy/ts-error-translator.nvim" true)
       (fromGitHub "d53f34f42d344e69303361064d4bcb46811f7fe6" "main"
@@ -88,7 +81,6 @@ in {
       nui-nvim # lib dep
       nvim-dap
       nvim-dap-ui
-      # nvim-lspconfig # LSP helper - DEPRECATED in nvim 0.11, using vim.lsp.config instead
       nvim-tree-lua # Better TreeView
       nvim-treesitter-textobjects
       nvim-treesitter-with-plugins

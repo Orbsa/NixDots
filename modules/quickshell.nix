@@ -31,7 +31,7 @@
     kdePackages.breeze-gtk
     kdePackages.breeze
     darkly
-    darkly-qt5
+    #darkly-qt5
     eza
     matugen
     readexpro

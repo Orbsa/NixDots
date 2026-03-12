@@ -43,9 +43,19 @@
     options snd-intel-dspcfg dsp_driver=1
   '';
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      python3 = prev.python3.override {
+        packageOverrides = pyFinal: pyPrev: {
+          mpv = pyPrev.mpv.overridePythonAttrs (_: { doCheck = false; });
+        };
+      };
+    })
+  ];
+
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages =
-    [ "python-2.7.18.12" "qtwebengine-5.15.19" "openssl-1.1.1w" ];
+    [ "python-2.7.18.12" "qtwebengine-5.15.19" "openssl-1.1.1w" "beekeeper-studio-5.5.7" ];
 
   fonts.packages = with pkgs; [
     plemoljp-nf
@@ -66,12 +76,12 @@
     openssh.enable = true;
     blueman.enable = true;
     flatpak.enable = true;
-    sunshine = {
-      enable = true;
-      autoStart = true;
-      capSysAdmin = true;
-      openFirewall = true;
-    };
+    #sunshine = {
+      #enable = true;
+      #autoStart = true;
+      #capSysAdmin = true;
+      #openFirewall = true;
+    #};
   };
 
   # Linux-specific packages (shared packages imported from ../shared/packages.nix)

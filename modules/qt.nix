@@ -27,7 +27,7 @@ let
     ps.cffi
     ps.click
     ps."dbus-python"
-    ps."kde-material-you-colors"
+    #ps."kde-material-you-colors"
     ps.libsass
     ps.loguru
     ps."material-color-utilities"
@@ -114,9 +114,9 @@ in
     kdePackages.breeze-icons
 
     # Qt5 compat
-    libsForQt5.breeze-icons
-    libsForQt5.qt5.qtgraphicaleffects
-    libsForQt5.qtsvg
+    #libsForQt5.breeze-icons
+    #libsForQt5.qt5.qtgraphicaleffects
+    #libsForQt5.qtsvg
 
     # Secrets
     libsecret
