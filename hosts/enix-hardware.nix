@@ -5,6 +5,10 @@
 
 let
   pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+  ntfsDrives = [
+    { name = "C";      uuid = "1CA2D086A2D065B4"; mountPoint = "/mnt/C"; }
+    { name = "games2"; uuid = "54BE5F16BE5EEFCA"; mountPoint = "/mnt/games2"; }
+  ];
 in
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
@@ -20,6 +24,9 @@ in
     autoScrub.enable = true;
     autoSnapshot.enable = true;
   };
+
+  # Give USB hub chains time to enumerate before ZFS decrypt prompt
+  boot.initrd.preDeviceCommands = "sleep 3";
 
   # Clean root on Every boot. Erase your darlings
   boot.initrd.postDeviceCommands = lib.mkAfter ''
@@ -62,13 +69,13 @@ in
   fileSystems."/mnt/sGames" = {
     device = "/dev/disk/by-uuid/1573eb3f-db14-49c8-ad91-6cb055c76865";
     fsType = "btrfs";
-    options = [ "rw" "nofail" "defaults" ];
+    options = [ "rw" "nofail" "defaults" "x-systemd.device-timeout=1" ];
   };
 
   fileSystems."/mnt/sharedGames" = {
     device = "/dev/disk/by-uuid/8413daac-493c-4872-9ea0-2377465982a3";
     fsType = "btrfs";
-    options = [ "rw" "nofail" "defaults" ];
+    options = [ "rw" "nofail" "defaults" "x-systemd.device-timeout=1" ];
   };
 
   fileSystems."/mnt/nixGames" = {
@@ -86,14 +93,32 @@ in
   fileSystems."/mnt/C" = {
     device = "/dev/disk/by-uuid/1CA2D086A2D065B4";
     fsType = "ntfs-3g";
-    options = [ "nofail" ];
+    options = [ "nofail" "noauto" "x-systemd.device-timeout=1" ];
   };
 
   fileSystems."/mnt/games2" = {
     device = "/dev/disk/by-uuid/54BE5F16BE5EEFCA";
     fsType = "ntfs-3g";
-    options = [ "nofail" ];
+    options = [ "nofail" "noauto" "x-systemd.device-timeout=1" ];
   };
+
+  systemd.services = lib.listToAttrs (map (drive: {
+    name = "ntfs-mount-${drive.name}";
+    value = {
+      description = "Mount ${drive.mountPoint} NTFS (ntfsfix on dirty)";
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = pkgs.writeShellScript "ntfs-mount-${drive.name}" ''
+          if ! mount ${drive.mountPoint} 2>/dev/null; then
+            ${pkgs.ntfs3g}/bin/ntfsfix -d /dev/disk/by-uuid/${drive.uuid}
+            mount ${drive.mountPoint}
+          fi
+        '';
+      };
+    };
+  }) ntfsDrives);
 
   swapDevices = [ ];
 

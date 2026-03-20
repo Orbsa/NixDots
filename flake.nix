@@ -36,6 +36,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    proto-control = {
+      url = "github:Orbsa/Proto-Control";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     musnix = { url = "github:musnix/musnix"; };
 
     nix-gaming = {

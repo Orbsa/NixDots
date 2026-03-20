@@ -46,8 +46,8 @@ let
     meta.mainProgram = "FreeCAD";
   };
 in {
-  #home.packages = [ orca-slicer-with-workaround freecad-with-workaround ];
-  home.packages = [pkgs.orca-slicer ];
+  home.packages = [ orca-slicer-with-workaround freecad-with-workaround ];
+  #home.packages = [pkgs.orca-slicer ];
 
   #xdg = {
     #mimeApps = {

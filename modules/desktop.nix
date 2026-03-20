@@ -1,7 +1,7 @@
 { inputs, pkgs, pkgs-stable, ... }:
 
 {
-  imports = [ ./quickshell.nix ];
+  #imports = [ ./quickshell.nix ];
   xdg.portal.enable = true;
 
   programs = {
@@ -16,27 +16,33 @@
     waybar.enable = true;
   };
 
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    extraConfig = {
-      pipewire."92-low-latency" = {
-        "context.properties" = {
-          "default.clock.rate" = 44100;
-          "default.clock.quantum" = 512;
-          "default.clock.min-quantum" = 512;
-          "default.clock.max-quantum" = 512;
+  services = {
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+      extraConfig = {
+        pipewire."92-low-latency" = {
+          "context.properties" = {
+            "default.clock.rate" = 44100;
+            "default.clock.quantum" = 512;
+            "default.clock.min-quantum" = 512;
+            "default.clock.max-quantum" = 512;
+          };
+        };
+        pipewire-pulse."chrome-no-audio" = {
+          "pulse.rules" = [{
+            matches = [{ "application.name" = "~Chromium.*"; }];
+            actions = { quirks = [ "block-source-volume" ]; };
+          }];
         };
       };
-      pipewire-pulse."chrome-no-audio" = {
-        "pulse.rules" = [{
-          matches = [{ "application.name" = "~Chromium.*"; }];
-          actions = { quirks = [ "block-source-volume" ]; };
-        }];
-      };
+    };
+    dunst = {
+      enable = true;
+      enableWayland= true;
     };
   };
 
@@ -51,6 +57,7 @@
     brave
     chatterino2
     claude-code
+    sox
     cliphist
     dbeaver-bin
     beekeeper-studio
@@ -78,6 +85,7 @@
     keepassxc
     libnotify
     librewolf
+    chromium
     papirus-folders
     pipewire.jack
     playerctl
@@ -91,10 +99,10 @@
     swww
     pkgs-stable.teamspeak_client
     #teamspeak3 # Will this ever work?
-    thunar
-    thunar-volman
+    #lxqt.pcmanfm-qt
+    pcmanfm
     thunderbird
-    vesktop
+    discord
     vscode
     wl-clipboard
     wofi

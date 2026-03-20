@@ -1,8 +1,8 @@
-{ pkgs, inputs, lib, osConfig, ... }:
+{ pkgs, lib, osConfig, ... }:
 
 let
   audioEnabled = osConfig.services.pipewire.enable or false;
-  hypr = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
+  #hypr = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
 in {
   imports = [
     ./common.nix

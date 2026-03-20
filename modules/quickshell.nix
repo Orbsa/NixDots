@@ -16,7 +16,7 @@
     twemoji-color-font
   ];
 
-  users.users.eric.extraGroups = [ "video" "i2c" "input" ];
+  users.users.eric.extraGroups = [ "video" "i2c" ];
 
   environment.systemPackages = with pkgs; [
     #Quickshell stuffs

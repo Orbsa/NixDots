@@ -88,12 +88,13 @@ in
     ILLOGICAL_IMPULSE_VIRTUAL_ENV = "${fakeVenv}";
     ILLOGICAL_IMPULSE_DOTFILES_SOURCE = "$HOME/.config";
     qsConfig = "$HOME/.config/quickshell/ii";
-    QT_STYLE_OVERRIDE = "";
   };
 
   environment.systemPackages = with pkgs; [
     wrappedQuickshell
     qt6Packages.qt6ct
+    adwaita-qt
+    adwaita-qt6
     pythonEnv
 
     # KDE integration
