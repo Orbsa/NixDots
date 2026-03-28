@@ -73,6 +73,10 @@
   };
 
   services = {
+    locate = {
+      enable = true;
+    };
+
     getty.autologinUser = "eric";
     openssh.enable = true;
     blueman.enable = true;

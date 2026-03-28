@@ -34,9 +34,9 @@
   };
 
   networking.firewall = {
-    allowedTCPPorts = [ 3074 ];
+    allowedTCPPorts = [ 3074 25565 ];
     allowedTCPPortRanges = [ { from = 27014; to = 27050; } ];
-    allowedUDPPorts = [ 3074 3478 27036 ];
+    allowedUDPPorts = [ 3074 3478 25565 27036 ];
     allowedUDPPortRanges = [
       { from = 4379; to = 4380; }
       { from = 27000; to = 27031; }
@@ -56,7 +56,8 @@
       dxvk_2
       lutris
       steamtinkerlaunch
-      r2modman
+      (pkgs.callPackage ../pkgs/r2modman.nix { })
+      # r2modman
       winetricks
       vulkan-loader
       vulkan-validation-layers

@@ -38,6 +38,9 @@ in
     "nvidia.NVreg_EnableGpuFirmware=0"
     "usbcore.autosuspend=-1"
     "iommu=pt"
+    # Skip HID init report fetches that cause ~5s timeout per interface on KVM switch
+    # GMMK Pro ANSI (320f:5044) and Logitech USB Receiver (046d:c547)
+    "usbhid.quirks=0x320F:0x5044:0x20000000,0x046D:0xC547:0x20000000"
   ];
 
   fileSystems."/" = {
@@ -107,13 +110,16 @@ in
     value = {
       description = "Mount ${drive.mountPoint} NTFS (ntfsfix on dirty)";
       wantedBy = [ "multi-user.target" ];
+      after = [ "dev-disk-by\\x2duuid-${drive.uuid}.device" ];
+      wants = [ "dev-disk-by\\x2duuid-${drive.uuid}.device" ];
+      unitConfig.ConditionPathExists = "/dev/disk/by-uuid/${drive.uuid}";
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
         ExecStart = pkgs.writeShellScript "ntfs-mount-${drive.name}" ''
-          if ! mount ${drive.mountPoint} 2>/dev/null; then
+          if ! ${pkgs.util-linux}/bin/mount ${drive.mountPoint} 2>/dev/null; then
             ${pkgs.ntfs3g}/bin/ntfsfix -d /dev/disk/by-uuid/${drive.uuid}
-            mount ${drive.mountPoint}
+            ${pkgs.util-linux}/bin/mount ${drive.mountPoint}
           fi
         '';
       };

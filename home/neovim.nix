@@ -14,6 +14,10 @@ let
     };
 in {
   programs.neovim = {
+    initLua= ''
+      vim.opt.rtp:prepend(vim.fn.expand("~/.config/neovim"))
+      require 'orbsa'
+    '';
     enable = true;
     defaultEditor = true;
     viAlias = true;

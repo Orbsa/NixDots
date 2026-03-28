@@ -12,6 +12,11 @@
       name = "adw-gtk3-dark";
     };
 
+    gtk4.theme = {
+      package = pkgs.libadwaita;
+      name = "adw-gtk4-dark";
+    };
+
     iconTheme = {
       package = pkgs.papirus-icon-theme;
       name = "Papirus-Dark";
