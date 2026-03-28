@@ -41,6 +41,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    rind = {
+      url = "github:Orbsa/rind";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     musnix = { url = "github:musnix/musnix"; };
 
     nix-gaming = {

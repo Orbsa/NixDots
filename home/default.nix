@@ -69,7 +69,8 @@ in {
     kdeconnect.enable = true;
     gpg-agent = {
       enable = true;
-      defaultCacheTtl = 1800;
+      defaultCacheTtl = 86400;
+      maxCacheTtl = 86400;
       enableSshSupport = true;
     };
   };

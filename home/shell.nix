@@ -1,12 +1,14 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 {
   home.packages = with pkgs; [
+    inputs.rind.packages.${pkgs.system}.default
     fishPlugins.done
     fishPlugins.forgit
     fishPlugins.grc
     fishPlugins.z
     ripgrep
+    yazi
     jq
     yq-go
     eza
