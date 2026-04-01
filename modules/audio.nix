@@ -35,7 +35,7 @@ in {
     reaper
     reaper-sws-extension
     reaper-reapack-extension
-    bitwig-studio
+    (pkgs.callPackage ../pkgs/bitwig6.nix { })
     vital
     cava
     surge-xt

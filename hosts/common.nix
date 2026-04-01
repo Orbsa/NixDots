@@ -41,6 +41,7 @@
   boot.extraModprobeConfig = ''
     options bluetooth disable_ertm=1
     options snd-intel-dspcfg dsp_driver=1
+    options snd-hda-intel power_save=0 power_save_controller=N
   '';
 
   nixpkgs.overlays = [

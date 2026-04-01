@@ -16,7 +16,7 @@ in
   boot.initrd.availableKernelModules =
     [ "vmd" "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" "coretemp" ];
+  boot.kernelModules = [ "kvm-intel" "coretemp" "i915" ];
   boot.supportedFilesystems = [ "zfs" "ext4" "vfat" "ntfs" "btrfs" ];
   boot.extraModulePackages = [ ];
   boot.zfs.extraPools = [ "zpool" ];
@@ -38,6 +38,9 @@ in
     "nvidia.NVreg_EnableGpuFirmware=0"
     "usbcore.autosuspend=-1"
     "iommu=pt"
+    # Force i915 for iGPU so it registers the audio component needed by snd_hda_intel for SPDIF
+    "xe.force_probe=!a780"
+    "i915.force_probe=a780"
     # Skip HID init report fetches that cause ~5s timeout per interface on KVM switch
     # GMMK Pro ANSI (320f:5044) and Logitech USB Receiver (046d:c547)
     "usbhid.quirks=0x320F:0x5044:0x20000000,0x046D:0xC547:0x20000000"

@@ -17,7 +17,7 @@
       ip route add 10.0.0.0/24 via 192.168.196.2 dev zthnhfqrru 2>/dev/null || true
     '';
     serviceConfig = {
-      Type = "oneshot";
+      Type = "simple";
       RemainAfterExit = true;
     };
   };

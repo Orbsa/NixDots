@@ -13,6 +13,7 @@ in {
     ./media.nix
     ./printing.nix
     ./gaming.nix
+    ./mimeapps.nix
   ];
 
   home = {
@@ -31,26 +32,6 @@ in {
   };
 
   xdg = {
-    #mimeApps = {
-      #enable = true;
-      #force=true;
-      #defaultApplications = let
-        #defaultBrowser = "zen.desktop";
-      #in {
-        ## "text/plain" = ["org.gnome.TextEditor.desktop"];
-        #"inode/directory" = ["dolphin.desktop"];
-        #"text/x-uri" = [defaultBrowser];
-        #"x-scheme-handler/http" = [defaultBrowser];
-        #"x-scheme-handler/https" = [defaultBrowser];
-        #"x-scheme-handler/mailto" = [defaultBrowser];
-        ##"image/*" = ["swayimg.desktop"];
-        ##"image/png" = ["swayimg.desktop"];
-        ##"image/jpeg" = ["swayimg.desktop"];
-        #"video/*" = ["mpv.desktop"];
-        #"application/pdf" = ["zen.desktop"];
-        ## "application/x-archive" = [ "gnome-file-roller.desktop" ];
-      #};
-    #};
     configFile = lib.mkIf audioEnabled {
       "yabridgectl/config.toml".text = ''
         plugin_dirs = [
