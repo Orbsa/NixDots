@@ -1,8 +1,12 @@
 # Shared CLI packages for all systems (NixOS and Darwin)
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.omp
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.ccusage-pi
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.ccusage
     coreutils
     # Version control
     git

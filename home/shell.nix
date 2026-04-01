@@ -2,7 +2,9 @@
 
 {
   home.packages = with pkgs; [
+  ] ++ lib.optionals (!pkgs.stdenv.isDarwin) [
     inputs.rind.packages.${pkgs.system}.default
+  ] ++ (with pkgs; [
     fishPlugins.done
     fishPlugins.forgit
     fishPlugins.grc
@@ -14,7 +16,7 @@
     eza
     fzf
     grc
-  ];
+  ]);
 
   programs.atuin = {
     enable = true;

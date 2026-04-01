@@ -65,6 +65,11 @@
 
     nixpkgs-zsh-fzf-tab.url =
       "github:nixos/nixpkgs/8193e46376fdc6a13e8075ad263b4b5ca2592c03";
+
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, lanzaboote, ... }@inputs:
