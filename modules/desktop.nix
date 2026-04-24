@@ -32,12 +32,12 @@
             "default.clock.max-quantum" = 512;
           };
         };
-        pipewire-pulse."chrome-no-audio" = {
-          "pulse.rules" = [{
-            matches = [{ "application.name" = "~Chromium.*"; }];
-            actions = { quirks = [ "block-source-volume" ]; };
-          }];
-        };
+        #pipewire-pulse."chrome-no-audio" = {
+          #"pulse.rules" = [{
+            #matches = [{ "application.name" = "~Chromium.*"; }];
+            #actions = { quirks = [ "block-source-volume" ]; };
+          #}];
+        #};
       };
     };
     dunst = {
@@ -85,6 +85,7 @@
     hyprpicker
     inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".twilight
     keepassxc
+    bitwarden-cli
     libnotify
     librewolf
     chromium
@@ -98,7 +99,6 @@
     rustdesk
     slurp
     stirling-pdf
-    swww
     pkgs-stable.teamspeak_client
     #teamspeak3 # Will this ever work?
     #lxqt.pcmanfm-qt

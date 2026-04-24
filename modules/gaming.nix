@@ -6,6 +6,7 @@
   programs = {
     steam = {
       enable = true;
+      extraCompatPackages = [ pkgs.proton-ge-bin ];
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
@@ -33,14 +34,19 @@
     };
   };
 
-  networking.firewall = {
-    allowedTCPPorts = [ 3074 25565 ];
-    allowedTCPPortRanges = [ { from = 27014; to = 27050; } ];
-    allowedUDPPorts = [ 3074 3478 25565 27036 ];
-    allowedUDPPortRanges = [
+  networking.firewall = let
+    sharedTCPPorts = [ 3074 25565 ];
+    sharedUDPPorts = [ 3074 3478 25565 27036 ];
+    sharedRanges = [
       { from = 4379; to = 4380; }
       { from = 27000; to = 27031; }
+      { from = 27014; to = 27050; }
     ];
+  in {
+    allowedTCPPorts = sharedTCPPorts;
+    allowedTCPPortRanges = sharedRanges;
+    allowedUDPPorts = sharedUDPPorts;
+    allowedUDPPortRanges = sharedRanges;
   };
 
   environment.systemPackages = with pkgs;
@@ -67,5 +73,7 @@
       hdos
       #runescape
       hypnotix
+      dolphin-emu
+      prismlauncher
   ];
 }

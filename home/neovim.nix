@@ -14,7 +14,7 @@ let
     };
 in {
   programs.neovim = {
-    extraLuaConfig= ''
+    initLua = ''
       vim.opt.rtp:prepend(vim.fn.expand("~/.config/neovim"))
       require 'orbsa'
     '';
@@ -24,6 +24,7 @@ in {
     vimAlias = true;
     withPython3 = true;
     withNodeJs = true;
+    withRuby = true;
     vimdiffAlias = true;
     plugins = let
       nvim-treesitter-with-plugins = pkgs.vimPlugins.nvim-treesitter.withPlugins

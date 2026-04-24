@@ -28,6 +28,7 @@ in {
     };
   };
 
+
   environment.systemPackages = with pkgs; [
     inputs.proto-control.packages.${pkgs.system}.default
     (pkgs.callPackage ../pkgs/aida-x.nix { })

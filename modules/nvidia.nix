@@ -26,6 +26,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    ddcutil
     nvidia-docker
     egl-wayland
     nvidia-vaapi-driver

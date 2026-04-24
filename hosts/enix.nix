@@ -5,6 +5,7 @@
     ./common.nix
     ./enix-hardware.nix
     ../modules/gaming.nix
+    ../modules/runelite.nix
     ../modules/nvidia.nix
     ../modules/audio.nix
     #../modules/virtualisation.nix

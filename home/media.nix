@@ -16,5 +16,6 @@
       enable = true;
       settings = { mpv_ext = true; };
     };
+    awww.enable = true;
   };
 }
