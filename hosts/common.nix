@@ -46,6 +46,7 @@
 
   nixpkgs.overlays = [
     (final: prev: {
+      openldap = prev.openldap.overrideAttrs (_: { doCheck = false; });
       python3 = prev.python3.override {
         packageOverrides = pyFinal: pyPrev: {
           mpv = pyPrev.mpv.overridePythonAttrs (_: { doCheck = false; });
@@ -61,6 +62,7 @@
   fonts.packages = with pkgs; [
     plemoljp-nf
     google-fonts
+    (callPackage ../pkgs/custom-fonts.nix { })
   ];
 
   programs = {
@@ -96,6 +98,7 @@
     python2
     home-manager
     busybox
+    procps
 
     # Hardware/Linux-specific
     android-tools

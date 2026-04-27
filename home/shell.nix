@@ -3,7 +3,7 @@
 {
   home.packages = with pkgs; [
   ] ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-    inputs.rind.packages.${pkgs.system}.default
+    inputs.rind.packages.${pkgs.stdenv.hostPlatform.system}.default
   ] ++ (with pkgs; [
     fishPlugins.done
     fishPlugins.forgit
@@ -35,11 +35,6 @@
 
   programs.fish = {
     enable = true;
-    loginShellInit = ''
-      if uwsm check may-start
-        exec uwsm start hyprland.desktop
-      end
-    '';
     interactiveShellInit = ''
       if not contains /run/current-system/sw/share $XDG_DATA_DIRS
         set -gx XDG_DATA_DIRS /run/current-system/sw/share /home/eric/.nix-profile/share /etc/profiles/per-user/eric/share $XDG_DATA_DIRS

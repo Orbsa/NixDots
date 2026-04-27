@@ -70,6 +70,11 @@
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nelko = {
+      url = "github:Orbsa/Nelko-PL70e-CUPS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, lanzaboote, ... }@inputs:

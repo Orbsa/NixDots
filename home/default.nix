@@ -47,6 +47,7 @@ in {
   };
 
   services = {
+    dunst.enable = true;
     kdeconnect.enable = true;
     gpg-agent = {
       enable = true;

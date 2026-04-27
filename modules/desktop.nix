@@ -1,7 +1,7 @@
 { inputs, pkgs, pkgs-stable, ... }:
 
 {
-  #imports = [ ./quickshell.nix ];
+  imports = [ ./quickshell.nix ];
   xdg.portal.enable = true;
 
   programs = {
@@ -40,10 +40,6 @@
         #};
       };
     };
-    dunst = {
-      enable = true;
-      enableWayland= true;
-    };
   };
 
   # Docker
@@ -52,7 +48,6 @@
   };
   users.users.eric.extraGroups = [ "docker" ];
 
-  environment.sessionVariables.XDG_DATA_DIRS = "/run/current-system/sw/share:/home/eric/.nix-profile/share:/etc/profiles/per-user/eric/share\${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}";
 
   environment.systemPackages = with pkgs; [
     blender

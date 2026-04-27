@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ inputs, ... }:
 
 {
   imports = [
@@ -8,9 +8,15 @@
     ../modules/runelite.nix
     ../modules/nvidia.nix
     ../modules/audio.nix
+    inputs.nelko.nixosModules.default
     #../modules/virtualisation.nix
     #../modules/vfio.nix
   ];
+
+  services.nelko-pl70e = {
+    enable = true;
+    macAddress = "DC:0D:30:5A:A7:F5";
+  };
 
   networking = {
     hostName = "enix";

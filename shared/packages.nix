@@ -13,6 +13,7 @@
     gitui
     jujutsu
     jjui
+    minio-client
     gh
 
     # Search and navigation

@@ -23,14 +23,14 @@ in {
     wantedBy = [ "default.target" ];
     path = [ pkgs.pipewire pkgs.wireplumber ];
     serviceConfig = {
-      ExecStart = "${inputs.proto-control.packages.${pkgs.system}.default}/bin/proto-control";
+      ExecStart = "${inputs.proto-control.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/proto-control";
       Restart = "on-failure";
     };
   };
 
 
   environment.systemPackages = with pkgs; [
-    inputs.proto-control.packages.${pkgs.system}.default
+    inputs.proto-control.packages.${pkgs.stdenv.hostPlatform.system}.default
     (pkgs.callPackage ../pkgs/aida-x.nix { })
     #(pkgs.callPackage ../pkgs/pulse-visualizer.nix { })
     reaper
@@ -79,7 +79,7 @@ in {
   ++ (
     let
       # helix native needs wine with fsync patches
-      w = inputs.nix-gaming.packages.${pkgs.system}.wine-tkg;
+      w = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
     in
     [
       w
