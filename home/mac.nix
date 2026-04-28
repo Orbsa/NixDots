@@ -22,4 +22,12 @@
   };
 
   programs.bash.enable = true;
+
+  services.gpg-agent = {
+    enable = true;
+    defaultCacheTtl = 86400;
+    maxCacheTtl = 86400;
+    enableSshSupport = true;
+    pinentry.package = pkgs.pinentry_mac;
+  };
 }

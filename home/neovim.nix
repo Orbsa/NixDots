@@ -14,7 +14,7 @@ let
     };
 in {
   programs.neovim = {
-    initLua = ''
+    extraLuaConfig = ''
       vim.opt.rtp:prepend(vim.fn.expand("~/.config/neovim"))
       require 'orbsa'
     '';

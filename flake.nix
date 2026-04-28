@@ -1,9 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-colors.url = "github:misterio77/nix-colors";
     hyprland.url = "github:hyprwm/Hyprland";
     nixvim = {
@@ -86,11 +85,11 @@
         system = linuxSystem;
         config.allowUnfree = true;
       };
-      pkgs-unstable-linux = import inputs.nixpkgs-unstable {
+      pkgs-unstable-linux = import inputs.nixpkgs {
         system = linuxSystem;
         config.allowUnfree = true;
       };
-      pkgs-unstable-darwin = import inputs.nixpkgs-unstable {
+      pkgs-unstable-darwin = import inputs.nixpkgs {
         system = darwinSystem;
         config.allowUnfree = true;
       };

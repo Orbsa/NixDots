@@ -54,6 +54,7 @@ in {
       defaultCacheTtl = 86400;
       maxCacheTtl = 86400;
       enableSshSupport = true;
+      pinentry.package = pkgs.pinentry-curses;
     };
   };
 }

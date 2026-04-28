@@ -25,7 +25,6 @@
       "karabiner-elements"
       "eurkey"
       "nikitabobko/tap/aerospace"
-      "alacritty"
       "tidal"
       "shottr"
       "the-unarchiver"
