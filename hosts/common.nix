@@ -64,7 +64,6 @@
     google-fonts
     nerd-fonts.blex-mono
     ibm-plex
-    (callPackage ../pkgs/custom-fonts.nix { })
   ];
 
   programs = {
