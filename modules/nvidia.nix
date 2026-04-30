@@ -22,8 +22,11 @@
     GDK_SCALE = "0.5";
     ENABLE_HDR_WSI = "1";
     LIBVA_DRIVER_NAME = "nvidia";
-    NVD_BACKEND = "direct";
+    NVD_BACKEND = "egl";
   };
+
+  hardware.graphics.extraPackages = [ pkgs.nvidia-vaapi-driver ];
+  hardware.graphics.extraPackages32 = [ pkgs.pkgsi686Linux.nvidia-vaapi-driver ];
 
   environment.systemPackages = with pkgs; [
     ddcutil

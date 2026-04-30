@@ -3,6 +3,8 @@
 let
   defaultBrowser = "zen-twilight.desktop";
 in {
+  home.sessionVariables.BROWSER = "zen-twilight";
+
   xdg.systemDirs.data = [
     "/run/current-system/sw/share"
     "/home/eric/.nix-profile/share"

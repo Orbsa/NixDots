@@ -71,6 +71,7 @@
     element-desktop
     spacedrive
     plex-mpv-shim
+    nemo
 
 
     hypridle

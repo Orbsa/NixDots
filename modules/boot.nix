@@ -25,5 +25,20 @@
     };
   };
 
+  systemd.tmpfiles.rules = [
+    "L /var/lib/sbctl    - - - - /persist/var/lib/sbctl"
+    "d /persist/var/log/journal 2755 root systemd-journal -"
+    "L /var/log/journal  - - - - /persist/var/log/journal"
+  ];
+
+  services.journald.extraConfig = ''
+    Storage=persistent
+    SystemMaxFiles=10
+    SystemMaxUse=500M
+    MaxFileSec=1week
+  '';
+
+  systemd.settings.Manager.DefaultTimeoutStopSec = "15s";
+
   environment.systemPackages = [ pkgs.sbctl ];
 }

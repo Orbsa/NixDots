@@ -94,13 +94,13 @@ in
   fileSystems."/mnt/sGames" = {
     device = "/dev/disk/by-uuid/1573eb3f-db14-49c8-ad91-6cb055c76865";
     fsType = "btrfs";
-    options = [ "rw" "nofail" "defaults" "x-systemd.device-timeout=1" ];
+    options = [ "rw" "nofail" "defaults" "x-systemd.device-timeout=10" ];
   };
 
   fileSystems."/mnt/sharedGames" = {
     device = "/dev/disk/by-uuid/8413daac-493c-4872-9ea0-2377465982a3";
     fsType = "btrfs";
-    options = [ "rw" "nofail" "defaults" "x-systemd.device-timeout=1" ];
+    options = [ "rw" "nofail" "defaults" "x-systemd.device-timeout=10" ];
   };
 
   fileSystems."/mnt/nixGames" = {
@@ -118,13 +118,13 @@ in
   fileSystems."/mnt/C" = {
     device = "/dev/disk/by-uuid/1CA2D086A2D065B4";
     fsType = "ntfs-3g";
-    options = [ "nofail" "noauto" "x-systemd.device-timeout=1" ];
+    options = [ "nofail" "noauto" "x-systemd.device-timeout=10" ];
   };
 
   fileSystems."/mnt/games2" = {
     device = "/dev/disk/by-uuid/54BE5F16BE5EEFCA";
     fsType = "ntfs-3g";
-    options = [ "nofail" "noauto" "x-systemd.device-timeout=1" ];
+    options = [ "nofail" "noauto" "x-systemd.device-timeout=10" ];
   };
 
   systemd.services = lib.listToAttrs (map (drive: {
@@ -139,6 +139,7 @@ in
         Type = "oneshot";
         RemainAfterExit = true;
         ExecStart = pkgs.writeShellScript "ntfs-mount-${drive.name}" ''
+          ${pkgs.coreutils}/bin/mkdir -p ${drive.mountPoint}
           if ! ${pkgs.util-linux}/bin/mount ${drive.mountPoint} 2>/dev/null; then
             ${pkgs.ntfs3g}/bin/ntfsfix -d /dev/disk/by-uuid/${drive.uuid}
             ${pkgs.util-linux}/bin/mount ${drive.mountPoint}

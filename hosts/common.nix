@@ -62,6 +62,8 @@
   fonts.packages = with pkgs; [
     plemoljp-nf
     google-fonts
+    nerd-fonts.blex-mono
+    ibm-plex
     (callPackage ../pkgs/custom-fonts.nix { })
   ];
 
@@ -84,6 +86,7 @@
     openssh.enable = true;
     blueman.enable = true;
     flatpak.enable = true;
+    geoclue2.enable = true;
     #sunshine = {
       #enable = true;
       #autoStart = true;
