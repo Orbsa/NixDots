@@ -23,14 +23,14 @@
     };
 
     font = {
-      name = "Google Sans Flex Medium";
+      name = "Inter Medium";
       size = 11;
     };
   };
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      font-name = "Google Sans Flex Medium 11";
+      font-name = "Inter Medium 11";
       color-scheme = "prefer-dark";
       icon-theme = "Papirus-Dark";
       gtk-theme = "adw-gtk3-dark";

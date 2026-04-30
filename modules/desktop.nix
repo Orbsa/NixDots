@@ -95,8 +95,7 @@
     rustdesk
     slurp
     stirling-pdf
-    pkgs-stable.teamspeak_client
-    #teamspeak3 # Will this ever work?
+    pkgs-stable.teamspeak3
     #lxqt.pcmanfm-qt
     pcmanfm
     thunderbird

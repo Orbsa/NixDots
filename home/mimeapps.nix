@@ -70,8 +70,9 @@ in {
       "x-scheme-handler/tidal" = [ "tidal-hifi.desktop" ];
 
       # Files
-      "inode/directory" = [ "Thunar.desktop" ];
-      "application/x-gnome-saved-search" = [ "Thunar.desktop" ];
+      "inode/directory" = [ "nemo.desktop" ];
+      "application/x-gnome-saved-search" = [ "nemo.desktop" ];
+      "x-scheme-handler/file" = [ "nemo.desktop" ];
 
       # Other
       "x-scheme-handler/beatsaver" = [ "BeatSaberModManager-url-beatsaver.desktop" ];

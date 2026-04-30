@@ -48,8 +48,8 @@
     musnix = { url = "github:musnix/musnix"; };
 
     nix-gaming = {
-      url = "github:torgeir/nix-gaming";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      url = "github:fufexan/nix-gaming";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     darwin = {
@@ -84,6 +84,7 @@
       pkgs-stable-linux = import inputs.nixpkgs-stable {
         system = linuxSystem;
         config.allowUnfree = true;
+        config.permittedInsecurePackages = [ "qtwebengine-5.15.19" ];
       };
       pkgs-unstable-linux = import inputs.nixpkgs {
         system = linuxSystem;
