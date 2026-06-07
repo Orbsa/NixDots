@@ -64,6 +64,7 @@
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     open = false;                    # Pascal (GP104) — proprietary only
     modesetting.enable = true;
     powerManagement.enable = true;   # nvidia-persistenced for headless
