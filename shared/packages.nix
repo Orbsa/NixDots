@@ -11,8 +11,6 @@
     pinentry-curses
     git
     gitui
-    jujutsu
-    jjui
     minio-client
     gh
 
