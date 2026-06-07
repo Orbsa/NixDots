@@ -35,6 +35,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    impermanence = {
+      url = "github:nix-community/impermanence";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     proto-control = {
       url = "github:Orbsa/Proto-Control";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -140,6 +149,14 @@
               };
             };
           }
+        ];
+      };
+
+      nixosConfigurations.plix = nixpkgs.lib.nixosSystem {
+        system = linuxSystem;
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/plix.nix
         ];
       };
 
