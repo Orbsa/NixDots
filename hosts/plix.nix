@@ -68,13 +68,17 @@
   environment.systemPackages = with pkgs; [ nvitop ];
 
   # ── Users ─────────────────────────────────────────────────────────
-  users.mutableUsers = true;
-  users.users.root.initialPassword = "changeme";   # TODO
+  users.mutableUsers = false;
+
+  users.users.root = {
+    hashedPassword = "!";   # locked — admin has sudo NOPASSWD
+  };
 
   users.users.admin = {
     isNormalUser = true;
+    uid = 1000;
     extraGroups = [ "wheel" "video" ];
-    initialPassword = "changeme";                  # TODO
+    hashedPassword = "$y$j9T$Injo.Q6tap4ELltI5Wm/01$d6MlCpifVK/TOSsLd1pJrqYNOEbOnNgbie8uSPk9yhA";
     openssh.authorizedKeys.keys = [
       # TODO: add your SSH public key
     ];
@@ -84,20 +88,21 @@
     { users = [ "admin" ]; commands = [ { command = "ALL"; options = [ "NOPASSWD" ]; } ]; }
   ];
 
-  # Service users for impermanence chown ordering.
+  # Service users — explicit UIDs for impermanence stability.
   users.users.plex = {
     isSystemUser = true;
+    uid = 900;
     group = "plex";
-    extraGroups = [ "video" ];   # GPU access for HW transcoding
+    extraGroups = [ "video" ];
   };
-  users.groups.plex = {};
+  users.groups.plex = { gid = 900; };
 
   users.users.tautulli = {
     isSystemUser = true;
+    uid = 901;
     group = "tautulli";
   };
-  users.groups.tautulli = {};
-
+  users.groups.tautulli = { gid = 901; };
   # ── SSH ───────────────────────────────────────────────────────────
   # openssh is enabled by headless; add stricter settings.
   services.openssh.settings = {
