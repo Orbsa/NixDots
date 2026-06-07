@@ -101,11 +101,8 @@
   };
   users.groups.plex = {};
 
-  users.users.tautulli = {
-    isSystemUser = true;
-    group = "tautulli";
-  };
-  users.groups.tautulli = {};
+  # Note: services.tautulli creates its own plexpy user; the tautulli
+  # user below was unused and is replaced by the module's plexpy user.
   # ── SSH ───────────────────────────────────────────────────────────
   # openssh is enabled by headless; add stricter settings.
   services.openssh.settings = {
@@ -189,8 +186,8 @@
       }
       {
         directory = "/var/lib/plexpy";
-        user = "tautulli";
-        group = "tautulli";
+        user = "plexpy";
+        group = "nogroup";
         mode = "0700";
       }
       { directory = "/var/lib/nixos"; mode = "0755"; }
