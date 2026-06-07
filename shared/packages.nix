@@ -68,5 +68,13 @@
 
     # Other
     parallel
+
+    # Essential CLI
+    python3
+    home-manager
+    busybox
+    procps
+    btrfs-progs
+    smartmontools
   ];
 }

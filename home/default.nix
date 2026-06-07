@@ -2,13 +2,9 @@
 
 let
   audioEnabled = osConfig.services.pipewire.enable or false;
-  #hypr = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system};
 in {
   imports = [
-    ./common.nix
-    ./shell.nix
-    ./neovim.nix
-    ./tmux.nix
+    ./headless.nix
     ./gtk.nix
     ./media.nix
     ./printing.nix
@@ -26,9 +22,6 @@ in {
       eZ = "cd ~/.config/nix; nvim home.nix";
       Ze = "sudo nixos-rebuild --flake /home/eric/.config/nix/ switch";
     };
-    packages = with pkgs; [
-      nil
-    ];
   };
 
   xdg = {
@@ -46,16 +39,6 @@ in {
     };
   };
 
-  services = {
-    dunst.enable = true;
-    kdeconnect.enable = true;
-    gpg-agent = {
-      enable = true;
-      defaultCacheTtl = 86400;
-      maxCacheTtl = 86400;
-      enableSshSupport = false;
-      pinentry.package = pkgs.pinentry-curses;
-    };
-    ssh-agent.enable = true;
-  };
+  services.dunst.enable = true;
+  services.kdeconnect.enable = true;
 }

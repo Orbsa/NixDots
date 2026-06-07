@@ -95,6 +95,10 @@
         config.allowUnfree = true;
       };
     in {
+      nixosModules.headless = ./modules/headless.nix;
+
+      homeModules.headless = ./home/headless.nix;
+
       nixosConfigurations.enix = nixpkgs.lib.nixosSystem {
         system = linuxSystem;
         specialArgs = { inherit inputs; pkgs-stable = pkgs-stable-linux; };

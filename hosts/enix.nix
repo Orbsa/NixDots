@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -11,6 +11,14 @@
     inputs.nelko.nixosModules.default
     #../modules/virtualisation.nix
     #../modules/vfio.nix
+  ];
+
+  # Hardware-specific packages for this host
+  environment.systemPackages = with pkgs; [
+    android-tools
+    lm_sensors
+    coolercontrol.coolercontrold
+    coolercontrol.coolercontrol-gui
   ];
 
   services.nelko-pl70e = {

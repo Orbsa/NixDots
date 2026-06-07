@@ -90,8 +90,6 @@
     pkgs-stable.plex-mpv-shim
     nemo
     ffmpegthumbnailer
-
-
     hypridle
     hyprland-qtutils
     neowall

@@ -93,21 +93,6 @@
     #};
   };
 
-  # Linux-specific packages (shared packages imported from ../shared/packages.nix)
-  environment.systemPackages = with pkgs; [
-    python3
-    home-manager
-    busybox
-    procps
-
-    # Hardware/Linux-specific
-    android-tools
-    lm_sensors
-    coolercontrol.coolercontrold
-    coolercontrol.coolercontrol-gui
-    smartmontools
-    btrfs-progs
-  ];
 
   system.stateVersion = "24.05";
 }

@@ -2,14 +2,10 @@
 
 {
   imports = [
-    ./common.nix
-    ./shell.nix
-    ./neovim.nix
-    ./tmux.nix
+    ./headless.nix
     ./aerospace.nix
     ./borders.nix
   ];
-
   home = {
     username = "ebell";
     homeDirectory = "/Users/ebell";
