@@ -45,7 +45,7 @@
   networking.defaultGateway = "10.0.0.1";
   networking.nameservers = [ "9.9.9.9" "1.1.1.1" ];
   networking.interfaces.ens18.ipv4.addresses = [{
-    address = "10.0.0.8";
+    address = "10.0.0.7";
     prefixLength = 23;
   }];
   networking.firewall = {

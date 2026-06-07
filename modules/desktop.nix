@@ -1,7 +1,7 @@
 { inputs, pkgs, pkgs-stable, ... }:
 
 {
-  imports = [ ./quickshell.nix ];
+  imports = [ ];#./quickshell.nix ];
   xdg.portal.enable = true;
 
   programs = {
@@ -100,7 +100,6 @@
     bitwarden-cli
     libnotify
     librewolf
-    chromium
     papirus-folders
     pipewire.jack
     playerctl
