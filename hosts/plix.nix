@@ -60,6 +60,7 @@
   hardware.graphics.enable = true;
 
   hardware.nvidia = {
+    enabled = true;
     open = false;                    # Pascal (GP104) — proprietary only
     modesetting.enable = true;
     powerManagement.enable = true;   # nvidia-persistenced for headless
