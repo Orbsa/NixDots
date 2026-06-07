@@ -55,8 +55,8 @@ in {
         "dmmulroy/ts-error-translator.nvim" true)
       (fromGitHub "d53f34f42d344e69303361064d4bcb46811f7fe6" "main"
         "xero/evangelion.nvim" true)
-      (fromGitHub "e7d495319f2a04df96402057a6992ea970f8914d" "master"
-        "isak102/telescope-git-file-history.nvim" true)
+      # (fromGitHub "e7d495319f2a04df96402057a6992ea970f8914d" "master"
+        # "isak102/telescope-git-file-history.nvim" true)
       blink-cmp
       blink-cmp-conventional-commits
       blink-cmp-git

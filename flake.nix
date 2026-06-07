@@ -109,6 +109,7 @@
               extraSpecialArgs = {
                 inherit inputs;
                 pkgs-unstable = pkgs-unstable-linux;
+                pkgs-stable = pkgs-stable-linux;
               };
             };
           }
@@ -131,6 +132,7 @@
               extraSpecialArgs = {
                 inherit inputs;
                 pkgs-unstable = pkgs-unstable-linux;
+                pkgs-stable = pkgs-stable-linux;
               };
             };
           }

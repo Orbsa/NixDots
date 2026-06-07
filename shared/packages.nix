@@ -4,6 +4,7 @@
 {
   environment.systemPackages = with pkgs; [
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.ccusage
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.omp
     coreutils
     # Version control
     gnupg

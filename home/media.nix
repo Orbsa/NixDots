@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-stable, ... }:
 
 {
   services = {
@@ -14,6 +14,7 @@
     };
     plex-mpv-shim = {
       enable = true;
+      package = pkgs-stable.plex-mpv-shim;
       settings = { mpv_ext = true; };
     };
     awww.enable = true;

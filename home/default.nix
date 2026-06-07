@@ -53,8 +53,9 @@ in {
       enable = true;
       defaultCacheTtl = 86400;
       maxCacheTtl = 86400;
-      enableSshSupport = true;
+      enableSshSupport = false;
       pinentry.package = pkgs.pinentry-curses;
     };
+    ssh-agent.enable = true;
   };
 }

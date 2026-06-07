@@ -88,6 +88,7 @@ in
     ILLOGICAL_IMPULSE_VIRTUAL_ENV = "${fakeVenv}";
     ILLOGICAL_IMPULSE_DOTFILES_SOURCE = "$HOME/.config";
     qsConfig = "$HOME/.config/quickshell/ii";
+    CALIBRE_USE_DARK_PALETTE = "1";
   };
 
   environment.systemPackages = with pkgs; [

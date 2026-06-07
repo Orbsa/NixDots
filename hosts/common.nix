@@ -52,6 +52,9 @@
           mpv = pyPrev.mpv.overridePythonAttrs (_: { doCheck = false; });
         };
       };
+      vimPlugins = prev.vimPlugins.extend (_: vprev: {
+        neotest = vprev.neotest.overrideAttrs (_: { doCheck = false; });
+      });
     })
   ];
 
@@ -69,10 +72,6 @@
   programs = {
     dconf.enable = true;
     mtr.enable = true;
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
     coolercontrol.enable = true;
   };
 
@@ -97,7 +96,6 @@
   # Linux-specific packages (shared packages imported from ../shared/packages.nix)
   environment.systemPackages = with pkgs; [
     python3
-    python2
     home-manager
     busybox
     procps

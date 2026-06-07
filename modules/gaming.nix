@@ -35,8 +35,8 @@
   };
 
   networking.firewall = let
-    sharedTCPPorts = [ 3074 25565 ];
-    sharedUDPPorts = [ 3074 3478 25565 27036 ];
+    sharedTCPPorts = [ 2626 3074 25565 80 ];
+    sharedUDPPorts = [ 2626 3074 3478 25565 27036 80];
     sharedRanges = [
       { from = 4379; to = 4380; }
       { from = 27000; to = 27031; }
@@ -57,13 +57,13 @@
           export VK_ICD_FILENAMES=${config.hardware.nvidia.package}/share/vulkan/icd.d/nvidia_icd.json:${config.hardware.nvidia.package.lib32}/share/vulkan/icd.d/nvidia_icd32.json:$VK_ICD_FILENAMES
         '';
       })
+      parsec-bin
       dxvk.out
       dxvk
       dxvk_2
       lutris
       steamtinkerlaunch
-      (pkgs.callPackage ../pkgs/r2modman.nix { })
-      # r2modman
+      r2modman
       winetricks
       vulkan-loader
       vulkan-validation-layers

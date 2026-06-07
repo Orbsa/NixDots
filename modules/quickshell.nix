@@ -20,7 +20,7 @@
 
   environment.systemPackages = with pkgs; [
     #Quickshell stuffs
-    easyeffects
+    #easyeffects
     lxqt.pavucontrol-qt
     libdbusmenu-gtk3
     geoclue2
