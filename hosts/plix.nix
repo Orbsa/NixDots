@@ -59,8 +59,11 @@
   # ── NVIDIA Quadro P4000 (PCIe passthrough) ──────────────────────
   hardware.graphics.enable = true;
 
+  # The nvidia module enables itself only when "nvidia" is in
+  # services.xserver.videoDrivers — even for headless servers.
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   hardware.nvidia = {
-    enabled = true;
     open = false;                    # Pascal (GP104) — proprietary only
     modesetting.enable = true;
     powerManagement.enable = true;   # nvidia-persistenced for headless
@@ -68,8 +71,6 @@
   };
 
   environment.systemPackages = with pkgs; [ nvitop ];
-
-
   # ── Secrets (agenix) ────────────────────────────────────────────
   age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets.admin-password = {
