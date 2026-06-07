@@ -15,6 +15,7 @@
 
   # Hardware-specific packages for this host
   environment.systemPackages = with pkgs; [
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.omp
     android-tools
     lm_sensors
     coolercontrol.coolercontrold
