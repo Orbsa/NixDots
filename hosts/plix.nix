@@ -88,20 +88,20 @@
     { users = [ "admin" ]; commands = [ { command = "ALL"; options = [ "NOPASSWD" ]; } ]; }
   ];
 
-  # Service users — explicit GIDs for impermanence stability.
-  # UIDs are managed by their respective service modules.
+  # Service users — declared so impermanence creates persistent dirs
+  # with correct ownership before services start.
   users.users.plex = {
     isSystemUser = true;
     group = "plex";
     extraGroups = [ "video" ];
   };
-  users.groups.plex = { gid = 900; };
+  users.groups.plex = {};
 
   users.users.tautulli = {
     isSystemUser = true;
     group = "tautulli";
   };
-  users.groups.tautulli = { gid = 901; };
+  users.groups.tautulli = {};
   # ── SSH ───────────────────────────────────────────────────────────
   # openssh is enabled by headless; add stricter settings.
   services.openssh.settings = {
