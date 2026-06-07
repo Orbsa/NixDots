@@ -179,7 +179,7 @@
     hideMounts = true;
     directories = [
       {
-        directory = "/var/lib/plexmediaserver";
+        directory = "/var/lib/plex";
         user = "plex";
         group = "plex";
         mode = "0755";
