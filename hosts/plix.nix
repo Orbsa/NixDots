@@ -65,7 +65,7 @@
     powerManagement.finegrained = false;
   };
 
-  environment.systemPackages = with pkgs; [ nvtop ];
+  environment.systemPackages = with pkgs; [ nvitop ];
 
   # ── Users ─────────────────────────────────────────────────────────
   users.mutableUsers = true;
