@@ -88,10 +88,10 @@
     { users = [ "admin" ]; commands = [ { command = "ALL"; options = [ "NOPASSWD" ]; } ]; }
   ];
 
-  # Service users — explicit UIDs for impermanence stability.
+  # Service users — explicit GIDs for impermanence stability.
+  # UIDs are managed by their respective service modules.
   users.users.plex = {
     isSystemUser = true;
-    uid = 900;
     group = "plex";
     extraGroups = [ "video" ];
   };
@@ -99,7 +99,6 @@
 
   users.users.tautulli = {
     isSystemUser = true;
-    uid = 901;
     group = "tautulli";
   };
   users.groups.tautulli = { gid = 901; };
