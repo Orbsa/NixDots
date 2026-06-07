@@ -2,11 +2,11 @@
 
 {
   imports = [
+    inputs.disko.nixosModules.disko
     inputs.impermanence.nixosModules.impermanence
     ../modules/headless.nix
     ./plix-disko.nix
   ];
-
   # Override headless defaults
   time.timeZone = "America/Chicago";
   system.stateVersion = "24.11";
