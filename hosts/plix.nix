@@ -56,7 +56,7 @@
   services.qemuGuest.enable = true;
 
   # ── NVIDIA Quadro P4000 (PCIe passthrough) ──────────────────────
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 
   hardware.nvidia = {
     open = false;                    # Pascal (GP104) — proprietary only
@@ -185,6 +185,7 @@
         group = "tautulli";
         mode = "0700";
       }
+      { directory = "/var/lib/nixos"; mode = "0755"; }
       "/var/log"
       "/etc/nixos"
       { directory = "/home/admin"; user = "admin"; group = "users"; mode = "0700"; }
