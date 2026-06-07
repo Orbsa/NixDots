@@ -8,8 +8,8 @@
     ./plix-disko.nix
   ];
   # Override headless defaults
-  time.timeZone = "America/Chicago";
-  system.stateVersion = "24.11";
+  time.timeZone = lib.mkForce "America/Chicago";
+  system.stateVersion = lib.mkForce "24.11";
 
   # ── Boot ──────────────────────────────────────────────────────────
   boot.initrd.systemd.enable = true;
