@@ -4,6 +4,7 @@
   imports = [
     inputs.disko.nixosModules.disko
     inputs.impermanence.nixosModules.impermanence
+    inputs.agenix.nixosModules.default
     ../modules/headless.nix
     ./plix-disko.nix
   ];
@@ -67,18 +68,21 @@
 
   environment.systemPackages = with pkgs; [ nvitop ];
 
+
+  # ── Secrets (agenix) ────────────────────────────────────────────
+  age.secrets.admin-password = {
+    file = ../secrets/admin-password.age;
+  };
+
   # ── Users ─────────────────────────────────────────────────────────
   users.mutableUsers = false;
-
-  users.users.root = {
-    hashedPassword = "!";   # locked — admin has sudo NOPASSWD
-  };
+  users.users.root.hashedPassword = "!";   # locked — admin has sudo NOPASSWD
 
   users.users.admin = {
     isNormalUser = true;
     uid = 1000;
     extraGroups = [ "wheel" "video" ];
-    hashedPassword = "$y$j9T$Injo.Q6tap4ELltI5Wm/01$d6MlCpifVK/TOSsLd1pJrqYNOEbOnNgbie8uSPk9yhA";
+    hashedPasswordFile = config.age.secrets.admin-password.path;
     openssh.authorizedKeys.keys = [
       # TODO: add your SSH public key
     ];

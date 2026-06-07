@@ -44,6 +44,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     proto-control = {
       url = "github:Orbsa/Proto-Control";
       inputs.nixpkgs.follows = "nixpkgs";

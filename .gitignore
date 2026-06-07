@@ -1,1 +1,6 @@
 pkgs/fonts/*
+# agenix secrets — age files are encrypted and should be committed
+# but private keys and runtime decryption directories should not
+secrets/*.txt
+secrets/*.key
+.agenix/
