@@ -70,6 +70,7 @@
 
 
   # ── Secrets (agenix) ────────────────────────────────────────────
+  age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets.admin-password = {
     file = ../secrets/admin-password.age;
   };
