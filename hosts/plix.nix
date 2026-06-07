@@ -56,10 +56,7 @@
   services.qemuGuest.enable = true;
 
   # ── NVIDIA Quadro P4000 (PCIe passthrough) ──────────────────────
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-  };
+  hardware.opengl.enable = true;
 
   hardware.nvidia = {
     open = false;                    # Pascal (GP104) — proprietary only
