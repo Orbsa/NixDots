@@ -40,7 +40,7 @@
       address = "10.0.0.1";
       interface = "enp4s0";
     };
-    nameservers = [ "10.0.0.1" ];
+    nameservers = [ "10.0.0.1" "1.1.1.1"];
   };
 
   home-manager = { users = { "eric" = import ../home; }; };

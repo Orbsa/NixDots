@@ -14,6 +14,9 @@
 
   nixpkgs.overlays = [
     (final: prev: {
+      discord = import ../pkgs/discord.nix { pkgs = prev; };
+    })
+    (final: prev: {
       openldap = prev.openldap.overrideAttrs (_: { doCheck = false; });
       python3 = prev.python3.override {
         packageOverrides = pyFinal: pyPrev: {
