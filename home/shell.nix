@@ -39,6 +39,18 @@
       if not contains /run/current-system/sw/share $XDG_DATA_DIRS
         set -gx XDG_DATA_DIRS /run/current-system/sw/share /home/eric/.nix-profile/share /etc/profiles/per-user/eric/share $XDG_DATA_DIRS
       end
+
+      # GPG agent / SSH — ensure pinentry-curses has a TTY
+      set -gx GPG_TTY (tty)
+      gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
+
+      # Unset SSH_ASKPASS so SSH uses the terminal for passphrase prompts
+      set -e SSH_ASKPASS
+
+      # Ensure SSH_AUTH_SOCK is correct (set-SSH_AUTH_SOCK.service handles this, but guard)
+      if not set -q SSH_AUTH_SOCK
+        set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+      end
     '';
     plugins = [
       {

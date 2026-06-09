@@ -172,6 +172,34 @@
     openFirewall = true;
   };
 
+  # Cap Plex's page cache at 64G via cgroup memory.high (soft limit).
+  # Plex has read 1.6TB from NFS and without limits Linux caches every
+  # byte — 380G+ on a 393G box. Actual process RSS is <1G; this just
+  # bounds the file cache so there's room for the transcode tmpfs.
+  systemd.services.plex.serviceConfig.MemoryHigh = "64G";
+
+  # ── Plex transcode tmpfs (ramdisk) ───────────────────────────────
+  # Sized for 40 streams × 100 Mbps × 60s buffer + 150% overhead ≈ 73G.
+  # 96G gives comfortable headroom. tmpfs only uses RAM for stored files
+  # — the quota is a cap, not a reservation. Empty dir costs nothing.
+  fileSystems."/var/lib/plex-transcode" = {
+    device = "tmpfs";
+    fsType = "tmpfs";
+    options = [
+      "size=96G"
+      "mode=1777"
+      "noatime"
+    ];
+  };
+
+  # Ensure the transcode dir exists with correct ownership.
+  systemd.tmpfiles.rules = [
+    "d /var/lib/plex-transcode 1777 plex plex - -"
+  ];
+
+  # Plex can write to /var/lib/plex-transcode because ProtectSystem=true
+  # only makes /usr, /boot, /etc read-only — /var remains writable.
+
   # ── Tautulli ──────────────────────────────────────────────────────
   services.tautulli = {
     enable = true;
