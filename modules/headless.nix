@@ -17,6 +17,11 @@
       discord = import ../pkgs/discord.nix { pkgs = prev; };
     })
     (final: prev: {
+      orca-slicer = prev.callPackage ../pkgs/orca-slicer/package.nix {
+        withNvidiaGLWorkaround = true;
+      };
+    })
+    (final: prev: {
       openldap = prev.openldap.overrideAttrs (_: { doCheck = false; });
       python3 = prev.python3.override {
         packageOverrides = pyFinal: pyPrev: {

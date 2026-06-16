@@ -28,11 +28,11 @@
       extraConfig = {
         pipewire."92-high-quality" = {
           "context.properties" = {
-            "default.clock.rate" = 192000;
+            "default.clock.rate" = 96000;
             "default.clock.allowed-rates" = [ 44100 48000 88200 96000 176400 192000 ];
-            "default.clock.quantum" = 256;
-            "default.clock.min-quantum" = 64;
-            "default.clock.max-quantum" = 2048;
+            "default.clock.quantum" = 512;
+            "default.clock.min-quantum" = 128;
+            "default.clock.max-quantum" = 4096;
             "default.audio.format" = "S32LE";
           };
         };
@@ -110,7 +110,6 @@
     rustdesk
     slurp
     stirling-pdf
-    pkgs-stable.teamspeak3
     #lxqt.pcmanfm-qt
     pcmanfm
     thunderbird

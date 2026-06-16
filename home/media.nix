@@ -19,4 +19,11 @@
     };
     awww.enable = true;
   };
+
+  systemd.user.services.plex-mpv-shim = {
+    Service = {
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
 }

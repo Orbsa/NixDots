@@ -19,9 +19,17 @@
   };
 
   # Clean root on Every boot. Erase your darlings
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r zpool/root@blank
-  '';
+  boot.initrd.systemd.services.rollback-root = {
+    description = "Rollback ZFS root to blank snapshot";
+    wantedBy = [ "initrd.target" ];
+    after = [ "zfs-import.target" ];
+    before = [ "sysroot.mount" ];
+    unitConfig.DefaultDependencies = false;
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${config.boot.zfs.package}/sbin/zfs rollback -r zpool/root@blank";
+    };
+  };
   # Multi-partition disk scheduler to none
   boot.kernelParams = [ "elevator=none" ];
 

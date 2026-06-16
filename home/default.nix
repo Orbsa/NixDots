@@ -12,6 +12,8 @@ in {
     ./mimeapps.nix
   ];
 
+  home.sessionVariables.TERM = "xterm-256color";
+
   home = {
     username = "eric";
     homeDirectory = "/home/eric";
