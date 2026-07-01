@@ -36,7 +36,6 @@
       "visual-studio-code"
       "zed"
       "linear-linear"
-      "spacedrive"
       "chatgpt"
     ];
     taps = [

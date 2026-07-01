@@ -129,6 +129,17 @@
     '';
   };
 
+  # ── Beszel Agent ──────────────────────────────────────────────────
+  services.beszel.agent = {
+    enable = true;
+    openFirewall = true;
+    environment = {
+      KEY = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2l2VPJakeA9vf5Ljsab0iPAOJbSR7w3Ji4qYvllB+1";
+      HUB_URL = "10.0.0.122";
+      TOKEN = "295ff-63d2a565a-3fd09-0a35f3054";
+    };
+  };
+
   # ── NFS mounts — media library (10.0.0.10) ──────────────────────
   fileSystems."/data" = {
     device = "10.0.0.10:/mnt/user/Media";

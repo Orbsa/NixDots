@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
+
 {
+  boot.zfs.forceImportRoot = false;
   boot = {
     loader = {
       efi = {

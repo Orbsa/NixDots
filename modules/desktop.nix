@@ -80,13 +80,14 @@
     ghostty
     gowall
     grim
+    teamspeak6-client
     normcap 
     wf-recorder
     hoppscotch
     httpie-desktop
     swayimg
+    obs-studio
     element-desktop
-    spacedrive
     pkgs-stable.plex-mpv-shim
     nemo
     ffmpegthumbnailer
@@ -99,7 +100,6 @@
     keepassxc
     bitwarden-cli
     libnotify
-    librewolf
     papirus-folders
     pipewire.jack
     playerctl
