@@ -149,7 +149,7 @@
       "/dev/nvidia-uvm rw"
       "/dev/nvidia-uvm-tools rw"
     ];
-    PrivateDevices = false;
+    PrivateDevices = lib.mkForce false;
   };
 
   # ── NFS mounts — media library (10.0.0.10) ──────────────────────
