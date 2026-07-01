@@ -140,14 +140,17 @@
     };
   };
 
-  # Allow beszel-agent to access NVIDIA GPU devices through PrivateDevices sandbox
-  systemd.services.beszel-agent.serviceConfig.DeviceAllow = [
-    "/dev/nvidiactl rw"
-    "/dev/nvidia0 rw"
-    "/dev/nvidia-modeset rw"
-    "/dev/nvidia-uvm rw"
-    "/dev/nvidia-uvm-tools rw"
-  ];
+  # Allow beszel-agent to access NVIDIA GPU devices
+  systemd.services.beszel-agent.serviceConfig = {
+    DeviceAllow = [
+      "/dev/nvidiactl rw"
+      "/dev/nvidia0 rw"
+      "/dev/nvidia-modeset rw"
+      "/dev/nvidia-uvm rw"
+      "/dev/nvidia-uvm-tools rw"
+    ];
+    PrivateDevices = false;
+  };
 
   # ── NFS mounts — media library (10.0.0.10) ──────────────────────
   fileSystems."/data" = {
