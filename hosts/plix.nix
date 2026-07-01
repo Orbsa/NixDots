@@ -140,6 +140,15 @@
     };
   };
 
+  # Allow beszel-agent to access NVIDIA GPU devices through PrivateDevices sandbox
+  systemd.services.beszel-agent.serviceConfig.DeviceAllow = [
+    "/dev/nvidiactl rw"
+    "/dev/nvidia0 rw"
+    "/dev/nvidia-modeset rw"
+    "/dev/nvidia-uvm rw"
+    "/dev/nvidia-uvm-tools rw"
+  ];
+
   # ── NFS mounts — media library (10.0.0.10) ──────────────────────
   fileSystems."/data" = {
     device = "10.0.0.10:/mnt/user/Media";
