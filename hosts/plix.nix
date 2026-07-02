@@ -6,6 +6,7 @@
     inputs.impermanence.nixosModules.impermanence
     inputs.agenix.nixosModules.default
     ../modules/headless.nix
+    ../modules/tailscale.nix
     ./plix-disko.nix
   ];
   # Override headless defaults
