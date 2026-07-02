@@ -1,3 +1,4 @@
+username:
 { config, pkgs, ... }:
 
 {
@@ -7,8 +8,8 @@
     ./borders.nix
   ];
   home = {
-    username = "ebell";
-    homeDirectory = "/Users/ebell";
+    username = username;
+    homeDirectory = "/Users/${username}";
     stateVersion = "23.11";
     shellAliases = {
       eZ = "nvim -c 'cd ~/nix-config/'";

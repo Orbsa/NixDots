@@ -230,7 +230,65 @@
                   import inputs.nixpkgs-zsh-fzf-tab { system = darwinSystem; };
                 pkgs-unstable = pkgs-unstable-darwin;
               };
-              users."ebell" = { ... }: { imports = [ ./home/mac.nix ]; };
+              users."ebell" = { ... }: { imports = [ (import ./home/mac.nix "ebell") ]; };
+            };
+          }
+        ];
+      };
+
+      darwinConfigurations."Nair" = inputs.darwin.lib.darwinSystem {
+        system = darwinSystem;
+        specialArgs = { inherit inputs; };
+        modules = [
+          inputs.nix-index-database.darwinModules.nix-index
+          ./hosts/nair.nix
+          ({ pkgs, ... }: {
+            nixpkgs.config.allowUnfree = true;
+
+            system = {
+              stateVersion = 4;
+              configurationRevision = self.rev or self.dirtyRev or null;
+            };
+
+            users.users."eric" = {
+              home = "/Users/eric";
+              shell = pkgs.fish;
+            };
+
+            networking = {
+              computerName = "Nair";
+              hostName = "Nair";
+              localHostName = "Nair";
+            };
+
+            nix = {
+              package = pkgs.nixVersions.stable;
+              gc.automatic = false;
+              settings = {
+                trusted-users = [ "root" "eric" ];
+                extra-platforms = [ "x86_64-linux" "aarch64-linux" ];
+                allowed-users = [ "eric" ];
+                experimental-features = [ "nix-command" "flakes" ];
+                warn-dirty = false;
+                auto-optimise-store = false;
+                substituters = ["https://hyprland.cachix.org" "https://nix-community.cachix.org"];
+                trusted-substituters = ["https://hyprland.cachix.org"];
+                trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+              };
+            };
+          })
+          inputs.home-manager-darwin.darwinModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit inputs;
+                pkgs-zsh-fzf-tab =
+                  import inputs.nixpkgs-zsh-fzf-tab { system = darwinSystem; };
+                pkgs-unstable = pkgs-unstable-darwin;
+              };
+              users."eric" = { ... }: { imports = [ (import ./home/mac.nix "eric") ]; };
             };
           }
         ];

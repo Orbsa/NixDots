@@ -1,8 +1,8 @@
 { pkgs, ... }: {
   imports = [
     ./common.nix
-    ./homebrew.nix
+    ./homebrew-nair.nix
   ];
 
-  system.primaryUser = "ebell";
+  system.primaryUser = "eric";
 }
