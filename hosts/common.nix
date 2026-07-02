@@ -10,6 +10,8 @@
     ../modules/media.nix
     ../modules/networking.nix
     ../modules/users.nix
+    inputs.agenix.nixosModules.default
+    ../modules/tailscale.nix
   ];
 
   nix.nixPath = [

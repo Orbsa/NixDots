@@ -69,6 +69,7 @@
     # Essential CLI
     python3
     home-manager
+    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     busybox
     procps
     btrfs-progs
