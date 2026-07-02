@@ -142,14 +142,8 @@
 
   # Allow beszel-agent to access NVIDIA GPU devices
   systemd.services.beszel-agent.serviceConfig = {
-    DeviceAllow = [
-      "/dev/nvidiactl rw"
-      "/dev/nvidia0 rw"
-      "/dev/nvidia-modeset rw"
-      "/dev/nvidia-uvm rw"
-      "/dev/nvidia-uvm-tools rw"
-    ];
     PrivateDevices = lib.mkForce false;
+    SupplementaryGroups = lib.mkAfter [ "video" ];
   };
 
   # ── NFS mounts — media library (10.0.0.10) ──────────────────────
