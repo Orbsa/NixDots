@@ -5,6 +5,7 @@
   imports = [
     ../shared/packages.nix
     ../darwin/nair.nix
+    ../modules/tailscale-darwin.nix
   ];
 
   # Darwin-specific packages (dev SDKs, LSPs, etc.)
