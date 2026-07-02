@@ -70,9 +70,8 @@
     python3
     home-manager
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
-    busybox
     procps
-    btrfs-progs
-    smartmontools
+    #btrfs-progs
+    #smartmontools
   ];
 }

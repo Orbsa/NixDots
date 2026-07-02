@@ -7,8 +7,9 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = [ "borders" "terminal-notifier" "jiratui" "gimme-aws-creds" ];
+    brews = [ "terminal-notifier"];
     casks = [
+      "proxy-audio-device"
       "claude"
       "json-viewer"
       "mongodb-compass"
@@ -24,7 +25,6 @@
       "meetingbar"
       "karabiner-elements"
       "eurkey"
-      "nikitabobko/tap/aerospace"
       "tidal"
       "shottr"
       "the-unarchiver"
@@ -35,7 +35,7 @@
       "obsidian"
       "visual-studio-code"
       "zed"
-      "linear-linear"
+      "linear"
       "chatgpt"
     ];
     taps = [

@@ -7,6 +7,12 @@
     ../darwin
   ];
 
+  nix.settings = {
+    extra-trusted-users = [ "ebell" ];
+    extra-experimental-features = "configurable-impure-env";
+  };
+  system.primaryUser = "ebell";
+
   # Darwin-specific packages (dev SDKs, LSPs, etc.)
   environment.systemPackages = with pkgs; [
     claude-code

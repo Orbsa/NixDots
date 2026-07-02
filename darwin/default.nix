@@ -3,6 +3,4 @@
     ./common.nix
     ./homebrew.nix
   ];
-
-  system.primaryUser = "ebell";
 }

@@ -15,7 +15,7 @@
       "obsidian"
       "visual-studio-code"
       "zed"
-      "linear-linear"
+      "linear"
       "chatgpt"
       "shottr"
       "the-unarchiver"
