@@ -40,7 +40,7 @@
 
   programs.fish.enable = true;
 
-  time.timeZone = "America/Denver";
+  time.timeZone = lib.mkDefault "America/Denver";
 
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
@@ -54,5 +54,5 @@
   services.locate.enable = true;
 
 
-  system.stateVersion = "24.05";
+  system.stateVersion = lib.mkDefault "24.05";
 }

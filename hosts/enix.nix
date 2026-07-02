@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, ... }:
+{ inputs, lib, pkgs, config, ... }:
 {
   imports = [
     ./common.nix
@@ -8,6 +8,8 @@
     ../modules/nvidia.nix
     ../modules/audio.nix
     inputs.nelko.nixosModules.default
+    ../modules/headless.nix
+    ../modules/beszel.nix
     #../modules/virtualisation.nix
     #../modules/vfio.nix
   ];
@@ -88,27 +90,10 @@
   };
 
   home-manager = { users = { "eric" = import ../home; }; };
-
   # ── Beszel Agent ──────────────────────────────────────────────────
-  services.beszel.agent = {
+  my.beszel = {
     enable = true;
-    openFirewall = true;
-    environment = {
-      KEY = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2l2VPJakeA9vf5Ljsab0iPAOJbSR7w3Ji4qYvllB+1";
-      HUB_URL = "10.0.0.122";
-      TOKEN = "295ff-63d2a565a-3fd09-0a35f3054";
-    };
-  };
-
-  # Allow beszel-agent to access NVIDIA GPU devices
-  systemd.services.beszel-agent.serviceConfig = {
-    DeviceAllow = [
-      "/dev/nvidiactl rw"
-      "/dev/nvidia0 rw"
-      "/dev/nvidia-modeset rw"
-      "/dev/nvidia-uvm rw"
-      "/dev/nvidia-uvm-tools rw"
-    ];
-    PrivateDevices = lib.mkForce false;
+    enableGpu = true;
+    key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2l2VPJakeA9vf5Ljsab0iPAOJbSR7w3Ji4qYvllB+1";
   };
 }

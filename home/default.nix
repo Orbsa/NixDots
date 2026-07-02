@@ -12,7 +12,7 @@ in {
     ./mimeapps.nix
   ];
 
-  home.sessionVariables.TERM = "xterm-256color";
+  home.sessionVariables.TERM = "xterm";
 
   home = {
     username = "eric";

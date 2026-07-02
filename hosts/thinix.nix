@@ -1,7 +1,7 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  imports = [ ./common.nix ./thinix-hardware.nix ];
+  imports = [ ./common.nix ./thinix-hardware.nix ../modules/headless.nix ];
 
   networking = {
     hostName = "thinix";

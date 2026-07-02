@@ -88,6 +88,11 @@
       url = "github:Orbsa/Nelko-PL70e-CUPS";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    vix-status-site = {
+      url = "github:Orbsa/vix-status-site/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, lanzaboote, ... }@inputs:
@@ -162,6 +167,14 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/plix.nix
+        ];
+      };
+
+      nixosConfigurations.vix = nixpkgs.lib.nixosSystem {
+        system = linuxSystem;
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/vix.nix
         ];
       };
 

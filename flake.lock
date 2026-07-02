@@ -1366,6 +1366,7 @@
         "proto-control": "proto-control",
         "quickshell": "quickshell",
         "rind": "rind",
+        "vix-status-site": "vix-status-site",
         "zen-browser": "zen-browser"
       }
     },
@@ -1532,6 +1533,27 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "vix-status-site": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782968413,
+        "narHash": "sha256-PYcvhGksomOVaUCfcoBGiAzDIqQ/kOMHiP5oBOEaAxA=",
+        "owner": "Orbsa",
+        "repo": "vix-status-site",
+        "rev": "a666a8d91452d2c6e3191fd0aa367c9f7335236b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Orbsa",
+        "ref": "master",
+        "repo": "vix-status-site",
         "type": "github"
       }
     },
