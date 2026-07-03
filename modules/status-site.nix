@@ -60,17 +60,20 @@ in {
 
       path = [ pkgs.iputils pkgs.bun pkgs.curl pkgs.gnutar pkgs.gzip ];
       preStart = ''
-        set -e
       '' + lib.optionalString (cfg.maxmindLicenseKeyFile != null) ''
         # ── GeoLite2 database ──────────────────────────────────────
         DB="%S/status-site/GeoLite2-City.mmdb"
         if [ ! -f "$DB" ] || [ "$(find "$DB" -mtime +7 2>/dev/null)" ]; then
           echo "Downloading GeoLite2-City database…"
-          curl -sSfL "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=$(cat $CREDENTIALS_DIRECTORY/maxmind-license-key)&suffix=tar.gz" \
-            | tar -xz --strip-components=1 -C "%S/status-site" --wildcards '*.mmdb'
-          echo "GeoLite2 database updated."
+          if curl -sSfL "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=$(cat $CREDENTIALS_DIRECTORY/maxmind-license-key)&suffix=tar.gz" \
+            | tar -xz --strip-components=1 -C "%S/status-site" --wildcards '*.mmdb'; then
+            echo "GeoLite2 database updated."
+          else
+            echo "WARNING: GeoLite2 download failed — geo-IP lookups will be unavailable"
+          fi
         fi
       '' + ''
+        set -e
         # ── App source ─────────────────────────────────────────────
         if ! cmp -s "${cfg.package}/package.json" "${appDir}/package.json" 2>/dev/null; then
           rm -rf "${appDir}"/*
@@ -84,7 +87,11 @@ in {
         fi
       '';
 
+
       serviceConfig = {
+        ExecStartPre = lib.mkBefore [
+          "+${pkgs.coreutils}/bin/chown -R status-site:status-site ${appDir}"
+        ];
         Type = "simple";
         User = "status-site";
         Group = "status-site";

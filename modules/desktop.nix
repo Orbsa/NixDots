@@ -51,6 +51,7 @@
     ghostty
     gowall
     grim
+    tonearm
     teamspeak6-client
     normcap 
     wf-recorder
