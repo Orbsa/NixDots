@@ -54,9 +54,6 @@
       discord = import ../pkgs/discord.nix { pkgs = prev; };
     })
     (final: prev: {
-      coolerdash = prev.callPackage ../pkgs/coolerdash.nix { };
-    })
-    (final: prev: {
       orca-slicer = prev.callPackage ../pkgs/orca-slicer/package.nix {
         withNvidiaGLWorkaround = true;
       };

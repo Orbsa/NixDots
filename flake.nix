@@ -144,8 +144,6 @@
         specialArgs = { inherit inputs; pkgs-stable = pkgs-stable-linux; };
         modules = [
           ./hosts/thinix.nix
-          inputs.musnix.nixosModules.musnix
-          { musnix.enable = true; }
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager = {

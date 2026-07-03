@@ -1,12 +1,14 @@
-{ inputs, lib, pkgs, config, ... }:
+{ inputs, pkgs, config, ... }:
+
 {
+  _module.args.username = "eric";
+
   imports = [
     ./common.nix
     ./enix-hardware.nix
     ../modules/gaming.nix
     ../modules/runelite.nix
     ../modules/nvidia.nix
-    ../modules/audio.nix
     inputs.nelko.nixosModules.default
     ../modules/headless.nix
     ../modules/beszel.nix
@@ -21,53 +23,19 @@
     lm_sensors
     coolercontrol.coolercontrold
     coolercontrol.coolercontrol-gui
-    coolerdash
   ];
 
-  # Set up CoolerDash plugin directory at runtime so CoolerControl discovers it.
-  # Immutable files are symlinked from the nix store; config/credentials are
-  # copied from defaults on first boot and preserved thereafter.
-  systemd.tmpfiles.rules = let
-    plug = "${pkgs.coolerdash}/share/coolerdash";
-    dest = "/var/lib/coolercontrol/plugins/coolerdash";
-  in [
-    "d ${dest} 0755 root root -"
-    "L+ ${dest}/manifest.toml  - - - - ${plug}/manifest.toml"
-    "L+ ${dest}/ui            - - - - ${plug}/ui"
-    "L+ ${dest}/shutdown.png  - - - - ${plug}/shutdown.png"
-    "L+ ${dest}/coolerdash.png - - - - ${plug}/coolerdash.png"
-    "L+ ${dest}/VERSION       - - - - ${plug}/VERSION"
-    "L+ ${dest}/README.md     - - - - ${plug}/README.md"
-    "L+ ${dest}/CHANGELOG.md  - - - - ${plug}/CHANGELOG.md"
-    "C  ${dest}/config.json    0600 root root - ${plug}/config.json.default"
-    "C  ${dest}/credentials.json 0600 root root - ${plug}/credentials.json.default"
+
+  # Persist critical runtime state across ZFS rollback
+  systemd.tmpfiles.rules = [
+    "d /persist/var/lib/tailscale 0755 root root -"
+    "L /var/lib/tailscale - - - - /persist/var/lib/tailscale"
   ];
 
-  # CoolerControl can't manage plugin services on NixOS — it tries to
-  # write unit files to /etc/systemd/system which is a read-only nix
-  # store symlink. Disable its built-in service manager and define the
-  # plugin unit ourselves.
+  # CoolerControl tries to manage plugin services by writing unit files to
+  # /etc/systemd/system (read-only on NixOS). Disable its service manager.
   systemd.services.coolercontrold.serviceConfig.Environment =
     [ "CC_SERVICE_MANAGER=off" ];
-
-  systemd.services.cc-plugin-coolerdash = {
-    description = "CoolerControl Plugin coolerdash";
-    after = [ "coolercontrold.service" ];
-    requires = [ "coolercontrold.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.coolerdash}/bin/coolerdash";
-      Restart = "on-failure";
-      RestartSec = 30;
-      TimeoutStopSec = 3;
-    };
-    unitConfig = {
-      StartLimitIntervalSec = 60;
-      StartLimitBurst = 10;
-    };
-  };
-
   services.nelko-pl70e = {
     enable = true;
     macAddress = "DC:0D:30:5A:A7:F5";
@@ -87,6 +55,35 @@
       interface = "enp4s0";
     };
     nameservers = [ "10.0.0.1" "1.1.1.1"];
+  };
+
+  # ── Secrets (agenix) ────────────────────────────────────────────
+  age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+
+  # Generate persistent SSH host keys on first boot so agenix can
+  # decrypt secrets after ZFS rollback.
+  system.activationScripts.sshHostKeys = {
+    text = ''
+      install -m 700 -d /persist/etc/ssh
+      if [ ! -f /persist/etc/ssh/ssh_host_ed25519_key ]; then
+        ${pkgs.openssh}/bin/ssh-keygen -t ed25519 \
+          -f /persist/etc/ssh/ssh_host_ed25519_key -N "" \
+          -C "root@${config.networking.hostName}"
+        ${pkgs.openssh}/bin/ssh-keygen -t rsa \
+          -f /persist/etc/ssh/ssh_host_rsa_key -N "" \
+          -C "root@${config.networking.hostName}"
+      fi
+      for key in ssh_host_ed25519_key ssh_host_rsa_key; do
+        for ext in "" ".pub"; do
+          t=/etc/ssh/$key$ext
+          s=/persist/etc/ssh/$key$ext
+          if [ ! -L "$t" ] || [ "$(readlink "$t")" != "$s" ]; then
+            rm -f "$t"
+            ln -s "$s" "$t"
+          fi
+        done
+      done
+    '';
   };
 
   home-manager = { users = { "eric" = import ../home; }; };

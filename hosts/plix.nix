@@ -231,6 +231,7 @@
         mode = "0700";
       }
       { directory = "/var/lib/nixos"; mode = "0755"; }
+      "/var/lib/tailscale"
       "/var/log"
       "/etc/nixos"
       "/var/cache/plocate"

@@ -25,35 +25,6 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
-      extraConfig = {
-        pipewire."92-high-quality" = {
-          "context.properties" = {
-            "default.clock.rate" = 96000;
-            "default.clock.allowed-rates" = [ 44100 48000 88200 96000 176400 192000 ];
-            "default.clock.quantum" = 512;
-            "default.clock.min-quantum" = 128;
-            "default.clock.max-quantum" = 4096;
-            "default.audio.format" = "S32LE";
-          };
-        };
-        # Uncomment below and comment out above for low-latency profile (rebuild required):
-        #pipewire."92-low-latency" = {
-        #  "context.properties" = {
-        #    "default.clock.rate" = 96000;
-        #    "default.clock.allowed-rates" = [ 44100 48000 96000 ];
-        #    "default.clock.quantum" = 128;
-        #    "default.clock.min-quantum" = 32;
-        #    "default.clock.max-quantum" = 256;
-        #    "default.audio.format" = "S32LE";
-        #  };
-        #};
-        #pipewire-pulse."chrome-no-audio" = {
-          #"pulse.rules" = [{
-            #matches = [{ "application.name" = "~Chromium.*"; }];
-            #actions = { quirks = [ "block-source-volume" ]; };
-          #}];
-        #};
-      };
     };
   };
 
