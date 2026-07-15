@@ -90,7 +90,7 @@
   users.users.admin = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "video" ];
+    extraGroups = [ "wheel" "video" "docker" ];
     hashedPasswordFile = config.age.secrets.admin-password.path;
     openssh.authorizedKeys.keys = [
       # TODO: add your SSH public key
@@ -145,6 +145,9 @@
     enable = true;
     enableGpu = true;  # NVIDIA Quadro P4000 — nvidia.com/gpu resources for pods
   };
+
+  # ── Docker (for Wings + Portainer) ─────────────────────────────────
+  virtualisation.docker.enable = true;
 
   # ── NFS mounts — media library (10.0.0.10) ──────────────────────
   fileSystems."/data" = {
@@ -244,6 +247,7 @@
       "/var/log"
       "/etc/nixos"
       "/var/cache/plocate"
+      "/var/lib/docker"
       { directory = "/home/admin"; user = "admin"; group = "users"; mode = "0700"; }
     ];
     files = [
