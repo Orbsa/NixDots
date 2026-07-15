@@ -155,6 +155,19 @@
   # ── Docker (for Wings + Portainer) ─────────────────────────────────
   virtualisation.docker.enable = true;
 
+  # Bind-mount Wings /etc/pelican to persistent storage
+  fileSystems."/etc/pelican" = {
+    device = "/persist/pelican/wings/etc";
+    fsType = "none";
+    options = [ "bind" ];
+  };
+
+  fileSystems."/tmp/pelican" = {
+    device = "/persist/pelican/wings/tmp";
+    fsType = "none";
+    options = [ "bind" ];
+  };
+
   # ── NFS mounts — media library (10.0.0.10) ──────────────────────
   fileSystems."/data" = {
     device = "10.0.0.10:/mnt/user/Media";
