@@ -53,8 +53,8 @@
   }];
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 22 ];
-    # Pterodactyl Wings (hostNetwork) — game server allocations
+    allowedTCPPorts = [ 22 9443 ];   # 9443 = Portainer web UI
+    # Game server allocations (Pterodactyl/Pelican Wings hostNetwork)
     allowedTCPPortRanges = [ { from = 25565; to = 25575; } ];
   };
 
