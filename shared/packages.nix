@@ -46,7 +46,7 @@
     unrar
 
     # Media
-    mpv
+    # mpv is in modules/media.nix (desktop-only); shared packages is for all hosts
     yt-dlp
     ffmpeg
     mediainfo
