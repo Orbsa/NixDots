@@ -52,9 +52,9 @@
     prefixLength = 23;
   }];
   networking.extraHosts = ''
-    10.0.0.7 wings.game.orbsa.net
-    10.0.0.7 wings.games.orbsa.net
-    10.0.0.7 game.orbsa.net
+    10.0.0.3 wings.game.orbsa.net
+    10.0.0.3 wings.games.orbsa.net
+    10.0.0.3 game.orbsa.net
   '';
 
   networking.firewall = {
