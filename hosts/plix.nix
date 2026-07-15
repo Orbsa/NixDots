@@ -9,6 +9,7 @@
     ../modules/tailscale.nix
     ../modules/beszel.nix
     ./plix-disko.nix
+    ../modules/k3s.nix
   ];
   # Override headless defaults
   time.timeZone = lib.mkForce "America/Chicago";
@@ -135,6 +136,12 @@
     enable = true;
     enableGpu = true;
     key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2l2VPJakeA9vf5Ljsab0iPAOJbSR7w3Ji4qYvllB+1";
+  };
+
+  # ── k3s Kubernetes (game servers) ─────────────────────────────────
+  my.k3s = {
+    enable = true;
+    enableGpu = true;  # NVIDIA Quadro P4000 — nvidia.com/gpu resources for pods
   };
 
   # ── NFS mounts — media library (10.0.0.10) ──────────────────────
