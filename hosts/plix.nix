@@ -54,6 +54,8 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 ];
+    # Pterodactyl Wings (hostNetwork) — game server allocations
+    allowedTCPPortRanges = [ { from = 25565; to = 25575; } ];
   };
 
   # ── Proxmox guest ─────────────────────────────────────────────────
