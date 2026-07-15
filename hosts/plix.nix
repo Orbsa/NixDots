@@ -51,6 +51,10 @@
     address = "10.0.0.7";
     prefixLength = 23;
   }];
+  networking.extraHosts = ''
+    10.0.0.7 wings.game.orbsa.net
+  '';
+
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 9443 8131 2022 ];   # 9443=Portainer, 8131=Wings API, 2022=Wings SFTP
