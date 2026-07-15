@@ -9,21 +9,20 @@
     };
     brews = [ "terminal-notifier" "gimme-aws-creds" ];
     casks = [
-      "claude"
       "ghostty"
       "raycast"
       "obsidian"
       "visual-studio-code"
-      "zed"
+      "discord"
+      "dbeaver-community"
+      "easy-move+resize"
       "linear"
-      "chatgpt"
+      "tidal"
       "shottr"
       "the-unarchiver"
       "hiddenbar"
     ];
     taps = [
-      "homebrew/bundle"
-      "homebrew/services"
       "FelixKratz/formulae"
     ];
   };

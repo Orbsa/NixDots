@@ -1,5 +1,5 @@
 username:
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -27,4 +27,6 @@ username:
     enableSshSupport = true;
     pinentry.package = pkgs.pinentry_mac;
   };
+
+  programs.atuin.enable = lib.mkForce false;
 }

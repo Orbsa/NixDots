@@ -190,10 +190,9 @@ in {
       mode = "0600";
     };
 
-    # Transport map: deliver relay domains to primary MX on port 587
-    # (inbound port 25 blocked by Quantum Fiber residential filtering)
+    # Transport map: deliver relay domains to primary MX via tailscale
     services.postfix.transport = lib.optionalString backupMode (
-      lib.concatMapStrings (d: "${d}    smtp:[mail.orbsa.net]:587\n") cfg.domains
+      lib.concatMapStrings (d: "${d}    smtp:[100.111.138.108]:25\n") cfg.domains
     );
     services.dovecot2 = {
       enable = true;
@@ -207,20 +206,19 @@ in {
       configFile = pkgs.writeText "dovecot.conf" ''
         dovecot_config_version = ${pkgs.dovecot.version}
         dovecot_storage_version = ${pkgs.dovecot.version}
-        protocols {
-          imap = no
-          pop3 = no
-        }
         auth_mechanisms = plain login
         passdb passwd-file {
-          args = scheme=ARGON2ID /etc/dovecot/users
+          passwd_file_path = /etc/dovecot/users
         }
         userdb static {
-          args = uid=vmail gid=vmail home=/var/empty
+        }
+        userdb_fields {
+          uid = vmail
+          gid = vmail
+          home = /var/empty
         }
         service auth {
-          unix_listener auth {
-            path = /var/lib/postfix/queue/private/auth
+          unix_listener /var/lib/postfix/queue/private/auth {
             mode = 0660
             user = postfix
             group = postfix

@@ -1,5 +1,5 @@
 # Darwin host: Nair (MacBook — eric's personal laptop)
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
@@ -11,6 +11,7 @@
   # Darwin-specific packages (dev SDKs, LSPs, etc.)
   environment.systemPackages = with pkgs; [
     claude-code
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.omp
     rustup
     cargo
     nodejs
