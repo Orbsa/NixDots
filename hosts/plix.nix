@@ -53,6 +53,7 @@
   }];
   networking.extraHosts = ''
     10.0.0.7 wings.game.orbsa.net
+    10.0.0.7 game.orbsa.net
   '';
 
   networking.firewall = {
