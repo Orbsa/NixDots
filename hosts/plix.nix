@@ -168,40 +168,42 @@
     options = [ "bind" ];
   };
 
-  # ── NFS mounts — media library (10.0.0.10) ──────────────────────
+  # ── CIFS mounts — media library (10.0.0.10) ──────────────────────
+  # Was NFS, but Unraid 7.3.1 FUSE/shfs readdir is broken over NFS re-export.
+  # CIFS works correctly through the shfs layer.
   fileSystems."/data" = {
-    device = "10.0.0.10:/mnt/user/Media";
-    fsType = "nfs";
+    device = "//10.0.0.10/Media";
+    fsType = "cifs";
     options = [
-      "nfsvers=4.2"
-      "rsize=1048576"
-      "wsize=1048576"
-      "nconnect=4"
-      "soft"
-      "timeo=50"
-      "retrans=3"
+      "guest"
+      "vers=3.0"
+      "uid=193"
+      "gid=100"
+      "forceuid"
+      "forcegid"
+      "file_mode=0755"
+      "dir_mode=0755"
       "noatime"
-      "actimeo=600"
+      "nofail"
       "x-systemd.requires=network-online.target"
-      "x-systemd.mount-timeout=30s"
     ];
   };
 
   fileSystems."/data1" = {
-    device = "10.0.0.10:/mnt/user/Media1";
-    fsType = "nfs";
+    device = "//10.0.0.10/Media1";
+    fsType = "cifs";
     options = [
-      "nfsvers=4.2"
-      "rsize=1048576"
-      "wsize=1048576"
-      "nconnect=4"
-      "soft"
-      "timeo=50"
-      "retrans=3"
+      "guest"
+      "vers=3.0"
+      "uid=193"
+      "gid=100"
+      "forceuid"
+      "forcegid"
+      "file_mode=0755"
+      "dir_mode=0755"
       "noatime"
-      "actimeo=600"
+      "nofail"
       "x-systemd.requires=network-online.target"
-      "x-systemd.mount-timeout=30s"
     ];
   };
 
