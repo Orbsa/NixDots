@@ -205,6 +205,7 @@ in {
       configFile = pkgs.writeText "dovecot.conf" ''
         dovecot_config_version = ${pkgs.dovecot.version}
         dovecot_storage_version = ${pkgs.dovecot.version}
+        default_internal_user = dovecot2
         auth_mechanisms = plain login
         passdb passwd-file {
           passwd_file_path = /etc/dovecot/users
@@ -225,6 +226,10 @@ in {
         }
       '';
     };
+
+    # dovecot worker processes must run as dovecot2 so they can read
+    # /etc/dovecot/users (root:dovecot2 640). Without this, the
+    # daemon drops to uid 988 (dovecot) which is not in the dovecot2 group.
 
     systemd.services.dovecot = {
       after = [ "postfix.service" ];
