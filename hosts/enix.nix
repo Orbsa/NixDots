@@ -86,6 +86,22 @@
     '';
   };
 
+  # Persist machine-id so license activations (Bitwig, etc.) survive
+  # ZFS rollback. Systemd reads this before activation runs, so the
+  # symlink only takes effect on the next boot after the @blank
+  # snapshot is updated.
+  system.activationScripts.machineId = {
+    text = ''
+      if [ ! -f /persist/etc/machine-id ]; then
+        cp /etc/machine-id /persist/etc/machine-id
+      fi
+      if [ ! -L /etc/machine-id ] || [ "$(readlink /etc/machine-id)" != /persist/etc/machine-id ]; then
+        rm -f /etc/machine-id
+        ln -s /persist/etc/machine-id /etc/machine-id
+      fi
+    '';
+  };
+
   home-manager = { users = { "eric" = import ../home; }; };
   # ── Beszel Agent ──────────────────────────────────────────────────
   my.beszel = {

@@ -30,5 +30,5 @@ let
     destination = "/share/mime/packages/model-step.xml";
   };
 in {
-  home.packages = [ pkgs.orca-slicer orca-slicer-mime-type freecad-with-workaround ];
+  home.packages = [ pkgs.orca-slicer orca-slicer-mime-type ];
 }

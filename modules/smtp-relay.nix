@@ -66,7 +66,7 @@ in {
       webroot = "/var/lib/acme/acme-challenge";
       reloadServices = [ "postfix" ];
     };
-    users.users.postfix.extraGroups = [ "acme" "opendkim" ];
+    users.users.postfix.extraGroups = [ "acme" "opendkim" "nginx" ];
     users.users.cleanup = {
       isSystemUser = true;
       group = "cleanup";
@@ -98,8 +98,7 @@ in {
           myorigin = mailFqdn;
           mydestination = [ "localhost" ];
           smtpd_tls_chain_files = [
-            "/var/lib/acme/${mailFqdn}/fullchain.pem"
-            "/var/lib/acme/${mailFqdn}/key.pem"
+            "/var/lib/acme/${mailFqdn}/full.pem"
           ];
           # IPv4 only — GandiCloud IPv6 lacks PTR/rDNS, Gmail rejects it
           inet_protocols = "ipv4";

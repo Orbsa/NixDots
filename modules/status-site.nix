@@ -76,6 +76,7 @@ in {
         set -e
         # ── App source ─────────────────────────────────────────────
         if ! cmp -s "${cfg.package}/package.json" "${appDir}/package.json" 2>/dev/null; then
+          chmod -R u+w "${appDir}" 2>/dev/null || true
           rm -rf "${appDir}"/*
           cp -r "${cfg.package}"/* "${appDir}/"
           chown -R status-site:status-site "${appDir}"
