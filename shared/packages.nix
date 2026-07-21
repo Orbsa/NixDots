@@ -6,6 +6,7 @@
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.ccusage
     coreutils
     # Version control
+    unzip
     gnupg
     pinentry-curses
     git

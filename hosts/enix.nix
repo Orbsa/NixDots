@@ -1,4 +1,4 @@
-{ inputs, pkgs, config, ... }:
+{ inputs, pkgs, config, lib, ... }:
 
 {
   _module.args.username = "eric";
@@ -31,6 +31,9 @@
     "d /persist/var/lib/tailscale 0755 root root -"
     "L /var/lib/tailscale - - - - /persist/var/lib/tailscale"
   ];
+
+  # systemd StateDirectory=tailscale chokes on the symlink above
+  systemd.services.tailscaled.serviceConfig.StateDirectory = lib.mkForce "";
 
   # CoolerControl tries to manage plugin services by writing unit files to
   # /etc/systemd/system (read-only on NixOS). Disable its service manager.

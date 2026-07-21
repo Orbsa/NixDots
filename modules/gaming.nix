@@ -70,6 +70,7 @@
       vulkan-tools
       # Games
       runelite
+      bolt-launcher
       hdos
       #runescape
       hypnotix
