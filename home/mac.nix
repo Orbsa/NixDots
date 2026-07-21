@@ -28,5 +28,5 @@ username:
     pinentry.package = pkgs.pinentry_mac;
   };
 
-  programs.atuin.enable = lib.mkForce false;
+  #programs.atuin.enable = lib.mkForce false;
 }

@@ -9,6 +9,7 @@
     };
     brews = [ "terminal-notifier"];
     casks = [
+      "easy-move-plus-resize"
       "proxy-audio-device"
       "claude"
       "json-viewer"
@@ -33,7 +34,6 @@
       "time-out"
       "raycast"
       "obsidian"
-      "visual-studio-code"
       "zed"
       "linear"
       "chatgpt"

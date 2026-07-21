@@ -15,6 +15,7 @@
 
   # Darwin-specific packages (dev SDKs, LSPs, etc.)
   environment.systemPackages = with pkgs; [
+    gimme-aws-creds
     claude-code
     rustup
     cargo
