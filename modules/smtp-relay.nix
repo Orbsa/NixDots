@@ -74,9 +74,8 @@ in {
     };
     users.groups.cleanup = {};
 
-    # ─── Firewall ───────────────────────────────────────────────────────
     networking.firewall.allowedTCPPorts =
-      [ 587 ] ++ lib.optionals backupMode [ 25 ];
+      [ 80 587 ] ++ lib.optionals backupMode [ 25 ];
 
     # ─── Postfix ────────────────────────────────────────────────────────
     services.postfix = {
@@ -98,6 +97,9 @@ in {
           myorigin = mailFqdn;
           mydestination = [ "localhost" ];
           smtpd_tls_chain_files = [
+            "/var/lib/acme/${mailFqdn}/full.pem"
+          ];
+          smtp_tls_chain_files = [
             "/var/lib/acme/${mailFqdn}/full.pem"
           ];
           # IPv4 only — GandiCloud IPv6 lacks PTR/rDNS, Gmail rejects it

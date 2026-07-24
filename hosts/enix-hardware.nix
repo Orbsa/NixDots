@@ -4,7 +4,6 @@
 { config, inputs, lib, pkgs, modulesPath, ... }:
 
 let
-  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
   ntfsDrives = [
     { name = "C";      uuid = "1CA2D086A2D065B4"; mountPoint = "/mnt/C"; }
     { name = "games2"; uuid = "54BE5F16BE5EEFCA"; mountPoint = "/mnt/games2"; }
@@ -160,8 +159,8 @@ in
     cpu.intel.updateMicrocode =
       lib.mkDefault config.hardware.enableRedistributableFirmware;
     graphics = {
-      package = pkgs-unstable.mesa;
-      package32 = pkgs-unstable.pkgsi686Linux.mesa;
+      #package = pkgs-unstable.mesa;
+      #package32 = pkgs-unstable.pkgsi686Linux.mesa;
       enable = true;
       enable32Bit = true;
     };

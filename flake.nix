@@ -4,7 +4,6 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     nix-colors.url = "github:misterio77/nix-colors";
-    hyprland.url = "github:hyprwm/Hyprland";
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -211,9 +210,8 @@
                 experimental-features = [ "nix-command" "flakes" ];
                 warn-dirty = false;
                 auto-optimise-store = false;
-                substituters = ["https://hyprland.cachix.org" "https://nix-community.cachix.org"];
-                trusted-substituters = ["https://hyprland.cachix.org"];
-                trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+                substituters = ["https://nix-community.cachix.org"];
+                trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
               };
             };
           })
@@ -269,9 +267,8 @@
                 experimental-features = [ "nix-command" "flakes" ];
                 warn-dirty = false;
                 auto-optimise-store = false;
-                substituters = ["https://hyprland.cachix.org" "https://nix-community.cachix.org"];
-                trusted-substituters = ["https://hyprland.cachix.org"];
-                trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+                substituters = ["https://nix-community.cachix.org"];
+                trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
               };
             };
           })
