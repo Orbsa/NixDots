@@ -36,6 +36,10 @@
   users.users.eric.extraGroups = [ "docker" ];
 
 
+  # gnome-keyring provides a D-Bus secret service so Electron apps (Jagex
+  # Launcher, etc.) can use safeStorage for persisting credentials/keys.
+  services.gnome.gnome-keyring.enable = true;
+
   environment.systemPackages = with pkgs; [
     blender
     brave
@@ -49,6 +53,7 @@
     deluge
     foot
     gemini-cli
+    xdotool
     ghostty
     gowall
     grim

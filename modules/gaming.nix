@@ -35,8 +35,8 @@
   };
 
   networking.firewall = let
-    sharedTCPPorts = [ 2626 3074 25565 80 8211];
-    sharedUDPPorts = [ 2626 3074 3478 25565 27036 80 8211];
+    sharedTCPPorts = [ 2626 3074 25565 80 ];
+    sharedUDPPorts = [ 2626 3074 3478 25565 27036 80 ];
     sharedRanges = [
       { from = 4379; to = 4380; }
       { from = 27000; to = 27031; }
