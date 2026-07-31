@@ -59,7 +59,7 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 22 9443 8131 2022 ];   # 9443=Portainer, 8131=Wings API, 2022=Wings SFTP
+    allowedTCPPorts = [ 22 9443 8131 2022 8211 ];   # 9443=Portainer, 8131=Wings API, 2022=Wings SFTP
     # Game server allocations (Wings hostNetwork)
     allowedTCPPortRanges = [ { from = 25565; to = 25575; } ];
   };
