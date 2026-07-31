@@ -296,10 +296,10 @@
   };
 
   # ── Auto-upgrade ──────────────────────────────────────────────────
-  # Rebuilds from the flake in /persist/etc/nixos weekly.
+  # Rebuilds from /home/admin/nix weekly (avoids git+file:// clone edge cases).
   system.autoUpgrade = {
     enable = true;
-    flake = "/persist/etc/nixos";
+    flake = "/home/admin/nix";
     flags = [ "--update-input" "nixpkgs" ];
     dates = "Mon *-*-* 03:00:00";
     randomizedDelaySec = "30min";
