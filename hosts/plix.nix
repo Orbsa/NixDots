@@ -299,6 +299,16 @@
     };
   };
 
+  # Jellyfin's preStart writes encoding.xml before tmpfiles creates
+  # the config dir — on ephemeral root the directory chain is missing.
+  systemd.services.jellyfin = {
+    preStart = lib.mkBefore ''
+      mkdir -p /var/lib/jellyfin/config
+    '';
+    after = [ "systemd-tmpfiles-setup.service" ];
+    wants = [ "systemd-tmpfiles-setup.service" ];
+  };
+
   # ── Impermanence: persistent paths ────────────────────────────────
   environment.persistence."/persist" = {
     hideMounts = true;
