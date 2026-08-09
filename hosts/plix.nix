@@ -116,6 +116,13 @@
   };
   users.groups.plex = {};
 
+  users.users.jellyfin = {
+    isSystemUser = true;
+    group = "jellyfin";
+    extraGroups = [ "video" "render" ];
+  };
+  users.groups.jellyfin = {};
+
   # Note: services.tautulli creates its own plexpy user; the tautulli
   # user below was unused and is replaced by the module's plexpy user.
   # ── SSH ───────────────────────────────────────────────────────────
@@ -239,9 +246,23 @@
     ];
   };
 
-  # Ensure the transcode dir exists with correct ownership.
+  # ── Jellyfin transcode tmpfs (ramdisk) ─────────────────────────────
+  # Smaller than Plex — Jellyfin has fewer concurrent streams.
+  # 16G covers ~8 streams × 100 Mbps × 60s buffer + overhead.
+  fileSystems."/var/lib/jellyfin/transcodes" = {
+    device = "tmpfs";
+    fsType = "tmpfs";
+    options = [
+      "size=16G"
+      "mode=1777"
+      "noatime"
+    ];
+  };
+
+  # Ensure transcode dirs exist with correct ownership.
   systemd.tmpfiles.rules = [
     "d /var/lib/plex-transcode 1777 plex plex - -"
+    "d /var/lib/jellyfin/transcodes 1777 jellyfin jellyfin - -"
   ];
 
   # Plex can write to /var/lib/plex-transcode because ProtectSystem=true
@@ -251,6 +272,31 @@
   services.tautulli = {
     enable = true;
     openFirewall = true;
+  };
+
+  # ── Jellyfin Media Server ──────────────────────────────────────────
+  services.jellyfin = {
+    enable = true;
+    openFirewall = true;
+    hardwareAcceleration = {
+      enable = true;
+      type = "nvenc";
+      device = "/dev/dri/renderD128";
+    };
+    forceEncodingConfig = true;
+    transcoding = {
+      enableToneMapping = true;
+      enableSubtitleExtraction = true;
+      enableHardwareEncoding = true;
+      hardwareDecodingCodecs = {
+        h264 = true;
+        hevc = true;
+        mpeg2 = true;
+        vc1 = true;
+        vp8 = true;
+        vp9 = true;
+      };
+    };
   };
 
   # ── Impermanence: persistent paths ────────────────────────────────
@@ -267,6 +313,18 @@
         directory = "/var/lib/plexpy";
         user = "plexpy";
         group = "nogroup";
+        mode = "0700";
+      }
+      {
+        directory = "/var/lib/jellyfin";
+        user = "jellyfin";
+        group = "jellyfin";
+        mode = "0700";
+      }
+      {
+        directory = "/var/cache/jellyfin";
+        user = "jellyfin";
+        group = "jellyfin";
         mode = "0700";
       }
       { directory = "/var/lib/nixos"; mode = "0755"; }
