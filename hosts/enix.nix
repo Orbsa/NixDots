@@ -58,7 +58,12 @@
       address = "10.0.0.1";
       interface = "enp4s0";
     };
-    nameservers = [ "10.0.0.1" "1.1.1.1"];
+    # VyOS (10.0.0.1) is the LAN resolver: authoritative for
+    # orbsa.net/ericbell.dev/thyrsos.tv, forwards everything else.
+    # Was [ "10.0.0.1" "1.1.1.1" ] — resolved stuck on 1.1.1.1 and
+    # bypassed the authoritative orbsa.net records (public IP has no
+    # port-forwards, so the panel was unreachable by name).
+    nameservers = [ "10.0.0.1" ];
   };
 
   # ── Secrets (agenix) ────────────────────────────────────────────
