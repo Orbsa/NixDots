@@ -17,6 +17,7 @@
       package = pkgs-stable.plex-mpv-shim;
       settings = { mpv_ext = true; };
     };
+    jellyfin-mpv-shim.enable = true;
     awww.enable = true;
   };
 

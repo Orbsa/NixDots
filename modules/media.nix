@@ -27,5 +27,7 @@
     plex-desktop
     #ncmpcpp
     revanced-cli
+    jellyfin-desktop
+    jellyfin-mpv-shim
   ];
 }
