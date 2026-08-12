@@ -62,7 +62,7 @@
     allowedTCPPorts = [ 22 9443 8131 2022 8211 ];   # 9443=Portainer, 8131=Wings API, 2022=Wings SFTP
     # Game server allocations (Wings hostNetwork)
     allowedTCPPortRanges = [ { from = 25565; to = 25575; } ];
-    allowedUDPPorts = [ 16261 ];                    # Project Zomboid (VyOS DST-NAT-55)
+    allowedUDPPorts = [ 16261 16262 ];              # Project Zomboid (VyOS DST-NAT-55/56)
   };
 
   # ── Proxmox guest ─────────────────────────────────────────────────
