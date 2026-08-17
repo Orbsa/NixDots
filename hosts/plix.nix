@@ -158,6 +158,9 @@
   my.k3s = {
     enable = true;
     enableGpu = true;  # NVIDIA Quadro P4000 — nvidia.com/gpu resources for pods
+    # VyOS (10.0.0.1) is the LAN resolver: authoritative for orbsa.net etc.
+    # CoreDNS forwards to it so pods resolve local records without hostAliases.
+    dnsUpstream = "10.0.0.1";
   };
 
   # ── Docker (for Wings + Portainer) ─────────────────────────────────
