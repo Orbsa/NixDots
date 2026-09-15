@@ -37,7 +37,7 @@
     enable = true;
     interactiveShellInit = ''
       if not contains /run/current-system/sw/share $XDG_DATA_DIRS
-        set -gx XDG_DATA_DIRS /run/current-system/sw/share /home/eric/.nix-profile/share /etc/profiles/per-user/eric/share $XDG_DATA_DIRS
+        set -gx XDG_DATA_DIRS /run/current-system/sw/share ${config.home.homeDirectory}/.nix-profile/share ${config.home.profileDirectory}/share $XDG_DATA_DIRS
       end
 
       # GPG agent / SSH — ensure pinentry-curses has a TTY

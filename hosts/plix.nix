@@ -83,7 +83,11 @@
     powerManagement.finegrained = false;
   };
 
-  environment.systemPackages = with pkgs; [ nvitop ];
+  environment.systemPackages = with pkgs; [
+    nvitop
+    # Coding agent — plix is the machine with pi, enix keeps omp.
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
+  ];
   # ── Secrets (agenix) ────────────────────────────────────────────
   age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets.admin-password = {
@@ -98,15 +102,26 @@
     isNormalUser = true;
     uid = 1000;
     extraGroups = [ "wheel" "video" "docker" ];
+    shell = pkgs.fish;
     hashedPasswordFile = config.age.secrets.admin-password.path;
     openssh.authorizedKeys.keys = [
-      # TODO: add your SSH public key
+      # eric@Stratos — the key vix/enix already trust.
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQClXfQoD+dIihb2UJr7oeEmA5EI38lpariK1vHhfM3lzXTNTXm6kODS+L98fxs3izdL8VEDgoPBrJaOx9WL10+zKuUVIw63jd38+o3NUcm8dgXbYndkb0ro6aYS+iyiqWl4rUi9h44N9KGDtEvL7khBQ1C80Vb+xyga2+WH/vTMEadsG51Pcasaq0X6eBFERMWMI0tXny7Poh+9M5q++8CCJ/0FX0Hr8t3/jcKrhi4ICJNSfvz7ywrPFzLMXB9AFcXKUz3D59awKfpeDZQV68S6tgVhkvOEkh6cXSfS6o3+qX7sb0u+PNYSCOLlZCxf4Bdz5K4Y9J8TnryrVf9UN95/BqCVXpnkEp+HziNp0kdCyJaxkaqbpBjnB0kJIsK1IjqpcznFnV9wF3BNVg1bmltl10Wf2hbewp7dCbaVx2z1gi3SECdlOVt+e0eUAoabsLXvwQddks6Yh1/PxCTwwS932bREONn60iKiOOMwywEyRqJvaS2WqEaTATueFr5ryhc= eric@Stratos"
     ];
   };
 
   security.sudo.extraRules = [
     { users = [ "admin" ]; commands = [ { command = "ALL"; options = [ "NOPASSWD" ]; } ]; }
   ];
+
+  # ── Home Manager — neovim/tmux terminal environment (as on enix) ──
+  # home/headless.nix pulls in fish, starship, atuin, neovim and tmux.
+  home-manager = {
+    users.admin = {
+      imports = [ ../home/headless.nix ];
+      home.stateVersion = "24.11";
+    };
+  };
 
   # Service users — declared so impermanence creates persistent dirs
   # with correct ownership before services start.

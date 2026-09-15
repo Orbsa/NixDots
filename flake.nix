@@ -164,6 +164,17 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/plix.nix
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit inputs;
+                pkgs-unstable = pkgs-unstable-linux;
+              };
+            };
+          }
         ];
       };
 
