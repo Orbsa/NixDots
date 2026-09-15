@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-  ] ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+  ] ++ lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) [
     inputs.rind.packages.${pkgs.stdenv.hostPlatform.system}.default
   ] ++ (with pkgs; [
     fishPlugins.done

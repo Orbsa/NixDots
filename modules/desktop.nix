@@ -52,7 +52,6 @@
     calibre
     deluge
     foot
-    gemini-cli
     xdotool
     ghostty
     gowall

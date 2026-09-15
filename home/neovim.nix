@@ -1,4 +1,4 @@
-{ lib, pkgs, pkgs-unstable, ... }:
+{ lib, pkgs, pkgs-unstable, options, ... }:
 
 let
   fromGitHub = rev: ref: repo: doCheck:
@@ -12,12 +12,20 @@ let
       };
       doCheck = doCheck;
     };
+
+  # home-manager master renamed `programs.neovim.extraLuaConfig` to
+  # `initLua`; the pinned darwin home-manager (release-25.11) only knows
+  # the old name, so define whichever one this home-manager has.
+  luaConfig = ''
+    vim.opt.rtp:prepend(vim.fn.expand("~/.config/neovim"))
+    require 'orbsa'
+  '';
+  luaOption =
+    if options.programs.neovim ? initLua
+    then { initLua = luaConfig; }
+    else { extraLuaConfig = luaConfig; };
 in {
-  programs.neovim = {
-    extraLuaConfig = ''
-      vim.opt.rtp:prepend(vim.fn.expand("~/.config/neovim"))
-      require 'orbsa'
-    '';
+  programs.neovim = luaOption // {
     enable = true;
     defaultEditor = true;
     viAlias = true;

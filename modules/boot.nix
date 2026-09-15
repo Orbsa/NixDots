@@ -33,12 +33,12 @@
     "L /var/log/journal  - - - - /persist/var/log/journal"
   ];
 
-  services.journald.extraConfig = ''
-    Storage=persistent
-    SystemMaxFiles=10
-    SystemMaxUse=500M
-    MaxFileSec=1week
-  '';
+  services.journald.settings.Journal = {
+    Storage = "persistent";
+    SystemMaxFiles = 10;
+    SystemMaxUse = "500M";
+    MaxFileSec = "1week";
+  };
 
   systemd.settings.Manager.DefaultTimeoutStopSec = "15s";
 
