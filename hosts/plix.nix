@@ -87,6 +87,10 @@
     nvitop
     # Coding agent — plix is the machine with pi, enix keeps omp.
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
+    # JS toolchain — npm ships with nodejs; bun is what pi's agent tooling
+    # and local package builds expect.
+    bun
+    nodejs
   ];
   # ── Secrets (agenix) ────────────────────────────────────────────
   age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
