@@ -4,14 +4,12 @@
   imports = [ ];#./quickshell.nix ];
 
 
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
-  };
   programs = {
     hyprland = {
       enable = true;
       withUWSM  = true;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       # make sure to also set the portal package, so that they are in sync
     };
     waybar.enable = true;
@@ -48,7 +46,6 @@
     sox
     cliphist
     dbeaver-bin
-    beekeeper-studio
     calibre
     deluge
     foot
@@ -86,7 +83,7 @@
     qpwgraph
     rustdesk
     slurp
-    stirling-pdf
+    # stirling-pdf — Gradle build fails in current nixpkgs (2026-08-27)
     #lxqt.pcmanfm-qt
     pcmanfm
     thunderbird

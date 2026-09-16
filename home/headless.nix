@@ -16,8 +16,10 @@
     enable = true;
     defaultCacheTtl = 86400;
     maxCacheTtl = 86400;
+    defaultCacheTtlSsh = 28800;
+    maxCacheTtlSsh = 28800;
     enableSshSupport = true;
-    pinentry.package = lib.mkDefault pkgs.pinentry-curses;
+    pinentry.package = lib.mkDefault pkgs.pinentry-gnome3;
   };
 
 

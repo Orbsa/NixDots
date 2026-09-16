@@ -18,12 +18,12 @@ username:
     };
   };
 
-  programs.bash.enable = true;
-
   services.gpg-agent = {
     enable = true;
     defaultCacheTtl = 86400;
     maxCacheTtl = 86400;
+    defaultCacheTtlSsh = 28800;
+    maxCacheTtlSsh = 28800;
     enableSshSupport = true;
     pinentry.package = pkgs.pinentry_mac;
   };

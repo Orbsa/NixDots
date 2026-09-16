@@ -90,8 +90,8 @@ in {
       neogit
       neoscroll-nvim
       nui-nvim # lib dep
-      nvim-dap
-      nvim-dap-ui
+      #nvim-dap
+      #nvim-dap-ui
       nvim-dbee
       nvim-tree-lua # Better TreeView
       nvim-treesitter-textobjects

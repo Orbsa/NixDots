@@ -24,7 +24,22 @@
     lm_sensors
     coolercontrol.coolercontrold
     coolercontrol.coolercontrol-gui
+    # NAPS2: bake in the NixOS sane env — launcher env propagation is
+    # unreliable, and without it the SANE driver finds no devices.
+    (pkgs.writeShellScriptBin "naps2" ''
+      exec ${pkgs.coreutils}/bin/env \
+        SANE_CONFIG_DIR=/etc/sane-config \
+        LD_LIBRARY_PATH=/etc/sane-libs''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH} \
+        ${pkgs.naps2}/bin/naps2 "$@"
+    '')
   ];
+
+  # Brother DS-640 document scanner (brscan5; brscan4 truncates pages)
+  hardware.sane.enable = true;
+  hardware.sane.brscan5.enable = true;
+
+  # Scanner access for this host's user
+  users.users.eric.extraGroups = [ "scanner" "lp" ];
 
 
   # Persist critical runtime state across ZFS rollback

@@ -8,7 +8,6 @@
     # Version control
     unzip
     gnupg
-    pinentry-curses
     git
     gitui
     minio-client

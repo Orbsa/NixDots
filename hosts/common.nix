@@ -51,9 +51,6 @@
 
   nixpkgs.overlays = [
     (final: prev: {
-      discord = import ../pkgs/discord.nix { pkgs = prev; };
-    })
-    (final: prev: {
       runelite = import ../pkgs/runelite.nix { pkgs = prev; };
     })
     (final: prev: {

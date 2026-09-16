@@ -40,11 +40,11 @@
         set -gx XDG_DATA_DIRS /run/current-system/sw/share ${config.home.homeDirectory}/.nix-profile/share ${config.home.profileDirectory}/share $XDG_DATA_DIRS
       end
 
-      # GPG agent / SSH — ensure pinentry-curses has a TTY
+      # GPG agent / SSH — keep GPG_TTY current (pinentry GUI fallback, tmux-safe)
       set -gx GPG_TTY (tty)
       gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
 
-      # Unset SSH_ASKPASS so SSH uses the terminal for passphrase prompts
+      # Unset SSH_ASKPASS so SSH never tries a detached askpass prompt
       set -e SSH_ASKPASS
 
       # Ensure SSH_AUTH_SOCK is correct (set-SSH_AUTH_SOCK.service handles this, but guard)

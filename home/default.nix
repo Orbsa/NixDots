@@ -23,6 +23,7 @@ in {
       vim = "nvim";
       eZ = "cd ~/.config/nix; nvim home.nix";
       Ze = "sudo nixos-rebuild --flake /home/eric/.config/nix/ switch";
+      yt = "yt-dlp --cookies-from-browser firefox:~/.config/zen --extractor-args \"youtube:player_client=web_embedded\"";
     };
   };
 

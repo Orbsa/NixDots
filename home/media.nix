@@ -17,13 +17,15 @@
       package = pkgs-stable.plex-mpv-shim;
       settings = { mpv_ext = true; };
     };
-    jellyfin-mpv-shim.enable = true;
     awww.enable = true;
   };
 
   systemd.user.services.plex-mpv-shim = {
+    Unit = {
+      StartLimitIntervalSec = 0;
+    };
     Service = {
-      Restart = "on-failure";
+      Restart = "always";
       RestartSec = 5;
     };
   };
