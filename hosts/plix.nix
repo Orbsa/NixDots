@@ -10,6 +10,7 @@
     ../modules/beszel.nix
     ./plix-disko.nix
     ../modules/k3s.nix
+    ../modules/pelican-ports.nix
   ];
   # Override headless defaults
   time.timeZone = lib.mkForce "America/Chicago";
@@ -46,7 +47,12 @@
   networking.hostName = "plix";
   networking.useDHCP = false;
   networking.defaultGateway = "10.0.0.1";
-  networking.nameservers = [ "9.9.9.9" "1.1.1.1" ];
+  # VyOS (10.0.0.1) is the LAN resolver: authoritative for orbsa.net etc.
+  # and forwards everything else. Must NOT use public DNS here — that
+  # resolves orbsa.net to the public IP (75.169.239.102) which has no
+  # port-forwards, so the Pelican panel pod can't reach Wings by name
+  # (k3s CoreDNS forwards to /etc/resolv.conf).
+  networking.nameservers = [ "10.0.0.1" ];
   networking.interfaces.ens18.ipv4.addresses = [{
     address = "10.0.0.7";
     prefixLength = 23;
@@ -91,6 +97,8 @@
     # and local package builds expect.
     bun
     nodejs
+    # LLM CLI proxy — reduces token consumption on common dev commands.
+    rtk
   ];
   # ── Secrets (agenix) ────────────────────────────────────────────
   age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
@@ -124,6 +132,11 @@
     users.admin = {
       imports = [ ../home/headless.nix ];
       home.stateVersion = "24.11";
+      # Standalone in-memory ssh-agent. headless.nix defaults to gpg-agent's
+      # ssh emulation, but its pinentry has no controlling TTY on this
+      # headless host, so `ssh-add` fails with "agent refused operation".
+      services.gpg-agent.enableSshSupport = lib.mkForce false;
+      services.ssh-agent.enable = lib.mkForce true;
     };
   };
 
@@ -155,7 +168,7 @@
   # Generate persistent host keys on first boot.
   system.activationScripts.sshHostKeys = {
     text = ''
-      install -m 700 -d /persist/etc/ssh
+      install -m 755 -d /persist/etc/ssh
       if [ ! -f /persist/etc/ssh/ssh_host_ed25519_key ]; then
         ${pkgs.openssh}/bin/ssh-keygen -t ed25519 \
           -f /persist/etc/ssh/ssh_host_ed25519_key -N "" \
@@ -180,6 +193,19 @@
     # VyOS (10.0.0.1) is the LAN resolver: authoritative for orbsa.net etc.
     # CoreDNS forwards to it so pods resolve local records without hostAliases.
     dnsUpstream = "10.0.0.1";
+  };
+
+  # ── Pelican game-port auto-sync (host firewall + VyOS NAT) ───────
+  # Reads this node's allocations from the panel DB and, on a 2min timer,
+  # opens every allocated port (TCP+UDP) in the host firewall and pushes
+  # matching DST-NAT rules to VyOS. See ../modules/pelican-ports.nix.
+  my.pelicanPorts = {
+    enable = true;
+    nodeId = 7;
+    vyos = {
+      enable = true;
+      wanInterface = "eth1";   # VyOS WAN interface (75.169.239.102)
+    };
   };
 
   # ── Docker (for Wings + Portainer) ─────────────────────────────────

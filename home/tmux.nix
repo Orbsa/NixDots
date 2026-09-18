@@ -33,6 +33,10 @@
       extrakto
     ];
     extraConfig = ''
+      set -s extended-keys always
+      set -s extended-keys-format csi-u
+      set -as terminal-features 'xterm*:extkeys'
+      
       version_pat='s/^tmux[^0-9]*([.0-9]+).*/\1/p'
 
       is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
