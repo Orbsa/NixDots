@@ -1,0 +1,14 @@
+{
+  "name": "homepage",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scan": "bun run src/scan.ts",
+    "build": "bun run src/build.ts",
+    "serve": "bun run src/serve.ts",
+    "dev": "bun run src/serve.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

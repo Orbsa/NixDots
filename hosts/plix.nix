@@ -8,6 +8,7 @@
     ../modules/headless.nix
     ../modules/tailscale.nix
     ../modules/beszel.nix
+    ../modules/homepage.nix
     ./plix-disko.nix
     ../modules/k3s.nix
     ../modules/pelican-ports.nix
@@ -61,6 +62,7 @@
     10.0.0.3 wings.game.orbsa.net
     10.0.0.3 wings.games.orbsa.net
     10.0.0.3 game.orbsa.net
+   10.0.0.3 home.orbsa.net
   '';
 
   networking.firewall = {
@@ -184,6 +186,12 @@
     enable = true;
     enableGpu = true;
     key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2l2VPJakeA9vf5Ljsab0iPAOJbSR7w3Ji4qYvllB+1";
+  };
+
+  # ── Homelab dashboard (network services homepage) ──────────────────
+  my.homepage = {
+    enable = true;
+    port = 8787;
   };
 
   # ── k3s Kubernetes (game servers) ─────────────────────────────────

@@ -1,0 +1,172 @@
+{
+  "generatedAt": "2026-09-17T06:30:37.249Z",
+  "hosts": [
+    {
+      "key": "plix",
+      "label": "plix",
+      "ip": "10.0.0.7"
+    },
+    {
+      "key": "unraid",
+      "label": "unraid",
+      "ip": "10.0.0.10"
+    },
+    {
+      "key": "proxy",
+      "label": "proxy",
+      "ip": "10.0.0.3"
+    }
+  ],
+  "services": [
+    {
+      "name": "Beszel",
+      "url": "http://10.0.0.122:8090/",
+      "host": "unraid"
+    },
+    {
+      "name": "Chaptarr",
+      "url": "http://10.0.0.35:8789/",
+      "host": "unraid"
+    },
+    {
+      "name": "Copyparty",
+      "url": "http://10.0.0.13:3923/",
+      "host": "unraid"
+    },
+    {
+      "name": "Home Assistant",
+      "url": "http://10.0.0.48:8123/",
+      "host": "unraid"
+    },
+    {
+      "name": "Immich",
+      "url": "http://10.0.0.159:8080/",
+      "host": "unraid"
+    },
+    {
+      "name": "Jackett",
+      "url": "http://10.0.0.49:9117/",
+      "host": "unraid"
+    },
+    {
+      "name": "Jackett 2",
+      "url": "http://10.0.0.105:9117/",
+      "host": "unraid"
+    },
+    {
+      "name": "Jellyfin",
+      "url": "http://10.0.0.7:8096",
+      "host": "plix"
+    },
+    {
+      "name": "MeTube",
+      "url": "http://10.0.0.149:8081/",
+      "host": "unraid"
+    },
+    {
+      "name": "Nginx",
+      "url": "http://10.0.0.72/",
+      "host": "unraid"
+    },
+    {
+      "name": "NPMplus",
+      "url": "http://10.0.0.3:81/",
+      "host": "proxy"
+    },
+    {
+      "name": "Pasta",
+      "url": "http://10.0.0.109/",
+      "host": "unraid"
+    },
+    {
+      "name": "Pelican Panel",
+      "url": "https://game.orbsa.net",
+      "host": "plix"
+    },
+    {
+      "name": "Pelican Wings",
+      "url": "http://10.0.0.7:8131",
+      "host": "plix"
+    },
+    {
+      "name": "Plex",
+      "url": "http://10.0.0.7:32400/web",
+      "host": "plix"
+    },
+    {
+      "name": "Pocket ID",
+      "url": "http://10.0.0.12:1411/",
+      "host": "unraid"
+    },
+    {
+      "name": "Portainer",
+      "url": "https://10.0.0.7:9443",
+      "host": "plix"
+    },
+    {
+      "name": "Poste.io",
+      "url": "https://10.0.0.5/",
+      "host": "unraid"
+    },
+    {
+      "name": "Radarr",
+      "url": "http://10.0.0.107:7878/",
+      "host": "unraid"
+    },
+    {
+      "name": "Radarr (4K)",
+      "url": "http://10.0.0.104:7878/",
+      "host": "unraid"
+    },
+    {
+      "name": "Readarr",
+      "url": "http://10.0.0.29:8787/",
+      "host": "unraid"
+    },
+    {
+      "name": "Rreading Glasses",
+      "url": "http://10.0.0.52:8788/",
+      "host": "unraid"
+    },
+    {
+      "name": "Seerr",
+      "url": "http://10.0.0.113:5055/",
+      "host": "unraid"
+    },
+    {
+      "name": "Sonarr",
+      "url": "http://10.0.0.103:8989/",
+      "host": "unraid"
+    },
+    {
+      "name": "Sonarr (4K)",
+      "url": "http://10.0.0.106:8989/",
+      "host": "unraid"
+    },
+    {
+      "name": "Tautulli",
+      "url": "http://10.0.0.7:8181",
+      "host": "plix"
+    },
+    {
+      "name": "Transmission",
+      "url": "http://10.0.0.101:9091/",
+      "host": "unraid"
+    },
+    {
+      "name": "Transmission 1",
+      "url": "http://10.0.0.83:9091/",
+      "host": "unraid"
+    },
+    {
+      "name": "Transmission 2",
+      "url": "http://10.0.0.84:9091/",
+      "host": "unraid"
+    },
+    {
+      "name": "Vaultwarden",
+      "url": "http://10.0.0.18/",
+      "host": "unraid"
+    }
+  ]
+}
