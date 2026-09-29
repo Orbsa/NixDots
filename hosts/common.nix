@@ -51,9 +51,6 @@
 
   nixpkgs.overlays = [
     (final: prev: {
-      runelite = import ../pkgs/runelite.nix { pkgs = prev; };
-    })
-    (final: prev: {
       orca-slicer = prev.callPackage ../pkgs/orca-slicer/package.nix {
         withNvidiaGLWorkaround = true;
       };
