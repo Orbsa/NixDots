@@ -38,6 +38,11 @@ in
   boot.initrd.systemd.enable = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # The 512M ESP had filled to 100% (65 generations, unlimited entries), so
+  # bootloader install failed with ENOSPC. systemd-boot's installer
+  # garbage-collects before writing, so capping the generations copied to
+  # /boot lets it reclaim the space first. Raise once the ESP is resized.
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.initrd.availableKernelModules = [ "nvme" ];
   boot.tmp.cleanOnBoot = true;
 
