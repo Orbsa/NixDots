@@ -11,6 +11,8 @@
     fishPlugins.z
     ripgrep
     yazi
+    beads
+    bun
     jq
     yq-go
     eza

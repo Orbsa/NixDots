@@ -63,7 +63,7 @@
       dxvk_2
       lutris
       steamtinkerlaunch
-      r2modman
+      gale
       winetricks
       vulkan-loader
       vulkan-validation-layers

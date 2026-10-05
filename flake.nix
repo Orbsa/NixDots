@@ -85,6 +85,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Pinned: github:nesquena/hermes-webui master @ 60b38c46 (2026-10-05).
+    hermes-webui = {
+      url = "github:nesquena/hermes-webui/60b38c46301e7ac7c304f9819ee343315b6f8658";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nelko = {
       url = "github:Orbsa/Nelko-PL70e-CUPS";
       inputs.nixpkgs.follows = "nixpkgs";

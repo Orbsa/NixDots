@@ -11,6 +11,8 @@ in
 {
   "admin-password.age".publicKeys = [ eric plix ];
 
+  "eric-password-hash.age".publicKeys = [ eric enix ];
+
   "plex-url.age".publicKeys = [ eric vix ];
   "maxmind-license-key.age".publicKeys = [ eric vix ];
   "dkim-s20190117248.key".publicKeys = [ eric vix ];

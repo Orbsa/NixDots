@@ -29,6 +29,7 @@ VYOS_ENABLE="${VYOS_ENABLE:-1}"
 VYOS_HOST="${VYOS_HOST:-10.0.0.1}"
 VYOS_USER="${VYOS_USER:-vyos}"
 VYOS_KEY="${VYOS_KEY:-/persist/pelican/vyos/ssh_key}"
+VYOS_KNOWN_HOSTS="${VYOS_KNOWN_HOSTS:-/persist/pelican/vyos/known_hosts}"
 VYOS_WAN_IF="${VYOS_WAN_IF:-eth1}"
 VYOS_TARGET="${VYOS_TARGET:-10.0.0.7}"
 VYOS_NAT_RULE="${VYOS_NAT_RULE:-400}"
@@ -87,6 +88,11 @@ if [ ! -f "$VYOS_KEY" ]; then
   exit 0
 fi
 
+# Root's filesystem is tmpfs on this host, so the default ~/.ssh/known_hosts is
+# wiped every boot and `accept-new` would re-trust whatever answers on the LAN.
+# Keep the pin on the persistent volume so a host-key change is actually noticed.
+mkdir -p "$(dirname "$VYOS_KNOWN_HOSTS")"
+
 # Empty port list → write an explicit drop/absent state rather than a
 # malformed empty port list. Use a sentinel port of 0 so VyOS validation
 # still passes while forwarding nothing real.
@@ -117,6 +123,10 @@ if {
   -o BatchMode=yes \
   -o ConnectTimeout=8 \
   -o StrictHostKeyChecking=accept-new \
+  -o UserKnownHostsFile="$VYOS_KNOWN_HOSTS" \
+  -o IdentitiesOnly=yes \
+  -o ForwardAgent=no \
+  -o PermitLocalCommand=no \
   "${VYOS_USER}@${VYOS_HOST}" >/dev/null 2>&1; then
   log "vyos: synced NAT+firewall rules for ${#PARRAY[@]} port(s) (commit-only; timer re-applies after VyOS reboot)"
 else

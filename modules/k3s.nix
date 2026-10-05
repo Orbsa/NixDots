@@ -1,6 +1,14 @@
 { config, lib, pkgs, ... }:
 let
   cfg = config.my.k3s;
+
+  # Pinned by hash: fetched into the Nix store at build time instead of at
+  # runtime. The previous `kubectl apply -f https://…` executed whatever the
+  # network returned, as root, against the cluster.
+  nvidiaDevicePluginManifest = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.16.2/deployments/static/nvidia-device-plugin.yml";
+    hash = "sha256-9yI1cZh4M26hXeMpYJocCu4KiUBZbUq/Al1R03Nu0AY=";
+  };
 in
 {
   options.my.k3s = {
@@ -87,8 +95,8 @@ in
         until [ -f /etc/rancher/k3s/k3s.yaml ]; do sleep 2; done
         export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
-        # Deploy the NVIDIA device plugin daemonset
-        kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.16.2/deployments/static/nvidia-device-plugin.yml
+        # Deploy the NVIDIA device plugin daemonset (hash-pinned in the store)
+        kubectl apply -f ${nvidiaDevicePluginManifest}
       '';
 
       serviceConfig = {

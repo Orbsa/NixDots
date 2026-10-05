@@ -2,9 +2,9 @@
  * Tiny static file server for the built site (Bun.serve).
  * Usage: bun run serve   (or BUN_PORT=8080 bun run serve)
  */
-import { join } from "node:path";
+import { join, resolve, sep } from "node:path";
 
-const root = join(import.meta.dir, "..", "dist");
+const root = resolve(join(import.meta.dir, "..", "dist"));
 const port = Number(process.env.BUN_PORT ?? 8787);
 
 const server = Bun.serve({
@@ -12,13 +12,29 @@ const server = Bun.serve({
   hostname: "0.0.0.0",
   async fetch(req) {
     const url = new URL(req.url);
-    let path = decodeURIComponent(url.pathname);
+    let path: string;
+    try {
+      path = decodeURIComponent(url.pathname);
+    } catch {
+      return new Response("400 — bad request", { status: 400 });
+    }
+    // Percent-decoding happens after WHATWG URL dot-segment normalisation, so
+    // `%2e%2e%2f` survives as `../` and must be neutralised here. Reject NUL
+    // bytes and anything that resolves outside the static root.
+    if (path.includes("\0")) {
+      return new Response("400 — bad request", { status: 400 });
+    }
     if (path === "/" || path === "") path = "/index.html";
 
-    const file = Bun.file(join(root, path));
-    if (await file.exists()) {
-      return new Response(file, {
-        headers: { "Content-Type": contentType(path) },
+    const file = resolve(root, "." + path);
+    if (file !== root && !file.startsWith(root + sep)) {
+      return new Response("403 — forbidden", { status: 403 });
+    }
+
+    const f = Bun.file(file);
+    if (await f.exists()) {
+      return new Response(f, {
+        headers: { "Content-Type": contentType(file) },
       });
     }
     return new Response("404 — not found", { status: 404 });

@@ -55,6 +55,11 @@
   # /etc/systemd/system (read-only on NixOS). Disable its service manager.
   systemd.services.coolercontrold.serviceConfig.Environment =
     [ "CC_SERVICE_MANAGER=off" ];
+
+  # Desktop console convenience. Deliberately kept out of hosts/common.nix so
+  # the headless host (thinix), which shares that module, never autologins.
+  services.getty.autologinUser = "eric";
+
   services.nelko-pl70e = {
     enable = true;
     macAddress = "DC:0D:30:5A:A7:F5";
@@ -83,6 +88,12 @@
 
   # ── Secrets (agenix) ────────────────────────────────────────────
   age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+
+  # eric's login password hash. Kept out of the tree — this repo is public.
+  age.secrets.eric-password-hash = {
+    file = ../secrets/eric-password-hash.age;
+  };
+  users.users.eric.hashedPasswordFile = config.age.secrets.eric-password-hash.path;
 
   # Generate persistent SSH host keys on first boot so agenix can
   # decrypt secrets after ZFS rollback.

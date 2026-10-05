@@ -81,7 +81,7 @@
     pwvucontrol
     coppwr
     qpwgraph
-    rustdesk
+    #rustdesk
     slurp
     # stirling-pdf — Gradle build fails in current nixpkgs (2026-08-27)
     #lxqt.pcmanfm-qt

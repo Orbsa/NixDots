@@ -1,7 +1,24 @@
 { config, lib, pkgs, inputs, ... }:
 
+let
+  # `llm-agents`' hermes-agent is a Python application whose runtime sys.path is
+  # assembled inside its own launcher (`site.addsitedir` over ~160 store dirs).
+  # The package exposes no python env and no `passthru.hermesVenv`, so the
+  # WebUI's in-process agent runtime gets a shim that reproduces that sys.path.
+  hermesAgent = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+  pyVerRe = lib.replaceStrings [ "." ] [ "\\." ] pkgs.python3.pythonVersion;
+  hermesAgentPython = pkgs.writeShellScriptBin "hermes-agent-python" ''
+    launch=${hermesAgent}/bin/.hermes-wrapped
+    py=$(${pkgs.gnused}/bin/sed -n '1s|^#!||p' "$launch")
+    dirs=$(${pkgs.gnugrep}/bin/grep -oE "/nix/store/[^']+/lib/python${pyVerRe}/site-packages" "$launch" \
+      | ${pkgs.coreutils}/bin/sort -u | ${pkgs.coreutils}/bin/paste -sd: -)
+    export PYTHONPATH="$dirs''${PYTHONPATH:+:$PYTHONPATH}"
+    exec "$py" "$@"
+  '';
+in
 {
   imports = [
+    inputs.hermes-webui.nixosModules.default
     inputs.disko.nixosModules.disko
     inputs.impermanence.nixosModules.impermanence
     inputs.agenix.nixosModules.default
@@ -62,7 +79,7 @@
     10.0.0.3 wings.game.orbsa.net
     10.0.0.3 wings.games.orbsa.net
     10.0.0.3 game.orbsa.net
-   10.0.0.3 home.orbsa.net
+    10.0.0.3 home.orbsa.net
   '';
 
   networking.firewall = {
@@ -165,6 +182,7 @@
   services.openssh.settings = {
     PermitRootLogin = "prohibit-password";
     PasswordAuthentication = false;
+    KbdInteractiveAuthentication = false;
   };
 
   # Generate persistent host keys on first boot.
@@ -428,5 +446,75 @@
     flags = [ "--update-input" "nixpkgs" ];
     dates = "Mon *-*-* 03:00:00";
     randomizedDelaySec = "30min";
+  };
+
+  # ── Hermes WebUI (browser front-end for the Hermes Agent) ──────────
+  # Declarative service from github:nesquena/hermes-webui, pinned in
+  # flake.nix. Tailnet-only: it binds plix's Tailscale address and the
+  # firewall admits the port on tailscale0 only (not LAN/WAN). 8787 is
+  # taken by the homelab homepage.
+  #
+  # Runs as `admin` because the WebUI reads HERMES_HOME directly and
+  # ~/.hermes is mode 0700, and because the Chat runs the Hermes agent
+  # in-process — hence the `hermesAgentPython` shim above.
+  services.hermes-webui = {
+    enable = true;
+    # Bound on all interfaces so NPMplus on `proxy` (10.0.0.3) can reach it over
+    # the LAN; the firewall below admits only the tailnet and that one source.
+    host = "0.0.0.0";
+    port = 8788;
+    user = "admin";
+    group = "users";
+    hermesHome = "/home/admin/.hermes";
+    stateDir = "/home/admin/.hermes/webui";
+    agent = {
+      dir = "${hermesAgent}/${pkgs.python3.sitePackages}";
+      python = "${hermesAgentPython}/bin/hermes-agent-python";
+    };
+    extraEnvironment = {
+      HOME = "/home/admin";
+      PATH = "${hermesAgent}/bin:/run/current-system/sw/bin:/run/wrappers/bin:/home/admin/.nix-profile/bin";
+    };
+  };
+  # Tailnet peers may hit the UI directly; NPMplus reaches it over the LAN from
+  # exactly one source. Nothing else on the LAN (or the WAN) can open the port.
+  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8788 ];
+  networking.firewall.extraCommands = ''
+    iptables -A nixos-fw -p tcp -s 10.0.0.3/32 --dport 8788 -j nixos-fw-accept
+  '';
+  systemd.services.hermes-webui = {
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
+  };
+
+  # ── Hermes Agent gateway ──────────────────────────────────────────
+  # The daemon the WebUI's scheduled jobs need for their cron ticks
+  # ("Gateway not configured" banner). It writes
+  # ~/.hermes/gateway_state.json, which is what the WebUI polls. No
+  # messaging platform is configured, so it only drives schedules.
+  #
+  # Declared here rather than via `hermes gateway install --system`
+  # because plix's root is tmpfs — an imperatively written unit would not
+  # survive a reboot.
+  systemd.services.hermes-gateway = {
+    description = "Hermes Agent gateway daemon";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    environment = {
+      HOME = "/home/admin";
+      HERMES_HOME = "/home/admin/.hermes";
+      # mkForce: systemd.nix defines a default PATH for every unit.
+      PATH = lib.mkForce "${hermesAgent}/bin:/run/current-system/sw/bin:/run/wrappers/bin:/home/admin/.nix-profile/bin";
+    };
+    serviceConfig = {
+      Type = "simple";
+      User = "admin";
+      Group = "users";
+      ExecStart = "${hermesAgent}/bin/hermes gateway run";
+      Restart = "on-failure";
+      RestartSec = 10;
+      UMask = "0077";
+    };
   };
 }

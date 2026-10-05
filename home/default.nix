@@ -28,6 +28,18 @@ in {
   };
 
   xdg = {
+    # Steam Linux Runtime (pressure-vessel), Flatpak and other sandboxes only see
+    # host fonts via /run/host/fonts (= host /usr/share/fonts, absent on NixOS)
+    # and /run/host/user-fonts (= ~/.local/share/fonts). NixOS keeps system fonts
+    # in the store and registers them through /etc/fonts, so sandboxed apps get no
+    # emoji font at all and render tofu. Stage one here.
+    dataFile."fonts/NotoColorEmoji.ttf" = {
+      source = "${pkgs.noto-fonts-color-emoji}/share/fonts/noto/NotoColorEmoji.ttf";
+      # The file predates home-manager management (and its store path changes
+      # with every nixpkgs bump); clobber it instead of failing the switch.
+      force = true;
+    };
+
     configFile = lib.mkIf audioEnabled {
       "yabridgectl/config.toml".text = ''
         plugin_dirs = [

@@ -51,11 +51,6 @@
 
   nixpkgs.overlays = [
     (final: prev: {
-      orca-slicer = prev.callPackage ../pkgs/orca-slicer/package.nix {
-        withNvidiaGLWorkaround = true;
-      };
-    })
-    (final: prev: {
       openldap = prev.openldap.overrideAttrs (_: { doCheck = false; });
       python3 = prev.python3.override {
         packageOverrides = pyFinal: pyPrev: {
@@ -85,13 +80,29 @@
     coolercontrol.enable = true;
   };
 
+  # Admin public key for every host that imports this module (enix, thinix).
+  # Required now that password authentication is disabled below.
+  users.users.eric.openssh.authorizedKeys.keys = [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQClXfQoD+dIihb2UJr7oeEmA5EI38lpariK1vHhfM3lzXTNTXm6kODS+L98fxs3izdL8VEDgoPBrJaOx9WL10+zKuUVIw63jd38+o3NUcm8dgXbYndkb0ro6aYS+iyiqWl4rUi9h44N9KGDtEvL7khBQ1C80Vb+xyga2+WH/vTMEadsG51Pcasaq0X6eBFERMWMI0tXny7Poh+9M5q++8CCJ/0FX0Hr8t3/jcKrhi4ICJNSfvz7ywrPFzLMXB9AFcXKUz3D59awKfpeDZQV68S6tgVhkvOEkh6cXSfS6o3+qX7sb0u+PNYSCOLlZCxf4Bdz5K4Y9J8TnryrVf9UN95/BqCVXpnkEp+HziNp0kdCyJaxkaqbpBjnB0kJIsK1IjqpcznFnV9wF3BNVg1bmltl10Wf2hbewp7dCbaVx2z1gi3SECdlOVt+e0eUAoabsLXvwQddks6Yh1/PxCTwwS932bREONn60iKiOOMwywEyRqJvaS2WqEaTATueFr5ryhc= eric@Stratos"
+  ];
+
   services = {
     locate = {
       enable = true;
     };
 
-    getty.autologinUser = "eric";
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      # Public-key only. NixOS defaults PasswordAuthentication (and PAM
+      # keyboard-interactive) to true, which left these hosts reachable with
+      # the local account password. `getty.autologinUser` is opt-in per host
+      # (only enix, the desktop) — a headless host must never autologin.
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
     blueman.enable = true;
     flatpak.enable = true;
     geoclue2.enable = true;

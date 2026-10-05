@@ -32,6 +32,7 @@
     ports = [ 2143 ];
     settings = {
       PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
     };
   };

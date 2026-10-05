@@ -141,8 +141,8 @@ in {
     jack2
     jack-example-tools
     libjack2
-    reaper-sws-extension
-    reaper-reapack-extension
+    #reaper-sws-extension
+    #reaper-reapack-extension
     bitwig-studio
     vital
     cava
