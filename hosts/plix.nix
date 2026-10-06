@@ -29,6 +29,7 @@ in
     ./plix-disko.nix
     ../modules/k3s.nix
     ../modules/pelican-ports.nix
+    ../modules/mail-cert-sync.nix
   ];
   # Override headless defaults
   time.timeZone = lib.mkForce "America/Chicago";
@@ -553,4 +554,12 @@ in
       UMask = "0077";
     };
   };
+
+  # ── Mail certificate sync (NPMplus proxy → poste.io on Unraid) ────
+  # The proxy owns mail.orbsa.net's certificate (issued via Cloudflare
+  # DNS-01, because the firewall DNATs 80/443 to the proxy so poste can
+  # never answer an HTTP-01 challenge itself). poste still terminates
+  # SMTP/IMAP, so the renewed material has to be pushed to it — this
+  # timer does that. See ../modules/mail-cert-sync.nix for the rationale.
+  my.mailCertSync.enable = true;
 }
