@@ -110,7 +110,6 @@
       pkgs-stable-linux = import inputs.nixpkgs-stable {
         system = linuxSystem;
         config.allowUnfree = true;
-        config.permittedInsecurePackages = [ "qtwebengine-5.15.19" ];
       };
       pkgs-unstable-linux = import inputs.nixpkgs {
         system = linuxSystem;

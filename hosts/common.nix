@@ -64,8 +64,6 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages =
-    [ "python-2.7.18.12" "qtwebengine-5.15.19" "openssl-1.1.1w" "beekeeper-studio-6.0.5" ];
 
   fonts.packages = with pkgs; [
     plemoljp-nf

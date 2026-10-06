@@ -137,6 +137,11 @@ in
   users.users.admin = {
     isNormalUser = true;
     uid = 1000;
+    # Start the user manager at boot with nobody logged in. The Costco
+    # shift-sync bot is a --user service, and /var is tmpfs here (impermanence),
+    # so this flag cannot be set imperatively — leave it to the flake, or the
+    # weekly Mon 22:00 run silently never fires after a reboot.
+    linger = true;
     extraGroups = [ "wheel" "video" "docker" ];
     shell = pkgs.fish;
     hashedPasswordFile = config.age.secrets.admin-password.path;
@@ -443,6 +448,25 @@ in
     "sunrpc.tcp_slot_table_entries" = 256;
   };
 
+  # ── Git trust for root-run rebuilds ───────────────────────────────
+  # `nixos-rebuild` and system.autoUpgrade run as root, and
+  # `--flake /home/admin/nix` resolves to `git+file://`. libgit2 refuses a
+  # repo owned by another user, so root rebuilds died with "repository path
+  # '/home/admin/nix' is not owned by current user" — which is why this host's
+  # weekly autoUpgrade had been failing silently on every run. Declared rather
+  # than set imperatively: /etc/gitconfig is regenerated from the closure on
+  # each boot, while `git config --global` would land in /root (tmpfs) and be
+  # wiped.
+  programs.git = {
+    # `enable` is required: the module only writes /etc/gitconfig under
+    # `mkIf cfg.enable`, so setting `config` alone silently emits no file and
+    # the rebuild comes out byte-identical to the previous one.
+    enable = true;
+    config = {
+      safe = { directory = "/home/admin/nix"; };
+    };
+  };
+
   # ── Auto-upgrade ──────────────────────────────────────────────────
   # Rebuilds from /home/admin/nix weekly (avoids git+file:// clone edge cases).
   system.autoUpgrade = {
@@ -509,6 +533,13 @@ in
     environment = {
       HOME = "/home/admin";
       HERMES_HOME = "/home/admin/.hermes";
+      # Kanban workers are spawned as detached children. Without this the
+      # dispatcher builds the worker argv as `<sys.executable> -m
+      # hermes_cli.main`, but llm-agents' hermes-agent injects its sys.path via
+      # `site.addsitedir` inside the wrapper rather than PYTHONPATH, so the
+      # child dies with "No module named 'hermes_cli'" and the task auto-blocks.
+      # HERMES_BIN makes _resolve_hermes_argv() use the wrapped launcher.
+      HERMES_BIN = "${hermesAgent}/bin/hermes";
       # mkForce: systemd.nix defines a default PATH for every unit.
       PATH = lib.mkForce "${hermesAgent}/bin:/run/current-system/sw/bin:/run/wrappers/bin:/home/admin/.nix-profile/bin";
     };

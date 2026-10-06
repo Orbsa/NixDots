@@ -11,7 +11,9 @@
 
   networking = {
     hostName = "thinix";
-    hostId = "6241ca71";
+    # Was "6241ca71" — the same value as enix. hostId must be unique per machine
+    # (journal identity, DHCP, machine-scoped state).
+    hostId = "acc2573c";
   };
 
   home-manager = { users = { "eric" = import ../home; }; };
