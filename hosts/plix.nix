@@ -30,6 +30,7 @@ in
     ../modules/k3s.nix
     ../modules/pelican-ports.nix
     ../modules/mail-cert-sync.nix
+    ../modules/moq-relay.nix
   ];
   # Override headless defaults
   time.timeZone = lib.mkForce "America/Chicago";
@@ -508,10 +509,26 @@ in
   };
   # Tailnet peers may hit the UI directly; NPMplus reaches it over the LAN from
   # exactly one source. Nothing else on the LAN (or the WAN) can open the port.
-  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8788 ];
+  #
+  # 3117 is the resurrected `multiplex` player — the React front-end plus its
+  # NVENC encoder, run as a --user service from /home/admin/Projects/multiplex.
+  # It is published as stream.orbsa.net, whose NPMplus vhost also arrives from
+  # 10.0.0.3, so it gets the same two-source treatment as the WebUI: tailnet
+  # peers, and the proxy. The video itself no longer comes out of this port:
+  # it is published to the MoQ relay below and subscribed to from the browser.
+  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8788 3117 ];
   networking.firewall.extraCommands = ''
     iptables -A nixos-fw -p tcp -s 10.0.0.3/32 --dport 8788 -j nixos-fw-accept
+    iptables -A nixos-fw -p tcp -s 10.0.0.3/32 --dport 3117 -j nixos-fw-accept
   '';
+  # ── MoQ relay (Multiplex's video feed) ────────────────────────────
+  # Declared in modules/moq-relay.nix. The relay terminates its own TLS on 443 —
+  # UDP for QUIC/WebTransport, TCP for the WebSocket fallback — which is exactly
+  # why moq.orbsa.net must resolve to THIS host and not to the proxy: a TCP-only
+  # reverse proxy cannot carry WebTransport, and UDP cannot be proxied by it at
+  # all. Every session is admitted by the relay's auth server against a token
+  # minted per viewer, so the feed stays as gated as the site is.
+  my.moqRelay.enable = true;
   systemd.services.hermes-webui = {
     after = [ "tailscaled.service" ];
     wants = [ "tailscaled.service" ];
