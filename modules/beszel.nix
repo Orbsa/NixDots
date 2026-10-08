@@ -44,8 +44,19 @@ in
     # Measured sources: the hub reaches LAN agents from its macvlan address
     # 10.0.0.122, and remote agents (vix) over the tailnet from its own node
     # identity 100.83.96.103 (tailnet name `beszel`, a container on unraid).
-    networking.firewall.extraInputRules = ''
-      ip saddr { ${lib.concatStringsSep ", " cfg.allowedFrom} } tcp dport 45876 accept
+    #
+    # extraCommands, NOT extraInputRules. These hosts run the *iptables*
+    # firewall (networking.nftables.enable = false), and extraInputRules is an
+    # nftables-only option: nixpkgs defines it in firewall-nftables.nix, and
+    # firewall-iptables.nix never reads it. Setting it evaluates happily, emits
+    # no rule and warns about nothing — so the accept it was meant to carry
+    # silently disappeared and every hub connection to 45876 ran off the end of
+    # nixos-fw and got refused (all agents showed as down). extraCommands is
+    # the option the iptables firewall does render, hence iptables syntax here.
+    networking.firewall.extraCommands = ''
+      ${lib.concatMapStringsSep "\n" (src:
+        "iptables -A nixos-fw -p tcp -s ${src} --dport 45876 -j nixos-fw-accept"
+      ) cfg.allowedFrom}
     '';
 
     # Token via agenix — copied via LoadCredential so the dynamic user can read it.
