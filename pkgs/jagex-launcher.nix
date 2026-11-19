@@ -3,11 +3,11 @@
 
 let
   pname = "jagex-launcher";
-  version = "0.1.1";
+  version = "0.1.8";
 
   src = fetchurl {
     url = "https://rs-launcher-updates.runescape.com/production/linux/x64/releases/${version}/jagex-launcher-beta-linux-x86_64.AppImage";
-    hash = "sha256-VUWfxwvnVTjfsA8lXYGBG6SYKQDbzhZQqrgApiz7lIE=";
+    hash = "sha256-86ZSfIIwIvDHrBRIrZClpfUSKBasS3jMDjo/9nORmEs=";
   };
 
   appimageContents = appimageTools.extract {

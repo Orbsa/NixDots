@@ -10,7 +10,6 @@
     gnupg
     git
     gitui
-    minio-client
     gh
 
     # Search and navigation

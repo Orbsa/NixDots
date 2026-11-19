@@ -1,24 +1,22 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, pkgs-unstable, lib, config, inputs, ... }:
 
 {
   home.packages = with pkgs; [
-  ] ++ lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) [
-    inputs.rind.packages.${pkgs.stdenv.hostPlatform.system}.default
-  ] ++ (with pkgs; [
     fishPlugins.done
     fishPlugins.forgit
     fishPlugins.grc
     fishPlugins.z
     ripgrep
     yazi
-    beads
+    # Not in nixpkgs-25.11-darwin, which pins the Darwin systems.
+    pkgs-unstable.beads
     bun
     jq
     yq-go
     eza
     fzf
     grc
-  ]);
+  ];
 
   programs.atuin = {
     enable = true;

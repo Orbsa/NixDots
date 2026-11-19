@@ -1,7 +1,35 @@
-{ config, lib, pkgs, inputs, ... }:
+{ lib, pkgs, inputs, ... }:
 
 {
-  boot.extraModulePackages = with config.boot.kernelPackages; [ xpadneo ];
+  # This pad (045E:02FD, firmware 0x0903) advertises a 306-byte report descriptor
+  # that is truncated mid-item: it opens 5 COLLECTIONs but closes only 3, ending
+  # on a dangling `09 7c 15 00`. hid-core's parser rejects that outright
+  # ("unbalanced collection at end of report description" -> "parse failed",
+  # -EINVAL), so NO driver can bind — hid_xpadneo *and* hid_microsoft both fail —
+  # and no /dev/input/event* ever appears. Steam is then blind to the pad even
+  # though BLE/BR-EDR and BlueZ are perfectly happy.
+  #
+  # Upstream repaired this for issue #624 in "xpadneo, device: Fix up cached
+  # truncated XB1S descriptor". That commit is in neither v0.11-pre nor the
+  # 0.10.4 shipped by nixpkgs, so pin the master rev that has it (bump
+  # deliberately, don't float).
+  boot.kernelPackages = pkgs.linuxPackages.extend (final: prev: {
+    xpadneo = prev.xpadneo.overrideAttrs (_: {
+      version = "0.11-pre-unstable-2026-10-06";
+      src = pkgs.fetchFromGitHub {
+        owner = "atar-axis";
+        repo = "xpadneo";
+        rev = "3879ba0f44e9bcfd500a5b92d02f83885f6b23c7";
+        hash = "sha256-rOFMjAw0tsL3a+2Imo1GhDUe9OJxbRFVZLNKy7zkihE=";
+      };
+    });
+  });
+
+  # The boot.kernelPackages pin above is what feeds the NixOS option (which also
+  # sets boot.kernelModules = [ "hid_xpadneo" ], so xpadneo registers before the
+  # in-tree hid_microsoft — both claim hid:b0005g0001v0000045Ep000002FD, see
+  # `modprobe -R`, and first registration wins the bind).
+  hardware.xpadneo.enable = true;
 
   programs = {
     steam = {
@@ -52,11 +80,15 @@
   environment.systemPackages = with pkgs;
     [
       (import ../pkgs/noita-entangled-worlds.nix { pkgs = pkgs; })
-      (steam.override {
-        extraProfile = ''
-          export VK_ICD_FILENAMES=${config.hardware.nvidia.package}/share/vulkan/icd.d/nvidia_icd.json:${config.hardware.nvidia.package.lib32}/share/vulkan/icd.d/nvidia_icd32.json:$VK_ICD_FILENAMES
-        '';
-      })
+      # Do NOT override steam's extraProfile to pin VK_ICD_FILENAMES.
+      # nixpkgs' nvidia lib32 package ships .../share/vulkan/icd.d/nvidia_icd.json,
+      # not nvidia_icd32.json, so that export injected a dead path (plus a trailing
+      # ":" that resolves to $PWD). pressure-vessel honours VK_ICD_FILENAMES when it
+      # decides which host drivers to expose per-arch, so the i386 scan found no ICD
+      # and 32-bit DXVK died with "DxvkInstance::createInstance: Failed to create
+      # Vulkan instance" (the .NET Arma 3 Launcher is 32-bit, hence no launch).
+      # programs.steam already wires up 64- and 32-bit graphics; leave it alone.
+      steam
       parsec-bin
       dxvk.out
       dxvk

@@ -7,10 +7,7 @@
   programs = {
     hyprland = {
       enable = true;
-      withUWSM  = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-      # make sure to also set the portal package, so that they are in sync
+      withUWSM = true;
     };
     waybar.enable = true;
   };
@@ -39,6 +36,7 @@
   services.gnome.gnome-keyring.enable = true;
 
   environment.systemPackages = with pkgs; [
+    deskflow
     blender
     brave
     chatterino2
@@ -66,7 +64,6 @@
     nemo
     ffmpegthumbnailer
     hypridle
-    hyprland-qtutils
     neowall
     hyprlock
     hyprpicker

@@ -29,8 +29,6 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
-
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,11 +50,6 @@
 
     proto-control = {
       url = "github:Orbsa/Proto-Control";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    rind = {
-      url = "github:Orbsa/rind";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

@@ -21,10 +21,8 @@
   ];
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    substituters = [ "https://hyprland.cachix.org" ];
     trusted-public-keys =
-      [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-        "bambu-studio.cachix.org-1:6Ygd0p7L9jY6dg/v6TzR1XrwqQa9C42ATLwsBmxD8JM=" ];
+      [ "bambu-studio.cachix.org-1:6Ygd0p7L9jY6dg/v6TzR1XrwqQa9C42ATLwsBmxD8JM=" ];
     max-jobs = 8;
     cores = 4;
   };

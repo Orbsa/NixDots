@@ -37,7 +37,6 @@ in
   system.stateVersion = lib.mkForce "24.11";
 
   # ── Boot ──────────────────────────────────────────────────────────
-  boot.initrd.systemd.enable = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   # The 512M ESP had filled to 100% (65 generations, unlimited entries), so

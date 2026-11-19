@@ -46,10 +46,43 @@
   systemd.tmpfiles.rules = [
     "d /persist/var/lib/tailscale 0755 root root -"
     "L /var/lib/tailscale - - - - /persist/var/lib/tailscale"
+    # BlueZ stores link keys (i.e. pairings) here. Without this, every boot's
+    # `zfs rollback -r zpool/root@blank` erases them, so BT devices come back
+    # as "Paired: yes / Bonded: no". BlueZ's input plugin then refuses the HID
+    # connection (ClassicBondedOnly defaults to true since the CVE-2023-45866
+    # fix):
+    #   hidp_add_connection() Rejected connection from !bonded device
+    # Nothing else creates /dev/input/event* for the pad, so Steam sees nothing.
+    "d /persist/var/lib/bluetooth 0700 root root -"
+    "L /var/lib/bluetooth - - - - /persist/var/lib/bluetooth"
+    # plocate's DB. /var/cache is on the rolled-back root dataset, so without
+    # this every reboot drops the index and `locate` returns nothing until the
+    # 02:15 timer fires. updatedb cannot write *through* the symlink: it builds
+    # the DB as an O_TMPFILE in dirname(--output), then unlinks --output and
+    # links the new inode in its place, so a symlinked output path is replaced
+    # by a regular file on the ephemeral root. It therefore writes straight to
+    # /persist (services.locate.output below) and clients reach it via this.
+    "d /persist/var/cache 0755 root root -"
+    "L /var/cache/locatedb - - - - /persist/var/cache/locatedb"
   ];
+
+  # Keep the locate database on /persist. The NixOS module derives the
+  # service's ReadWritePaths from dirOf output, which is what lets updatedb
+  # write inside the unit's ReadOnlyPaths=/ sandbox.
+  services.locate.output = "/persist/var/cache/locatedb";
 
   # systemd StateDirectory=tailscale chokes on the symlink above
   systemd.services.tailscaled.serviceConfig.StateDirectory = lib.mkForce "";
+  # bluetooth.service ships StateDirectory=bluetooth and needs the same (systemd
+  # cannot mkdir through the symlink). But that unit also runs with
+  # ProtectSystem=strict, and StateDirectory was its ONLY writable path — blanking
+  # it makes the whole namespace read-only, so every pairing/bond write fails:
+  #   store_device_info_cb() Unable set contents for .../cache/...: Read-only file system
+  # Grant the real store explicitly instead.
+  systemd.services.bluetooth.serviceConfig = {
+    StateDirectory = lib.mkForce "";
+    ReadWritePaths = [ "/persist/var/lib/bluetooth" ];
+  };
 
   # CoolerControl tries to manage plugin services by writing unit files to
   # /etc/systemd/system (read-only on NixOS). Disable its service manager.
@@ -84,6 +117,8 @@
     # bypassed the authoritative orbsa.net records (public IP has no
     # port-forwards, so the panel was unreachable by name).
     nameservers = [ "10.0.0.1" ];
+    # Deskflow (barrier protocol) server listens on TCP 24800.
+    firewall.allowedTCPPorts = [ 24800 ];
   };
 
   # ── Secrets (agenix) ────────────────────────────────────────────
