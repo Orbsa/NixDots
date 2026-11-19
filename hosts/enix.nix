@@ -12,6 +12,7 @@
     inputs.nelko.nixosModules.default
     ../modules/headless.nix
     ../modules/beszel.nix
+    ../modules/uxplay.nix
     #../modules/virtualisation.nix
     #../modules/vfio.nix
   ];
@@ -178,5 +179,15 @@
     enable = true;
     enableGpu = true;
     key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2l2VPJakeA9vf5Ljsab0iPAOJbSR7w3Ji4qYvllB+1";
+  };
+
+  # Audio-only AirPlay receiver (macOS/iOS → this host's PipeWire "airplay" sink).
+  # One client per endpoint, so two endpoints for simultaneous Mac + iPhone.
+  my.uxplay = {
+    enable = true;
+    instances = [
+      { name = "enix AirPlay"; }
+      { name = "enix AirPlay 2"; mac = "02:41:08:00:00:02"; }
+    ];
   };
 }
